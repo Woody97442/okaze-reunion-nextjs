@@ -32,7 +32,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/dashboard/page.jsx"
+    "app/dashboard/page.jsx",
+    "prisma/**/*",
   ],
   "exclude": [
     "node_modules"
