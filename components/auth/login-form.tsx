@@ -1,7 +1,8 @@
 "use client";
 import * as z from "zod";
-import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { useState, useTransition } from "react";
+import { useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from "@/schemas";
 import {
@@ -21,7 +22,13 @@ import { FormSuccess } from "@/components/form-success";
 import { login } from "@/actions/login";
 
 export const LoginForm = () => {
-  const [error, setError] = useState<string>("");
+  const searchParams = useSearchParams();
+  const urlError =
+    searchParams.get("error") === "OAuthAccountNotLinked"
+      ? "Email already in use with different prvider !"
+      : "";
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
 
   const [isPending, startTransition] = useTransition();
 
@@ -35,10 +42,12 @@ export const LoginForm = () => {
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     setError("");
+    setSuccess("");
     startTransition(() => {
       login(values).then((data) => {
         if (data) {
-          setError(data.error);
+          setError(data?.error);
+          setSuccess(data?.success);
         }
       });
     });
@@ -48,7 +57,7 @@ export const LoginForm = () => {
     <CardWrapper
       headerLabel="Welcome back"
       backButtonLabel="Don't have an account"
-      backButtonHref="/register"
+      backButtonHref="/auth/register"
       showSocial>
       <Form {...form}>
         <form
@@ -92,7 +101,8 @@ export const LoginForm = () => {
               )}
             />
           </div>
-          <FormError message={error} />
+          <FormError message={error || urlError} />
+          <FormSuccess message={success} />
           <Button
             type="submit"
             className="w-full"
