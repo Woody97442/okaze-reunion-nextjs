@@ -31,7 +31,7 @@ export const RedisterForm = () => {
     defaultValues: {
       email: "",
       password: "",
-      username: "",
+      name: "",
     },
   });
 
@@ -59,7 +59,7 @@ export const RedisterForm = () => {
           <div className="space-y-4">
             <FormField
               control={form.control}
-              name={"username"}
+              name={"name"}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Username</FormLabel>
