@@ -12,7 +12,7 @@ export const register = async (value: z.infer<typeof RegisterSchema>) => {
         return { error: "Invalid fields !" };
     }
 
-    const { email, username, password } = validatedField.data;
+    const { email, name, password } = validatedField.data;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const existingUser = await getUserByEmail(email);
@@ -24,8 +24,8 @@ export const register = async (value: z.infer<typeof RegisterSchema>) => {
     await prisma.user.create({
         data: {
             email,
-            username,
-            passwordHash: hashedPassword,
+            name,
+            password: hashedPassword,
         },
     });
 
