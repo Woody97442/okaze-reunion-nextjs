@@ -68,6 +68,7 @@ export const RedisterForm = () => {
                       {...field}
                       disabled={isPending}
                       placeholder="john"
+                      autoComplete="username"
                     />
                   </FormControl>
                   <FormMessage />
@@ -86,6 +87,7 @@ export const RedisterForm = () => {
                       disabled={isPending}
                       placeholder="john.doe@me.com"
                       type="email"
+                      autoComplete="email"
                     />
                   </FormControl>
                   <FormMessage />
@@ -104,6 +106,7 @@ export const RedisterForm = () => {
                       disabled={isPending}
                       placeholder="******"
                       type="password"
+                      autoComplete="current-password"
                     />
                   </FormControl>
                   <FormMessage />
