@@ -2,9 +2,10 @@
 import { UserButton } from "@/components/auth/user-button";
 import { SearchBar } from "@/components/nav/searchbar";
 import { TabButton } from "@/components/nav/tab-button";
-import { useCurrentUser } from "@/hooks/use-current-user";
 
 import Link from "next/link";
+import { LoginButton } from "../auth/login-button";
+import { FaUser } from "react-icons/fa";
 
 const Navbar = () => {
   return (
@@ -23,7 +24,14 @@ const Navbar = () => {
       <SearchBar />
       <div className="flex gap-x-4 items-center">
         <TabButton />
-        <UserButton />
+        <LoginButton>
+          <Link
+            href="/auth/login"
+            className="flex flex-col items-center gap-y-1">
+            <FaUser className="text-black w-6 h-6" />
+            <span>Se connecter</span>
+          </Link>
+        </LoginButton>
       </div>
     </nav>
   );

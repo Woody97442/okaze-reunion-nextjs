@@ -1,5 +1,3 @@
-import { LoginButton } from "@/components/auth/login-button";
-import { Button } from "@/components/ui/button";
 import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
 
@@ -17,15 +15,7 @@ export default function HomePage() {
           🔐 Auth
         </h1>
         <p className="text-lg text-white">A simple authentication service</p>
-        <div>
-          <LoginButton>
-            <Button
-              variant={"secondary"}
-              size={"lg"}>
-              Sign in
-            </Button>
-          </LoginButton>
-        </div>
+        <div></div>
       </div>
     </main>
   );
