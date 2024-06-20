@@ -79,9 +79,16 @@ export const LoginForm = () => {
       backButtonLabel="Pas de compte ?"
       backButtonHref="/auth/register"
       showSocial>
-      <p className="text-sm text-muted-foreground text-center max-w-xs mx-auto mb-3">
-        Connectez-vous pour découvrir toutes nos fonctionnalités.
-      </p>
+      {showTwoFactor ? (
+        <p className="text-sm text-muted-foreground text-center max-w-xs mx-auto mb-3">
+          Un code de double authentification a été envoyé à votre adresse email
+          !
+        </p>
+      ) : (
+        <p className="text-sm text-muted-foreground text-center max-w-xs mx-auto mb-3">
+          Connectez-vous pour découvrir toutes nos fonctionnalités.
+        </p>
+      )}
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

@@ -14,7 +14,7 @@ export const Header = ({ label }: HeaderProps) => {
           label
         ) : (
           <img
-            src="/images/okaze-logo.png"
+            src="/images/logo/okaze-logo.png"
             alt="logo de l'application Okaze Réunion"
             className="w-full h-[90px]"
           />

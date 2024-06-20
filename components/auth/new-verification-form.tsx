@@ -40,9 +40,12 @@ const NewVerificationForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Confirmation de votre email"
+      headerLabel=""
       backButtonHref="/auth/login"
       backButtonLabel="Revenir à la connexion.">
+      <p className="text-sm text-muted-foreground text-center max-w-xs mx-auto mb-4">
+        Confirmation de votre email.
+      </p>
       <div className="w-full flex justify-center items-center">
         {!success && !error && (
           <BeatLoader

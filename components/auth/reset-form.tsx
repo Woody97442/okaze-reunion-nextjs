@@ -50,9 +50,12 @@ export const ResetForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Mot de passe oublié ?"
+      headerLabel=""
       backButtonLabel="Revenir à la connexion."
       backButtonHref="/auth/login">
+      <p className="text-sm text-muted-foreground text-center max-w-xs mx-auto mb-3">
+        Mot de passe oublié ?
+      </p>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
