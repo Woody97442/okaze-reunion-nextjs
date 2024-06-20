@@ -1,6 +1,6 @@
 /**
- * An array of routes that are accessible to the public
- * These routes do not require authentication
+ * Les Routes accessibles au public
+ * Ces Routes ne nécessitent pas d'authentification
  * @type {string[]}
  */
 export const publicRoutes = [
@@ -9,11 +9,12 @@ export const publicRoutes = [
 ]
 
 /**
- * An array of routes that are used for authentication
- * These routes will redirect logged in users to /dashboard
+ * Les Routes utilisées pour l'authentification
+ * Ces Routes redirigeront les utilisateurs connectés vers /dashboard
  * @type {string[]}
  */
 export const authRoutes = [
+    "/",
     "/auth/login",
     "/auth/register",
     "/auth/error",
@@ -22,14 +23,14 @@ export const authRoutes = [
 ]
 
 /**
- * The prefix for API auhtentication routes
- * Routes that start with this prefix are used for API authentication purposes
+ * Le préfixe des routes d'authentification API
+ * Les routes commençant par ce préfixe sont utilisées à des fins d'authentification API
  * @type {string}
  */
 export const apiAuthPrefix = "/api/auth";
 
 /**
- * The default redirect path after logging in
+ * Le routes de redirection par défaut après la connexion
  * @type {string}
  */
 export const DEFAULT_LOGIN_REDIRECT = "/dashboard"

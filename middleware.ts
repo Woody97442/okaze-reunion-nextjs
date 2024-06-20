@@ -34,11 +34,6 @@ export default auth((req) => {
         return Response.redirect(new URL("/auth/login", nextUrl))
     }
 
-    // Si l'utilisateur est connecté et accède à la racine (/), rediriger vers /dashboard
-    if (isLoggedIn && nextUrl.pathname === '/') {
-        return Response.redirect(new URL("/dashboard", nextUrl));
-    }
-
     return;
 })
 
