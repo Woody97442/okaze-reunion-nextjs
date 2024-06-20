@@ -1,4 +1,5 @@
 "use client";
+
 import * as z from "zod";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
@@ -20,6 +21,9 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { register } from "@/actions/register";
 
+import { FaArrowRight, FaCircleXmark } from "react-icons/fa6";
+import { FaCheckCircle } from "react-icons/fa";
+
 export const RedisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
@@ -32,8 +36,12 @@ export const RedisterForm = () => {
       email: "",
       password: "",
       name: "",
+      confirm_password: "",
     },
   });
+
+  const { watch } = form;
+  const password = watch("password", "");
 
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
     setError("");
@@ -48,10 +56,13 @@ export const RedisterForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Create an account"
-      backButtonLabel="Already have an account"
+      headerLabel=""
+      backButtonLabel="Vous avez déjà un compte"
       backButtonHref="/auth/login"
       showSocial>
+      <p className="text-sm text-muted-foreground text-center max-w-xs mx-auto mb-3">
+        Inscrivez-vous maintenant pour profiter pleinement de nos services.
+      </p>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -62,7 +73,7 @@ export const RedisterForm = () => {
               name={"name"}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Nom d'utilisateur</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -99,7 +110,72 @@ export const RedisterForm = () => {
               name={"password"}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>Mot de passe</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      placeholder="******"
+                      type="password"
+                      autoComplete="current-password"
+                    />
+                  </FormControl>
+                  <div className="space-y-1 flex flex-row justify-between items-center pt-2">
+                    <ul className="flex flex-col gap-y-2">
+                      <li>
+                        <div className="flex justify-between gap-x-4 items-center ">
+                          <p className="text-xs">Un chiffre</p>
+                          {/[0-9]/.test(password) ? (
+                            <FaCheckCircle className="w-4 h-4 text-primary" />
+                          ) : (
+                            <FaCircleXmark className="w-4 h-4 text-red-500" />
+                          )}
+                        </div>
+                      </li>
+                      <li>
+                        <div className="flex justify-between gap-x-4 items-center ">
+                          <p className="text-xs">Une majuscule</p>
+                          {/[A-Z]/.test(password) ? (
+                            <FaCheckCircle className="w-4 h-4 text-primary" />
+                          ) : (
+                            <FaCircleXmark className="w-4 h-4 text-red-500" />
+                          )}
+                        </div>
+                      </li>
+                    </ul>
+                    <ul className="flex flex-col gap-y-2">
+                      <li>
+                        <div className="flex justify-between gap-x-4 items-center ">
+                          <p className="text-xs">Min 6 caractères</p>
+                          {password.length >= 6 ? (
+                            <FaCheckCircle className="w-4 h-4 text-primary" />
+                          ) : (
+                            <FaCircleXmark className="w-4 h-4 text-red-500" />
+                          )}
+                        </div>
+                      </li>
+                      <li>
+                        <div className="flex justify-between gap-x-4 items-center ">
+                          <p className="text-xs">Un caractère @/*</p>
+                          {/[^a-zA-Z0-9]/.test(password) ? (
+                            <FaCheckCircle className="w-4 h-4 text-primary" />
+                          ) : (
+                            <FaCircleXmark className="w-4 h-4 text-red-500" />
+                          )}
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name={"confirm_password"}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirmez le mot de passe</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -120,7 +196,10 @@ export const RedisterForm = () => {
             type="submit"
             className="w-full"
             disabled={isPending}>
-            Register
+            <div className="w-full flex justify-center gap-x-2 items-center ">
+              S'inscrire
+              <FaArrowRight className="w-4 h-4" />
+            </div>
           </Button>
         </form>
       </Form>

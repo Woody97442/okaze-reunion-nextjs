@@ -11,7 +11,7 @@ export const register = async (value: z.infer<typeof RegisterSchema>) => {
     const validatedField = RegisterSchema.safeParse(value);
 
     if (!validatedField.success) {
-        return { error: "Invalid fields !" };
+        return { error: "Champs invalides !" };
     }
 
     const { email, name, password } = validatedField.data;
@@ -20,7 +20,7 @@ export const register = async (value: z.infer<typeof RegisterSchema>) => {
     const existingUser = await getUserByEmail(email);
 
     if (existingUser) {
-        return { error: "Email already exists !" };
+        return { error: "l'email existe déjà !" };
     }
 
     await prisma.user.create({

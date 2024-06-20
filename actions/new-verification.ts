@@ -8,19 +8,19 @@ export const newVerification = async (token: string) => {
     const existingToken = await getVerificationTokenByToken(token);
 
     if (!existingToken) {
-        return { error: "Token does not exist !" };
+        return { error: "Token manquant !" };
     }
 
     const hasExpired = new Date(existingToken.expires) < new Date();
 
     if (hasExpired) {
-        return { error: "Token has expired !" };
+        return { error: "Le token a expiré !" };
     }
 
     const existingUser = await getUserByEmail(existingToken.email);
 
     if (!existingUser) {
-        return { error: "User does not exist !" };
+        return { error: "Le compte n'existe pas !" };
     }
 
     await prisma.user.update({
@@ -40,5 +40,5 @@ export const newVerification = async (token: string) => {
         }
     });
 
-    return { success: "Email verified !" };
+    return { success: "Confirmation de l'email réussie !" };
 }

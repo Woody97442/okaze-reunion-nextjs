@@ -12,10 +12,8 @@ export default function HomePage() {
             "text-6xl font-semibold text-white drop-shadow-md",
             font.className
           )}>
-          🔐 Auth
+          Home Page
         </h1>
-        <p className="text-lg text-white">A simple authentication service</p>
-        <div></div>
       </div>
     </main>
   );
