@@ -19,7 +19,7 @@ const NewVerificationForm = () => {
     if (success || error) return;
 
     if (!token) {
-      setError("Missing token !");
+      setError("Token manquant !");
       return;
     }
 
@@ -30,7 +30,7 @@ const NewVerificationForm = () => {
         return;
       })
       .catch(() => {
-        setError("Something went wrong !");
+        setError("Quelque chose s'est mal passé !");
       });
   }, [token, success, error]);
 
@@ -40,9 +40,9 @@ const NewVerificationForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Confirming your email"
+      headerLabel="Confirmation de votre email"
       backButtonHref="/auth/login"
-      backButtonLabel="Back to Login">
+      backButtonLabel="Revenir à la connexion.">
       <div className="w-full flex justify-center items-center">
         {!success && !error && (
           <BeatLoader

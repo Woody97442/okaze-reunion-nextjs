@@ -10,13 +10,13 @@ import { prisma } from "@/prisma/prismaClient";
 
 export const newPassword = async (value: z.infer<typeof NewPasswordSchema>, token: string | null) => {
     if (!token) {
-        return { error: "Missing token !" };
+        return { error: "Token manquant !" };
     }
 
     const validatedField = NewPasswordSchema.safeParse(value);
 
     if (!validatedField.success) {
-        return { error: "Invalid fields !" };
+        return { error: "Champs invalides !" };
     }
 
     const { password } = validatedField.data;
@@ -24,19 +24,19 @@ export const newPassword = async (value: z.infer<typeof NewPasswordSchema>, toke
     const existingToken = await getPasswordResetTokenByToken(token);
 
     if (!existingToken) {
-        return { error: "Invalid token !" };
+        return { error: "Token invalide !" };
     }
 
     const hasExpired = new Date(existingToken.expires) < new Date();
 
     if (hasExpired) {
-        return { error: "Token has expired !" };
+        return { error: "Le token a expiré !" };
     }
 
     const existingUser = await getUserByEmail(existingToken.email);
 
     if (!existingUser) {
-        return { error: "Email does not exist !" };
+        return { error: "L'e-mail n'existe pas !" };
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -56,6 +56,6 @@ export const newPassword = async (value: z.infer<typeof NewPasswordSchema>, toke
         }
     });
 
-    return { success: "Password updated !" };
+    return { success: "Mot de passe mis à jour !" };
 
 }

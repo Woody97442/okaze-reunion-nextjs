@@ -22,12 +22,13 @@ import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { login } from "@/actions/login";
+import { FaArrowRight } from "react-icons/fa6";
 
 export const LoginForm = () => {
   const searchParams = useSearchParams();
   const urlError =
     searchParams.get("error") === "OAuthAccountNotLinked"
-      ? "Email already in use with different prvider !"
+      ? "E-mail déjà utilisé avec un autre fournisseur !"
       : "";
 
   const [showTwoFactor, setShowTwoFactor] = useState(false);
@@ -67,17 +68,20 @@ export const LoginForm = () => {
           }
         })
         .catch(() => {
-          setError("Something went wrong !");
+          setError("Quelque chose s'est mal passé !");
         });
     });
   };
 
   return (
     <CardWrapper
-      headerLabel="Welcome back"
-      backButtonLabel="Don't have an account"
+      headerLabel=""
+      backButtonLabel="Pas de compte ?"
       backButtonHref="/auth/register"
       showSocial>
+      <p className="text-sm text-muted-foreground text-center max-w-xs mx-auto mb-3">
+        Connectez-vous pour découvrir toutes nos fonctionnalités.
+      </p>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -89,7 +93,7 @@ export const LoginForm = () => {
                 name={"code"}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Two Factor Code</FormLabel>
+                    <FormLabel>Double authentification</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -128,7 +132,7 @@ export const LoginForm = () => {
                   name={"password"}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel>Mot de passe</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
@@ -142,8 +146,8 @@ export const LoginForm = () => {
                         size={"sm"}
                         variant={"link"}
                         asChild
-                        className=" px-0 font-normal">
-                        <Link href="/auth/reset">Forgot password ?</Link>
+                        className=" px-0 font-bold">
+                        <Link href="/auth/reset">Mot de passe oublié ?</Link>
                       </Button>
                       <FormMessage />
                     </FormItem>
@@ -158,7 +162,10 @@ export const LoginForm = () => {
             type="submit"
             className="w-full"
             disabled={isPending}>
-            {showTwoFactor ? "Confirm" : "Login"}
+            <div className="w-full flex justify-center gap-x-2 items-center">
+              {showTwoFactor ? "Confirmer" : "Se Connecter"}
+              <FaArrowRight className="w-4 h-4" />
+            </div>
           </Button>
         </form>
       </Form>

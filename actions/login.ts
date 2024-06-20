@@ -19,7 +19,7 @@ export const login = async (value: z.infer<typeof LoginSchema>) => {
     const validatedField = LoginSchema.safeParse(value);
 
     if (!validatedField.success) {
-        return { error: "Invalid fields !" };
+        return { error: "Champs invalides !" };
     }
 
     const { email, password, code } = validatedField.data;
@@ -27,7 +27,7 @@ export const login = async (value: z.infer<typeof LoginSchema>) => {
     const existingUser = await getUserByEmail(email);
 
     if (!existingUser || !existingUser.email || !existingUser.password) {
-        return { error: "Email does not exist !" };
+        return { error: "L'e-mail n'existe pas !" };
     }
 
     if (!existingUser.emailVerified) {
@@ -35,7 +35,7 @@ export const login = async (value: z.infer<typeof LoginSchema>) => {
 
         await sendVerificationEmail(verificationToken.email, verificationToken.token);
 
-        return { success: "Comfirmation email sent !" };
+        return { success: "Email de Confirmation Envoyé !" };
     }
 
     if (existingUser.isTwoFactorEnabled && existingUser.email) {
@@ -43,17 +43,17 @@ export const login = async (value: z.infer<typeof LoginSchema>) => {
             const twoFactorToken = await getTwoFactorTokenByEmail(existingUser.email);
 
             if (!twoFactorToken) {
-                return { error: "Invalid code !" };
+                return { error: "Code invalide !" };
             }
 
             if (twoFactorToken.token !== code) {
-                return { error: "Invalid code !" };
+                return { error: "Code invalide !" };
             }
 
             const hasExpired = new Date(twoFactorToken.expires) < new Date();
 
             if (hasExpired) {
-                return { error: "Code has expired !" };
+                return { error: "Le code a expiré !" };
             }
 
             await prisma.twoFactorToken.delete({
@@ -98,10 +98,10 @@ export const login = async (value: z.infer<typeof LoginSchema>) => {
         if (error instanceof AuthError) {
             switch (error.type) {
                 case "CallbackRouteError":
-                    return { error: "Invalid credentials !" };
+                    return { error: "informations invalides !" };
 
                 default:
-                    return { error: "Something went wrong !" };
+                    return { error: "Quelque chose s'est mal passé !" };
             }
         }
         throw error;

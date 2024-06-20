@@ -16,7 +16,6 @@ import { LogoutButton } from "@/components/auth/logout-button";
 
 export const UserButton = () => {
   const user = useCurrentUser();
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="focus-visible:outline-none">
