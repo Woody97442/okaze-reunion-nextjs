@@ -18,7 +18,9 @@ export const TabButton = () => {
           className="h-full">
           <Link
             href="/favorites"
-            className="flex flex-col items-center gap-y-1">
+            className={`flex flex-col items-center gap-y-1 ${
+              pathname === "/favorites" ? "text-white font-bold" : ""
+            }`}>
             <BsHeart className="w-6 h-6" />
             <span>Favoris</span>
           </Link>
@@ -30,7 +32,9 @@ export const TabButton = () => {
           className="h-full">
           <Link
             href="/my-lots"
-            className="flex flex-col items-center gap-y-1">
+            className={`flex flex-col items-center gap-y-1 ${
+              pathname === "/my-lots" ? "text-white font-bold" : ""
+            }`}>
             <BsBoxSeam className="w-6 h-6" />
             <span>Mes Lots</span>
           </Link>
@@ -42,7 +46,9 @@ export const TabButton = () => {
           className="h-full">
           <Link
             href="/messages"
-            className="flex flex-col items-center gap-y-1">
+            className={`flex flex-col items-center gap-y-1 ${
+              pathname === "/messages" ? "text-white font-bold" : ""
+            }`}>
             <FiMail className="w-6 h-6" />
             <span>Messages</span>
           </Link>

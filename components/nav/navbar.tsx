@@ -11,6 +11,7 @@ import { FaArrowLeft } from "react-icons/fa6";
 
 const Navbar = () => {
   const pathname = usePathname();
+
   return (
     <>
       {pathname === "/auth/login" || pathname === "/auth/register" ? (

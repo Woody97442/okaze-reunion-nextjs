@@ -16,10 +16,12 @@ export default auth((req) => {
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
+    // Si la requête est pour une route d'authentification API, ne rien faire
     if (isApiAuthRoute) {
         return;
     }
 
+    // Si la requête est pour une route d'authentification et que l'utilisateur est connecté, rediriger vers la redirection de connexion par défaut
     if (isAuthRoute) {
         if (isLoggedIn) {
             return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
@@ -27,8 +29,14 @@ export default auth((req) => {
         return;
     }
 
+    // Si l'utilisateur n'est pas connecté et que la route n'est pas publique, rediriger vers la page de connexion
     if (!isLoggedIn && !isPublicRoute) {
         return Response.redirect(new URL("/auth/login", nextUrl))
+    }
+
+    // Si l'utilisateur est connecté et accède à la racine (/), rediriger vers /dashboard
+    if (isLoggedIn && nextUrl.pathname === '/') {
+        return Response.redirect(new URL("/dashboard", nextUrl));
     }
 
     return;
