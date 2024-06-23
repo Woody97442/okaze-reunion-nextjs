@@ -6,15 +6,15 @@
 export const publicRoutes = [
     "/",
     "/auth/new-verification",
+    "/categories",
 ]
 
 /**
  * Les Routes utilisées pour l'authentification
- * Ces Routes redirigeront les utilisateurs connectés vers /dashboard
+ * Ces Routes redirigeront les utilisateurs connectés vers /
  * @type {string[]}
  */
 export const authRoutes = [
-    "/",
     "/auth/login",
     "/auth/register",
     "/auth/error",
@@ -33,4 +33,4 @@ export const apiAuthPrefix = "/api/auth";
  * Le routes de redirection par défaut après la connexion
  * @type {string}
  */
-export const DEFAULT_LOGIN_REDIRECT = "/dashboard"
+export const DEFAULT_LOGIN_REDIRECT = "/"

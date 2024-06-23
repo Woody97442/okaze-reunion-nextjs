@@ -2,11 +2,10 @@
 import { UserButton } from "@/components/auth/user-button";
 import { SearchBar } from "@/components/nav/searchbar";
 import { TabButton } from "@/components/nav/tab-button";
-import { useCurrentUser } from "@/hooks/use-current-user";
 
 import Link from "next/link";
 
-const Navbar = () => {
+const NavbarAuthenticated = () => {
   return (
     <nav className="bg-white flex justify-between items-center  w-full py-4 px-12">
       <div className="w-auto">
@@ -29,4 +28,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default NavbarAuthenticated;

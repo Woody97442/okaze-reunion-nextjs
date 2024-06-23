@@ -4,6 +4,8 @@ import "./globals.css";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import Navbar from "@/components/nav/navbar";
+import NavbarAuthenticated from "@/components/nav/navbar-authenticated";
+import NavCategories from "@/components/nav/nav-categories";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +24,8 @@ export default async function RootLayout({
     <SessionProvider session={session}>
       <html lang="fr">
         <body className={inter.className}>
-          {!session?.user && <Navbar />}
+          {!session?.user ? <Navbar /> : <NavbarAuthenticated />}
+          <NavCategories />
           {children}
         </body>
       </html>
