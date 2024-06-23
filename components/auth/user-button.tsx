@@ -13,9 +13,11 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { LogoutButton } from "@/components/auth/logout-button";
+import Link from "next/link";
 
 export const UserButton = () => {
   const user = useCurrentUser();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="focus-visible:outline-none">
@@ -25,6 +27,7 @@ export const UserButton = () => {
             <FaUser className="text-white w-6 h-6" />
           </AvatarFallback>
         </Avatar>
+        {user?.name || ""}
       </DropdownMenuTrigger>
       <DropdownMenuContent
         className="w-auto bg-white px-2"
@@ -37,7 +40,7 @@ export const UserButton = () => {
         </LogoutButton>
         <DropdownMenuItem>
           <FaUserGear className="mr-2 h-4 w-4" />
-          Profile
+          <Link href="/profile">Profile</Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
