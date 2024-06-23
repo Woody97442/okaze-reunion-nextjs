@@ -94,6 +94,21 @@ model Category {
   name       String @unique
   icon       String
   altIcon    String?
+
+  posts      Post[] @relation("PostCategories")
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Post {
+  id          String @id @default(cuid())
+  name        String 
+  price       Float
+  description String
+  image       String
+  
+  categories    Category[] @relation("PostCategories")
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
