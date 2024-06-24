@@ -17,11 +17,13 @@ import {
   PaginationEllipsis,
   PaginationNext,
 } from "@/components/ui/pagination";
+import { useState } from "react";
 
 const RightColumn = ({ props }: { props?: CategoryWithPosts }) => {
   if (!props) return null;
-
   const { posts, name } = props;
+
+  const [currentPage, setCurrentPage] = useState(1);
 
   if (!posts || posts.length === 0) return <LoaderOkaze />;
 
@@ -90,16 +92,17 @@ const RightColumn = ({ props }: { props?: CategoryWithPosts }) => {
               onClick={previousPage}
             />
           </PaginationItem>
+          {currentPage - 1 !== 0 && (
+            <PaginationItem>{currentPage - 1}</PaginationItem>
+          )}
           <PaginationItem>
             <PaginationLink
               href="#"
               onClick={goToPage}>
-              1
+              {currentPage}
             </PaginationLink>
           </PaginationItem>
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
+          <PaginationItem>{currentPage + 1}</PaginationItem>
           <PaginationItem>
             <PaginationNext
               href="#"
