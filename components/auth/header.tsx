@@ -1,5 +1,6 @@
 import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 const font = Poppins({ subsets: ["latin"], weight: ["600"] });
 interface HeaderProps {
@@ -13,10 +14,12 @@ export const Header = ({ label }: HeaderProps) => {
         {label ? (
           label
         ) : (
-          <img
+          <Image
             src="/images/logo/okaze-logo.png"
             alt="logo de l'application Okaze Réunion"
             className="w-full h-[90px]"
+            width={170}
+            height={90}
           />
         )}
       </h1>

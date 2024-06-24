@@ -7,22 +7,24 @@ import Link from "next/link";
 
 const NavbarAuthenticated = () => {
   return (
-    <nav className="bg-white flex justify-between items-center  w-full py-4 px-12">
-      <div className="w-auto">
-        <Link
-          aria-label="logo de l'application Okaze Réunion"
-          href="/">
-          <img
-            src="/images/logo/okaze-logo.png"
-            alt="logo de l'application Okaze Réunion"
-            className="w-full h-[90px]"
-          />
-        </Link>
-      </div>
-      <SearchBar />
-      <div className="flex gap-x-4 items-center">
-        <TabButton />
-        <UserButton />
+    <nav className="bg-white w-full">
+      <div className=" flex justify-between items-center py-4 mx-[250px]">
+        <div className="w-auto">
+          <Link
+            aria-label="logo de l'application Okaze Réunion"
+            href="/">
+            <img
+              src="/images/logo/okaze-logo.png"
+              alt="logo de l'application Okaze Réunion"
+              className="w-full h-[90px]"
+            />
+          </Link>
+        </div>
+        <SearchBar />
+        <div className="flex gap-x-4 items-center">
+          <TabButton />
+          <UserButton />
+        </div>
       </div>
     </nav>
   );

@@ -22,10 +22,14 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <SessionProvider session={session}>
-      <html lang="fr">
-        <body className={inter.className}>
-          {!session?.user ? <Navbar /> : <NavbarAuthenticated />}
-          <NavCategories />
+      <html
+        lang="fr"
+        className="!h-auto">
+        <body className={inter.className + " bg-[#f5f5f5]"}>
+          <div className="sticky top-0 z-50">
+            {!session?.user ? <Navbar /> : <NavbarAuthenticated />}
+            <NavCategories />
+          </div>
           {children}
         </body>
       </html>
