@@ -26,7 +26,7 @@ export default async function RootLayout({
         lang="fr"
         className="!h-auto">
         <body className={inter.className + " bg-[#f5f5f5]"}>
-          <div className="sticky top-0 z-50">
+          <div className="">
             {!session?.user ? <Navbar /> : <NavbarAuthenticated />}
             <NavCategories />
           </div>

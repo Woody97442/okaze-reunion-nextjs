@@ -22,11 +22,11 @@ export default function CardCategory({ post }: { post: Post }) {
               href={"/post/" + post.id}
               className="h-auto flex rounded-md w-auto hover:brightness-80 overflow-hidden rounded-b-none">
               <Image
-                alt="Product image"
+                alt={post.name}
                 className="aspect-video rounded-md rounded-b-none object-cover transition-transform duration-300 ease-in-out transform hover:scale-110 "
                 width="250"
                 height="140"
-                src="/images/posts/four.webp"
+                src={post.image}
               />
             </Link>
             <CardHeader>

@@ -22,7 +22,7 @@ const RightColumn: React.FC<Props> = ({ categoryName, categoryId }) => {
   const [posts, setPosts] = useState<Post[] | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const pageSize = 10;
+  const pageSize = 5;
 
   const fetchData = async (url: string) => {
     try {
@@ -66,19 +66,25 @@ const RightColumn: React.FC<Props> = ({ categoryName, categoryId }) => {
     fetchTotalPages();
   }, [categoryId, currentPage]);
 
-  const previousPage = () => {
+  const previousPage = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
     if (currentPage > 1) {
       setCurrentPage((prev) => prev - 1);
     }
   };
 
-  const nextPage = () => {
+  const nextPage = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
     if (currentPage < totalPages) {
       setCurrentPage((prev) => prev + 1);
     }
   };
 
-  const goToPage = (page: number) => {
+  const goToPage = (
+    page: number,
+    event: React.MouseEvent<HTMLAnchorElement>
+  ) => {
+    event.preventDefault();
     setCurrentPage(page);
   };
 
@@ -114,7 +120,7 @@ const RightColumn: React.FC<Props> = ({ categoryName, categoryId }) => {
               <PaginationItem>
                 <PaginationLink
                   href="#"
-                  onClick={() => goToPage(currentPage - 1)}>
+                  onClick={(e) => goToPage(currentPage - 1, e)}>
                   {currentPage - 1}
                 </PaginationLink>
               </PaginationItem>
@@ -122,7 +128,7 @@ const RightColumn: React.FC<Props> = ({ categoryName, categoryId }) => {
             <PaginationItem>
               <PaginationLink
                 href="#"
-                onClick={() => goToPage(currentPage)}>
+                onClick={(e) => goToPage(currentPage, e)}>
                 {currentPage}
               </PaginationLink>
             </PaginationItem>
@@ -130,7 +136,7 @@ const RightColumn: React.FC<Props> = ({ categoryName, categoryId }) => {
               <PaginationItem>
                 <PaginationLink
                   href="#"
-                  onClick={() => goToPage(currentPage + 1)}>
+                  onClick={(e) => goToPage(currentPage + 1, e)}>
                   {currentPage + 1}
                 </PaginationLink>
               </PaginationItem>
