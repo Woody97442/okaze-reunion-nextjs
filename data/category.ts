@@ -1,7 +1,6 @@
 import { prisma } from "@/prisma/prismaClient";
-import { CategoryWithPosts } from "@/prisma/types/category";
 
-export const getCategoryById = async (id: string): Promise<CategoryWithPosts> => {
+export const getCategoryById = async (id: string) => {
     try {
         const category = await prisma.category.findUnique({
             where: {
@@ -17,7 +16,7 @@ export const getCategoryById = async (id: string): Promise<CategoryWithPosts> =>
     }
 }
 
-export const getCategoryByName = async (name: string): Promise<CategoryWithPosts> => {
+export const getCategoryByName = async (name: string) => {
     try {
         const category = await prisma.category.findUnique({
             where: {

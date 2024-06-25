@@ -3,7 +3,7 @@ import { SearchBar } from "@/components/nav/searchbar";
 import { TabButton } from "@/components/nav/tab-button";
 
 import Link from "next/link";
-import { LoginButton } from "../auth/login-button";
+import { LoginButton } from "../auth/client/login-button";
 import { FaUser } from "react-icons/fa";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";

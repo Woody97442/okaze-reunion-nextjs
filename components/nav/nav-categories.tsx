@@ -40,7 +40,7 @@ const NavCategories = () => {
                   variant={"ghost"}
                   className="h-full">
                   <Link
-                    href={"/category?id=" + category.id}
+                    href={"/category/" + category.id}
                     className={`flex flex-row items-center gap-x-2 font-bold `}>
                     <img
                       src={category.icon}

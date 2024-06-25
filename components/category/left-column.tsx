@@ -1,4 +1,3 @@
-import React from "react";
 import { SearchBar } from "@/components/category/searchbar";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -13,7 +12,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/input";
 
 const LeftColumn = () => {
   //TODO: Implementation of left column filter

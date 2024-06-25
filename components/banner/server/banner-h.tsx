@@ -10,6 +10,7 @@ const BannerH = ({ variant }: { variant: string }) => {
             className="object-cover w-full rounded-md shadow-md"
             width={1400}
             height={350}
+            priority
             alt={"Bannier publicitaire 1"}
           />
         </div>
@@ -23,6 +24,7 @@ const BannerH = ({ variant }: { variant: string }) => {
             className="object-cover w-full rounded-md shadow-md"
             width={1400}
             height={350}
+            priority
             alt={"Bannier rassurance"}
           />
         </div>

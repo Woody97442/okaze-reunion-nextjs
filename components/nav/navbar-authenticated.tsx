@@ -1,5 +1,5 @@
 "use client";
-import { UserButton } from "@/components/auth/user-button";
+import { UserButton } from "@/components/auth/client/user-button";
 import { SearchBar } from "@/components/nav/searchbar";
 import { TabButton } from "@/components/nav/tab-button";
 
