@@ -1,13 +1,29 @@
+
+const routesAPIPublic = [
+    "/api/categories",
+    "/api/posts",
+    "/api/posts/byCategory",
+    "/api/posts/byCategory/newest",
+    "/api/posts/byCategory/paginated",
+    "/api/posts/byCategory/totalPages",
+]
+
+const publicPages = [
+    "/",
+    "/auth/new-verification",
+    "/category",
+    "/post",
+
+]
+
 /**
  * Les Routes accessibles au public
  * Ces Routes ne nécessitent pas d'authentification
  * @type {string[]}
  */
 export const publicRoutes = [
-    "/",
-    "/auth/new-verification",
-    "/category",
-    "/api/categories",
+    ...publicPages,
+    ...routesAPIPublic
 ]
 
 /**

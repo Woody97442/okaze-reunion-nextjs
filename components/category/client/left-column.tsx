@@ -6,7 +6,6 @@ import {
   SelectValue,
   SelectContent,
   SelectGroup,
-  SelectLabel,
   SelectItem,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -14,8 +13,58 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
-const LeftColumn = () => {
+interface Props {
+  setOrderBy: (orderBy: string) => void;
+  setMinPrice: (minPrice: number) => void;
+  setMaxPrice: (maxPrice: number) => void;
+  min: number;
+  max: number;
+}
+
+const LeftColumn: React.FC<Props> = ({
+  setOrderBy,
+  setMinPrice,
+  setMaxPrice,
+  min,
+  max,
+}) => {
   //TODO: Implementation of left column filter
+
+  const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(e.target.value);
+
+    if (Number.isNaN(value)) return;
+
+    if (value <= 0) {
+      setMinPrice(0);
+      return;
+    }
+
+    if (value > max) {
+      setMinPrice(max);
+      return;
+    }
+
+    setMinPrice(value);
+  };
+
+  const handleMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(e.target.value);
+
+    if (Number.isNaN(value)) return;
+
+    if (value <= 0) {
+      setMaxPrice(0);
+      return;
+    }
+
+    if (value < min) {
+      setMaxPrice(min);
+      return;
+    }
+
+    setMaxPrice(value);
+  };
 
   return (
     <>
@@ -47,10 +96,14 @@ const LeftColumn = () => {
           <Input
             type="number"
             placeholder="min"
+            value={min || ""}
+            onChange={(e) => handleMinChange(e)}
           />
           <Input
             type="number"
             placeholder="max"
+            value={max || ""}
+            onChange={(e) => handleMaxChange(e)}
           />
         </div>
       </div>
@@ -60,52 +113,52 @@ const LeftColumn = () => {
         <div className="items-top flex space-x-2 justify-between items-center">
           <div className="grid gap-1.5 leading-none">
             <label
-              htmlFor="état-neuf"
+              htmlFor="new"
               className="text-md font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
               État neuf
             </label>
           </div>
           <Checkbox
-            id="état-neuf"
+            id="new"
             className="h-6 w-6 "
           />
         </div>
         <div className="items-top flex space-x-2 justify-between items-center">
           <div className="grid gap-1.5 leading-none">
             <label
-              htmlFor="très-bon"
+              htmlFor="very_good"
               className="text-md font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
               Très bon
             </label>
           </div>
           <Checkbox
-            id="très-bon"
+            id="very_good"
             className="h-6 w-6 "
           />
         </div>
         <div className="items-top flex space-x-2 justify-between items-center">
           <div className="grid gap-1.5 leading-none">
             <label
-              htmlFor="bon-état"
+              htmlFor="good"
               className="text-md font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
               Bon
             </label>
           </div>
           <Checkbox
-            id="bon-état"
+            id="good"
             className="h-6 w-6 "
           />
         </div>
         <div className="items-top flex space-x-2 justify-between items-center">
           <div className="grid gap-1.5 leading-none">
             <label
-              htmlFor="état-satisfaisant"
+              htmlFor="satisfactory"
               className="text-md font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
               État satisfaisant
             </label>
           </div>
           <Checkbox
-            id="état-satisfaisant"
+            id="satisfactory"
             className="h-6 w-6 "
           />
         </div>
@@ -114,46 +167,42 @@ const LeftColumn = () => {
       <div className="space-y-4 my-2">
         <h3 className="text-lg">Tri</h3>
         <RadioGroup
-          defaultValue="most-recent"
+          defaultValue="recent"
           className="space-y-2">
           <div className="flex items-center justify-between">
             <Label htmlFor="r2">Plus récents</Label>
             <RadioGroupItem
-              value="most-recent"
+              value="recent"
               id="r1"
               className="w-6 h-6"
-            />
-          </div>
-          <div className="flex items-center justify-between">
-            <Label htmlFor="r1">Pertinence</Label>
-            <RadioGroupItem
-              value="relevance"
-              id="r2"
-              className="w-6 h-6"
+              onClick={() => setOrderBy("recent")}
             />
           </div>
           <div className="flex items-center justify-between">
             <Label htmlFor="r3">Plus anciennes</Label>
             <RadioGroupItem
-              value="older"
+              value="oldest"
               id="r3"
               className="w-6 h-6"
+              onClick={() => setOrderBy("oldest")}
             />
           </div>
           <div className="flex items-center justify-between">
             <Label htmlFor="r3">Prix croissant</Label>
             <RadioGroupItem
-              value="ascending-price"
+              value="priceLow"
               id="r4"
               className="w-6 h-6"
+              onClick={() => setOrderBy("priceLow")}
             />
           </div>
           <div className="flex items-center justify-between">
             <Label htmlFor="r3">Prix décroissant</Label>
             <RadioGroupItem
-              value="descending-price"
+              value="priceHigh"
               id="r5"
               className="w-6 h-6"
+              onClick={() => setOrderBy("priceHigh")}
             />
           </div>
         </RadioGroup>

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getPaginatedPosts } from "@/data/post";
+import { getPaginatedPosts, getTotalPagesByCategory } from "@/data/post";
 
 
 // Route pour récupérer les posts paginés d'une catégorie
@@ -13,7 +13,9 @@ export async function GET(req: Request) {
 
         if (categoryId) {
             const posts = await getPaginatedPosts(categoryId, page, pageSize, orderBy);
-            return NextResponse.json(posts, { status: 200 });
+            const totalPages = await getTotalPagesByCategory(categoryId, pageSize);
+            const response = { posts, totalPages };
+            return NextResponse.json(response, { status: 200 });
         }
 
         return NextResponse.json({ error: "Category ID is required" }, { status: 400 });

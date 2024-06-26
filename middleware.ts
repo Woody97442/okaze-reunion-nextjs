@@ -18,6 +18,8 @@ export default auth((req) => {
 
     // Vérifier si la route est une route dynamique sous /category
     const isDynamicCategoryRoute = /^\/category\/c[a-z0-9]{24,}$/.test(nextUrl.pathname);
+    const isDynamicPostsApiRoute = /^\/api\/posts\/c[a-z0-9]{24,}$/.test(nextUrl.pathname);
+    const isDynamicPostRoute = /^\/post\/c[a-z0-9]{24,}$/.test(nextUrl.pathname);
 
     // Si la requête est pour une route d'authentification API, ne rien faire
     if (isApiAuthRoute) {
@@ -33,7 +35,7 @@ export default auth((req) => {
     }
 
     // Si l'utilisateur n'est pas connecté et que la route n'est pas publique, rediriger vers la page de connexion
-    if (!isLoggedIn && !isPublicRoute && !isDynamicCategoryRoute) {
+    if (!isLoggedIn && !isPublicRoute && !isDynamicCategoryRoute && !isDynamicPostRoute && !isDynamicPostsApiRoute) {
         return Response.redirect(new URL("/auth/login", nextUrl))
     }
 

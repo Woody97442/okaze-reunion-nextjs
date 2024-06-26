@@ -12,6 +12,13 @@ enum UserRole {
   ADMIN
 }
 
+enum PostState {
+  new
+  very_good
+  good
+  satisfactory
+}
+
 model User {
   id            String          @id @default(cuid())
   name          String?          
@@ -95,10 +102,17 @@ model Category {
   icon       String
   altIcon    String?
 
+  subcategories subcategory[] @relation("SubcategoryCategories")
   posts      Post[] @relation("PostCategories")
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model subcategory {
+  id         String @id @default(cuid())
+  name       String @unique
+  categories    Category[] @relation("SubcategoryCategories")
 }
 
 model Post {
@@ -107,7 +121,9 @@ model Post {
   price       Float
   description String
   image       String
-  
+  imageAlt    String?
+
+  state       PostState
   categories    Category[] @relation("PostCategories")
   
   createdAt DateTime @default(now())
