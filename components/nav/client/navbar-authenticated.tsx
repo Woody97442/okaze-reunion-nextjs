@@ -1,7 +1,7 @@
 "use client";
 import { UserButton } from "@/components/auth/client/user-button";
-import { SearchBar } from "@/components/nav/searchbar";
-import { TabButton } from "@/components/nav/tab-button";
+import { SearchBar } from "@/components/nav/client/searchbar";
+import { TabButton } from "@/components/nav/client/tab-button";
 
 import Link from "next/link";
 

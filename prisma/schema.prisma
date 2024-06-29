@@ -99,32 +99,36 @@ model TwoFactorConfirmation{
 model Category {
   id         String @id @default(cuid())
   name       String @unique
-  icon       String
+  icon       String?
   altIcon    String?
 
-  subcategories subcategory[] @relation("SubcategoryCategories")
   posts      Post[] @relation("PostCategories")
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model subcategory {
+model Attribut  {
   id         String @id @default(cuid())
   name       String @unique
-  categories    Category[] @relation("SubcategoryCategories")
+
+  posts      Post[] @relation("PostTag")
+  
 }
 
 model Post {
   id          String @id @default(cuid())
-  name        String 
+  icode       String @unique
+  title       String
   price       Float
-  description String
-  image       String
+  description String?
+  image       String?
   imageAlt    String?
 
   state       PostState
-  categories    Category[] @relation("PostCategories")
+
+  categories  Category[] @relation("PostCategories")
+  attributs   Attribut[] @relation("PostTag")
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

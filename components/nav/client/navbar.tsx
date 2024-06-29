@@ -1,13 +1,14 @@
 "use client";
-import { SearchBar } from "@/components/nav/searchbar";
-import { TabButton } from "@/components/nav/tab-button";
+import { SearchBar } from "@/components/nav/client/searchbar";
+import { TabButton } from "@/components/nav/client/tab-button";
 
 import Link from "next/link";
-import { LoginButton } from "../auth/client/login-button";
+import { LoginButton } from "@/components/auth/client/login-button";
 import { FaUser } from "react-icons/fa";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { FaArrowLeft } from "react-icons/fa6";
+import Image from "next/image";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -32,10 +33,12 @@ const Navbar = () => {
               <Link
                 aria-label="logo de l'application Okaze Réunion"
                 href="/">
-                <img
+                <Image
                   src="/images/logo/okaze-logo.png"
                   alt="logo de l'application Okaze Réunion"
                   className="w-full h-[90px]"
+                  width={200}
+                  height={90}
                 />
               </Link>
             </div>
@@ -48,10 +51,12 @@ const Navbar = () => {
               <Link
                 aria-label="logo de l'application Okaze Réunion"
                 href="/">
-                <img
+                <Image
                   src="/images/logo/okaze-logo.png"
                   alt="logo de l'application Okaze Réunion"
                   className="w-full h-[90px]"
+                  width={200}
+                  height={90}
                 />
               </Link>
             </div>

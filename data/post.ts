@@ -1,10 +1,15 @@
+import { Post } from "@/prisma/post/types";
 import { prisma } from "@/prisma/prismaClient";
 
-export const getPostById = async (id: string) => {
+// Retourne un post par son ID
+export const getPostById = async (id: string): Promise<Post | null> => {
     try {
         const post = await prisma.post.findUnique({
             where: {
                 id
+            }, include: {
+                categories: true,
+                attributs: true
             }
         })
         return post
@@ -13,7 +18,8 @@ export const getPostById = async (id: string) => {
     }
 }
 
-export const getPostsByCategoryId = async (categoryId: string) => {
+// Retourne tous les posts d'une catégorie
+export const getPostsByCategoryId = async (categoryId: string): Promise<Post[] | null> => {
     try {
         const posts = await prisma.post.findMany({
             where: {
@@ -22,6 +28,9 @@ export const getPostsByCategoryId = async (categoryId: string) => {
                         id: categoryId
                     }
                 }
+            }, include: {
+                categories: true,
+                attributs: true
             }
         });
         return posts;
@@ -31,105 +40,17 @@ export const getPostsByCategoryId = async (categoryId: string) => {
     }
 };
 
-export const getPaginatedPosts = async (categoryId: string, page: number, pageSize: number, orderBy: string = 'recent') => {
+// Retourne tous les posts
+export const getPosts = async (): Promise<Post[] | null> => {
     try {
-        let orderByClause: any = {};
-
-        switch (orderBy) {
-            case 'recent':
-                orderByClause = { createdAt: 'desc' };
-                break;
-            case 'oldest':
-                orderByClause = { createdAt: 'asc' };
-                break;
-            case 'priceLow':
-                orderByClause = { price: 'asc' };
-                break;
-            case 'priceHigh':
-                orderByClause = { price: 'desc' };
-                break;
-            default:
-                orderByClause = { createdAt: 'desc' }; // Par défaut, tri par les plus récents
-                break;
-        }
-
-        const skip = (page - 1) * pageSize;
         const posts = await prisma.post.findMany({
-            where: {
-                categories: {
-                    some: {
-                        id: categoryId
-                    }
-                }
-            },
-            skip,
-            take: pageSize,
-            orderBy: orderByClause
-        });
-
-        return posts;
-    } catch (error) {
-        console.error("Error in getPaginatedPosts:", error);
-        return null;
-    }
-};
-
-export const getTotalPostCountByCategory = async (categoryId: string) => {
-    try {
-        const count = await prisma.post.count({
-            where: {
-                categories: {
-                    some: {
-                        id: categoryId
-                    }
-                }
+            include: {
+                categories: true,
+                attributs: true
             }
-        });
-        return count;
-    } catch (error) {
-        console.error("Error in getTotalPostCountByCategory:", error);
-        return 0;
-    }
-};
-
-export const getTotalPagesByCategory = async (categoryId: string, pageSize: number) => {
-    try {
-        const totalCount = await getTotalPostCountByCategory(categoryId);
-        const totalPages = Math.ceil(totalCount / pageSize);
-        return totalPages;
-    } catch (error) {
-        console.error("Error in getTotalPagesByCategory:", error);
-        return 0;
-    }
-};
-
-export const getPosts = async () => {
-    try {
-        const posts = await prisma.post.findMany()
+        })
         return posts
     } catch {
         return null
     }
 }
-
-export const getNewestPostsByCategory = async (categoryId: string, limit: number = 10) => {
-    try {
-        const posts = await prisma.post.findMany({
-            where: {
-                categories: {
-                    some: {
-                        id: categoryId
-                    }
-                }
-            },
-            orderBy: {
-                createdAt: 'desc'
-            },
-            take: limit
-        });
-        return posts;
-    } catch (error) {
-        console.error("Error in getNewestPostsByCategory:", error);
-        return null;
-    }
-};

@@ -1,66 +1,283 @@
 "use client";
 
-import { Category, Post } from "@prisma/client";
-import RightColumn from "@/components/category/client/right-column";
-import LeftColumn from "@/components/category/client/left-column";
-import { FetchData } from "@/lib/fetch-data";
-import { useEffect, useState } from "react";
+import CardPost from "@/components/post/client/card-post";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import LoaderOkaze from "@/components/utils/server/loader";
+import { FilterPosts, SortPosts } from "@/lib/filter-posts";
+import { Category } from "@/prisma/category/types";
+import { Post } from "@/prisma/post/types";
+import { useState } from "react";
+import { FiSearch } from "react-icons/fi";
 
 interface Props {
   category: Category;
+  posts: Post[];
+  listAttributs: string[];
 }
 
-export default function ContentCategory({ category }: Props) {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [orderBy, setOrderBy] = useState("recent");
+export default function ContentCategory({
+  category,
+  posts,
+  listAttributs,
+}: Props) {
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [currentSearch, setCurrentSearch] = useState<string>("");
 
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(0);
+  const [selectedAttribute, setSelectedAttribute] = useState<string>("default");
+
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(0);
 
-  const pageSize = 5;
+  const [orderBy, setOrderBy] = useState<string>("recent");
 
-  const fetchPosts = async () => {
-    const url = new URL(
-      `/api/posts/byCategory/paginated`,
-      window.location.origin
-    );
-    url.searchParams.append("categoryId", category.id);
-    url.searchParams.append("page", currentPage.toString());
-    url.searchParams.append("pageSize", pageSize.toString());
-    url.searchParams.append("orderBy", orderBy);
-    const data = await FetchData(url.toString());
+  const [listState, setListState] = useState<string[]>([]);
 
-    setPosts(data.posts);
-    setTotalPages(data.totalPages);
+  // Functions
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      setSearchTerm(currentSearch);
+    }
   };
 
-  useEffect(() => {
-    fetchPosts();
-  }, [category.id, currentPage, orderBy, minPrice, maxPrice]);
+  const handleSetListState = (value: string) => {
+    if (listState.includes(value)) {
+      setListState(listState.filter((item) => item !== value));
+    } else {
+      setListState([...listState, value]);
+    }
+  };
+
+  const postsSorted = SortPosts(posts, orderBy);
+
+  const filteredPosts = postsSorted.filter((post) =>
+    FilterPosts(
+      post,
+      searchTerm,
+      selectedAttribute,
+      minPrice,
+      maxPrice,
+      listState
+    )
+  );
 
   return (
     <div className="flex flex-row space-x-6 mx-[250px] h-full ">
-      <aside className="flex flex-col gap-y-4 bg-white w-1/3 py-4 px-12 shadow-md rounded-sm">
-        <LeftColumn
-          setOrderBy={setOrderBy}
-          setMaxPrice={setMaxPrice}
-          setMinPrice={setMinPrice}
-          min={minPrice}
-          max={maxPrice}
-        />
+      <aside className="flex flex-col gap-y-4 bg-white w-1/3 py-4 px-8 shadow-md rounded-sm">
+        <div className="space-y-4 my-2">
+          <div className="flex w-full items-center space-x-2">
+            <Input
+              type="text"
+              placeholder="Rechercher..."
+              value={currentSearch}
+              onChange={(e) => {
+                setCurrentSearch(e.target.value);
+              }}
+              onKeyDown={handleKeyDown}
+            />
+            <Button
+              type="submit"
+              variant={"default"}
+              onClick={() => setSearchTerm(currentSearch)}>
+              <FiSearch className="w-6 h-6 text-white" />
+            </Button>
+          </div>
+        </div>
+        <Separator />
+        {listAttributs ? (
+          <>
+            <div className="space-y-4 my-2">
+              <h3 className="text-lg">Attribut</h3>
+              <Select
+                onValueChange={(value) => setSelectedAttribute(value)}
+                defaultValue={"default"}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value={"default"}>Tous Afficher</SelectItem>
+                    {listAttributs.map((attribute, index) => (
+                      <SelectItem
+                        key={index}
+                        value={attribute}>
+                        {attribute}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            <Separator />
+          </>
+        ) : (
+          <></>
+        )}
+        <div className="space-y-4 my-2">
+          <h3 className="text-lg">Prix</h3>
+          <div className="grid grid-cols-2 gap-4">
+            <Input
+              type="number"
+              placeholder="Minimum"
+              onChange={(e) => setMinPrice(parseInt(e.target.value) || 0)}
+              inputMode="numeric"
+            />
+            <Input
+              type="number"
+              placeholder="Maximum"
+              onChange={(e) => setMaxPrice(parseInt(e.target.value) || 0)}
+              inputMode="numeric"
+            />
+          </div>
+        </div>
+        <Separator />
+        <div className="space-y-4 my-2">
+          <h3 className="text-lg">État</h3>
+          <div className="items-top flex space-x-2 justify-between items-center">
+            <div className="grid gap-1.5 leading-none">
+              <label
+                htmlFor="new"
+                className="text-md font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                État neuf
+              </label>
+            </div>
+            <Checkbox
+              id="new"
+              className="h-6 w-6 "
+              onClick={() => handleSetListState("new")}
+            />
+          </div>
+          <div className="items-top flex space-x-2 justify-between items-center">
+            <div className="grid gap-1.5 leading-none">
+              <label
+                htmlFor="very_good"
+                className="text-md font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Très bon
+              </label>
+            </div>
+            <Checkbox
+              id="very_good"
+              className="h-6 w-6 "
+              onClick={() => handleSetListState("very_good")}
+            />
+          </div>
+          <div className="items-top flex space-x-2 justify-between items-center">
+            <div className="grid gap-1.5 leading-none">
+              <label
+                htmlFor="good"
+                className="text-md font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Bon
+              </label>
+            </div>
+            <Checkbox
+              id="good"
+              className="h-6 w-6 "
+              onClick={() => handleSetListState("good")}
+            />
+          </div>
+          <div className="items-top flex space-x-2 justify-between items-center">
+            <div className="grid gap-1.5 leading-none">
+              <label
+                htmlFor="satisfactory"
+                className="text-md font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                État satisfaisant
+              </label>
+            </div>
+            <Checkbox
+              id="satisfactory"
+              className="h-6 w-6 "
+              onClick={() => handleSetListState("satisfactory")}
+            />
+          </div>
+        </div>
+        <Separator />
+        <div className="space-y-4 my-2">
+          <h3 className="text-lg">Tri</h3>
+          <RadioGroup
+            defaultValue="recent"
+            className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="r2">Plus récents</Label>
+              <RadioGroupItem
+                value="recent"
+                id="r1"
+                className="w-6 h-6"
+                onClick={() => setOrderBy("recent")}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="r3">Plus anciennes</Label>
+              <RadioGroupItem
+                value="oldest"
+                id="r3"
+                className="w-6 h-6"
+                onClick={() => setOrderBy("oldest")}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="r3">Prix croissant</Label>
+              <RadioGroupItem
+                value="priceLow"
+                id="r4"
+                className="w-6 h-6"
+                onClick={() => setOrderBy("priceLow")}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="r3">Prix décroissant</Label>
+              <RadioGroupItem
+                value="priceHigh"
+                id="r5"
+                className="w-6 h-6"
+                onClick={() => setOrderBy("priceHigh")}
+              />
+            </div>
+          </RadioGroup>
+        </div>
       </aside>
-      <section className="flex flex-col gap-y-4 bg-white w-full py-4 px-12 shadow-md rounded-sm">
-        <RightColumn
-          categoryName={category.name}
-          currentPage={currentPage}
-          posts={posts}
-          totalPages={totalPages}
-          setCurrentPage={setCurrentPage}
-          minPrice={minPrice}
-          maxPrice={maxPrice}
-        />
+      <section className="flex flex-col gap-y-4 bg-white w-full py-4 px-8 shadow-md rounded-sm">
+        <>
+          {!posts || posts.length === 0 ? (
+            <LoaderOkaze />
+          ) : (
+            <>
+              <div className="space-y-4 my-2">
+                <h2 className="text-2xl text-black drop-shadow-md">
+                  {category?.name}
+                </h2>
+              </div>
+              <Separator />
+              <div className="h-full justify-between flex flex-col">
+                <ScrollArea className="h-[650px] w-full">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {filteredPosts.map((post, index) => (
+                      <div
+                        key={post.id}
+                        className={`space-y-4 my-2 animate-fadeIn`}
+                        style={{ animationDelay: `${index * 0.1}s` }}>
+                        <CardPost post={post} />
+                      </div>
+                    ))}
+                  </div>
+                </ScrollArea>
+              </div>
+            </>
+          )}
+        </>
       </section>
     </div>
   );

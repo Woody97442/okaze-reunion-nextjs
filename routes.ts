@@ -2,10 +2,6 @@
 const routesAPIPublic = [
     "/api/categories",
     "/api/posts",
-    "/api/posts/byCategory",
-    "/api/posts/byCategory/newest",
-    "/api/posts/byCategory/paginated",
-    "/api/posts/byCategory/totalPages",
 ]
 
 const publicPages = [

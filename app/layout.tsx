@@ -3,9 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
-import Navbar from "@/components/nav/navbar";
-import NavbarAuthenticated from "@/components/nav/navbar-authenticated";
-import NavCategories from "@/components/nav/nav-categories";
+import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,12 +24,14 @@ export default async function RootLayout({
       <html
         lang="fr"
         className="!h-auto">
-        <body className={inter.className + " bg-[#f5f5f5]"}>
-          <div className="">
-            {!session?.user ? <Navbar /> : <NavbarAuthenticated />}
-            <NavCategories />
-          </div>
+        <body
+          className={
+            inter.className +
+            " bg-[#f5f5f5] flex flex-col justify-between min-h-screen"
+          }>
+          <Header />
           {children}
+          <Footer />
         </body>
       </html>
     </SessionProvider>

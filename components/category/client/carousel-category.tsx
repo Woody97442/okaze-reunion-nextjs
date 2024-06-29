@@ -8,8 +8,8 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "@/components/ui/carousel";
-import CardCategory from "@/components/category/client/card-category";
-import { Post } from "@prisma/client";
+import CardPost from "@/components/post/client/card-post";
+import { Post } from "@/prisma/post/types";
 
 interface Props {
   posts?: Post[] | null;
@@ -41,14 +41,20 @@ const CarouselCategories: React.FC<Props> = ({ posts, categoryName }) => {
           loop: true,
         }}
         className="w-full max-w-[1400px] mx-auto">
-        <CarouselContent className="-ml-1">
-          {posts.map((post) => (
-            <CarouselItem
-              key={post.id}
-              className="pl-1 md:basis-1/4 lg:basis-1/5">
-              <CardCategory post={post} />
-            </CarouselItem>
-          ))}
+        <CarouselContent>
+          {posts
+            .sort((a, b) => b!.createdAt.getTime() - a!.createdAt.getTime())
+            .slice(0, 20)
+            .map(
+              (post) =>
+                post && (
+                  <CarouselItem
+                    key={post.id}
+                    className="pl-1 md:basis-1/4 lg:basis-1/5">
+                    <CardPost post={post} />
+                  </CarouselItem>
+                )
+            )}
         </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />
