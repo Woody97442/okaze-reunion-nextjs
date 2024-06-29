@@ -12,6 +12,13 @@ enum UserRole {
   ADMIN
 }
 
+enum PostState {
+  new
+  very_good
+  good
+  satisfactory
+}
+
 model User {
   id            String          @id @default(cuid())
   name          String?          
@@ -92,8 +99,36 @@ model TwoFactorConfirmation{
 model Category {
   id         String @id @default(cuid())
   name       String @unique
-  icon       String
+  icon       String?
   altIcon    String?
+
+  posts      Post[] @relation("PostCategories")
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Attribut  {
+  id         String @id @default(cuid())
+  name       String @unique
+
+  posts      Post[] @relation("PostTag")
+  
+}
+
+model Post {
+  id          String @id @default(cuid())
+  icode       String @unique
+  title       String
+  price       Float
+  description String?
+  image       String?
+  imageAlt    String?
+
+  state       PostState
+
+  categories  Category[] @relation("PostCategories")
+  attributs   Attribut[] @relation("PostTag")
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

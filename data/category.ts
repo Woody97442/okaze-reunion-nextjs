@@ -1,10 +1,14 @@
 import { prisma } from "@/prisma/prismaClient";
+import { Category } from "@/prisma/category/types";
 
-export const getCategoryById = async (id: string) => {
+export const getCategoryById = async (id: string): Promise<Category | null> => {
     try {
         const category = await prisma.category.findUnique({
             where: {
                 id
+            },
+            include: {
+                posts: true
             }
         })
         return category
@@ -13,11 +17,14 @@ export const getCategoryById = async (id: string) => {
     }
 }
 
-export const getCategoryByName = async (name: string) => {
+export const getCategoryByName = async (name: string): Promise<Category | null> => {
     try {
         const category = await prisma.category.findUnique({
             where: {
                 name
+            },
+            include: {
+                posts: true
             }
         })
         return category
@@ -26,9 +33,13 @@ export const getCategoryByName = async (name: string) => {
     }
 }
 
-export const getCategories = async () => {
+export const getCategories = async (): Promise<Category[] | null> => {
     try {
-        const categories = await prisma.category.findMany()
+        const categories = await prisma.category.findMany({
+            include: {
+                posts: true
+            }
+        })
         return categories
     } catch {
         return null
