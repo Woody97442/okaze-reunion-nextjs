@@ -10,6 +10,7 @@ import { Category } from "@/prisma/category/types";
 import { Post } from "@/prisma/post/types";
 import { getLotsByUserId } from "@/data/lot";
 import { auth } from "@/auth";
+import { Lot } from "@prisma/client";
 
 interface Props {
   idCategory: string;
@@ -43,9 +44,11 @@ const TemplateCategory = async (props: Props) => {
     }
   });
   const session = await auth();
-  if (!session) return <LoaderOkaze />;
+  let lots: Lot[] = [];
 
-  const lots = await getLotsByUserId(session.user.id as string);
+  if (session?.user) {
+    lots = (await getLotsByUserId(session?.user.id as string)) || [];
+  }
 
   return (
     <>
@@ -54,6 +57,7 @@ const TemplateCategory = async (props: Props) => {
         <CarouselCategories
           categoryName={category.name}
           posts={posts}
+          lots={lots || []}
         />
       </div>
       <ContentCategory

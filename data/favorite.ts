@@ -9,7 +9,12 @@ export const getFavoriteByUserId = async (userId: string): Promise<Favorite | nu
             where: {
                 userId
             }, include: {
-                posts: true
+                posts: {
+                    include: {
+                        images: true
+                    }
+
+                }
             }
         })
         return favoris
