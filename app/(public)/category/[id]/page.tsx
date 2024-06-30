@@ -8,7 +8,7 @@ interface Props {
 
 export default async function CategoryId({ params: { id } }: Props) {
   return (
-    <main className="flex flex-col py-8 space-y-6">
+    <main className="flex flex-col py-8 space-y-6 container">
       <TemplateCategory idCategory={id} />
     </main>
   );

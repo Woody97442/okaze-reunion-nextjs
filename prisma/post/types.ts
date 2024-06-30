@@ -1,4 +1,4 @@
-import { Category, Attribut, $Enums } from '@prisma/client';
+import { Category, Attribut, $Enums, Image, Favorite } from '@prisma/client';
 
 export type Post = {
     id: string
@@ -6,12 +6,15 @@ export type Post = {
     title: string
     price: number
     description: string | null
-    image: string | null
-    imageAlt: string | null
+
     state: $Enums.PostState
-    createdAt: Date
-    updatedAt: Date
+
     categories: Category[]
     attributs: Attribut[]
+    images: Image[]
+    favorites: Favorite[]
+
+    createdAt: Date
+    updatedAt: Date
 }
 

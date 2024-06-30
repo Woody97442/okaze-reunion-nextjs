@@ -9,7 +9,9 @@ export const getPostById = async (id: string): Promise<Post | null> => {
                 id
             }, include: {
                 categories: true,
-                attributs: true
+                attributs: true,
+                images: true,
+                favorites: true
             }
         })
         return post
@@ -30,7 +32,9 @@ export const getPostsByCategoryId = async (categoryId: string): Promise<Post[] |
                 }
             }, include: {
                 categories: true,
-                attributs: true
+                attributs: true,
+                images: true,
+                favorites: true
             }
         });
         return posts;
@@ -46,7 +50,9 @@ export const getPosts = async (): Promise<Post[] | null> => {
         const posts = await prisma.post.findMany({
             include: {
                 categories: true,
-                attributs: true
+                attributs: true,
+                images: true,
+                favorites: true
             }
         })
         return posts

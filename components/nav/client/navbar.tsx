@@ -16,8 +16,8 @@ const Navbar = () => {
   return (
     <>
       {pathname === "/auth/login" || pathname === "/auth/register" ? (
-        <nav className="bg-white w-full">
-          <div className=" flex justify-between items-center py-4 mx-[250px]">
+        <nav className="bg-white w-full shadow-lg">
+          <div className=" flex justify-between items-center py-4 container">
             <Button
               variant="default"
               asChild>
@@ -45,8 +45,8 @@ const Navbar = () => {
           </div>
         </nav>
       ) : (
-        <nav className="bg-white w-full">
-          <div className=" flex justify-between items-center py-4 mx-[250px]">
+        <nav className="bg-white w-full ">
+          <div className=" flex justify-between items-center py-4 container">
             <div className="w-auto">
               <Link
                 aria-label="logo de l'application Okaze Réunion"

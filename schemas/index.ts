@@ -1,5 +1,9 @@
 import * as z from "zod";
 
+export const NewLotSchema = z.object({
+    name: z.string().min(3, { message: "Minimum 3 caractères requis" })
+})
+
 export const NewPasswordSchema = z.object({
     password: z.string().min(6, { message: "Minimum 6 caractères requis" })
 })
