@@ -19,7 +19,6 @@ export const AddFavoritesButton = ({ post }: { post: Post }) => {
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
   const user = useCurrentUser();
-  const userId = user?.id;
 
   const [currentIsFavorite, setCurrentIsFavorite] = useState<boolean>(false);
 
