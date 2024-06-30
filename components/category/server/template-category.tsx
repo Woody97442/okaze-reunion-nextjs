@@ -8,7 +8,8 @@ import { getPostsByCategoryId } from "@/data/post";
 
 import { Category } from "@/prisma/category/types";
 import { Post } from "@/prisma/post/types";
-import { Attribut } from "@/prisma/attribut/types";
+import { getLotsByUserId } from "@/data/lot";
+import { auth } from "@/auth";
 
 interface Props {
   idCategory: string;
@@ -20,7 +21,7 @@ interface OneAttribut {
 }
 
 const TemplateCategory = async (props: Props) => {
-  const category: Category = await getCategoryById(props.idCategory);
+  const category: Category | null = await getCategoryById(props.idCategory);
   if (!category) return <LoaderOkaze />;
 
   const posts: Post[] | null = await getPostsByCategoryId(category.id);
@@ -41,11 +42,15 @@ const TemplateCategory = async (props: Props) => {
       }
     }
   });
+  const session = await auth();
+  if (!session) return <LoaderOkaze />;
+
+  const lots = await getLotsByUserId(session.user.id as string);
 
   return (
     <>
       <BannerH variant="1" />
-      <div className="space-y-6 text-start shadow-md bg-white py-4 px-12 mx-[250px] rounded-sm">
+      <div className="space-y-6 text-start shadow-md bg-white py-4 px-12 rounded-sm">
         <CarouselCategories
           categoryName={category.name}
           posts={posts}
@@ -55,6 +60,7 @@ const TemplateCategory = async (props: Props) => {
         category={category}
         posts={posts}
         listAttributs={Listattributs}
+        lots={lots || []}
       />
       <BannerH variant="2" />
     </>

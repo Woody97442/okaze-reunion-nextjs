@@ -5,7 +5,9 @@ export type Category = {
     name: string
     icon: string | null
     altIcon: string | null
+
+    posts: Post[]
+
     createdAt: Date
     updatedAt: Date
-    posts: Post[]
-} | null | undefined
+}

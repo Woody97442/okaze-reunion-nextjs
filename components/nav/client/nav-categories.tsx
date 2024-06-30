@@ -38,7 +38,7 @@ const NavCategories = () => {
         <div></div>
       ) : (
         <div className="bg-white w-full shadow-lg">
-          <div className="flex justify-between items-center py-4 mx-[250px]">
+          <div className="flex justify-between items-center py-4 container">
             {categories.slice(0, 7).map((category) => (
               <div
                 className="flex"

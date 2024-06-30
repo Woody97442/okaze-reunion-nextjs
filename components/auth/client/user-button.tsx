@@ -14,9 +14,23 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { LogoutButton } from "@/components/auth/client/logout-button";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 export const UserButton = () => {
   const user = useCurrentUser();
+  const [shouldRefresh, setShouldRefresh] = useState(false);
+
+  useEffect(() => {
+    if (!user) {
+      const timeout = setTimeout(() => {
+        setShouldRefresh(true);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000); // Attendre 1 seconde avant de rafraîchir à nouveau
+      }, 1000); // Attendre 1 seconde avant de rafraîchir la première fois
+      return () => clearTimeout(timeout);
+    }
+  }, [user]);
 
   return (
     <DropdownMenu>

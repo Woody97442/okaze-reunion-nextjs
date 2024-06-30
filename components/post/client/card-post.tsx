@@ -8,13 +8,17 @@ import Image from "next/image";
 
 import { FormatDate } from "@/lib/format-date";
 import { FormatPrice } from "@/lib/format-price";
-import { AddLotButton } from "@/components/category/client/add-lot-button";
-import { AddFavoritesButton } from "@/components/category/client/add-favorites-button";
+import { AddLotButton } from "@/components/post/client/add-lot-button";
 import { Post } from "@/prisma/post/types";
 import { Badge } from "@/components/ui/badge";
 import { TraductionState } from "@/lib/traduction-state";
+import { AddFavoritesButton } from "@/components/post/client/add-favorites-button";
+import { Lot } from "@prisma/client";
 
-export default function CardPost({ post }: { post: Post }) {
+export default function CardPost({ post, lots }: { post: Post; lots: Lot[] }) {
+  //TODO: Ajouter le choix de l'image de cover
+  const coverImage = 1;
+
   return (
     <>
       <div className="h-auto flex rounded-md w-auto">
@@ -23,17 +27,20 @@ export default function CardPost({ post }: { post: Post }) {
             <Link
               href={"/post/" + post.id}
               className="h-auto flex rounded-md w-auto hover:brightness-80 overflow-hidden rounded-b-none">
-              {post.image ? (
+              {post.images[coverImage] ? (
                 <Image
-                  alt={post.title}
+                  alt={post.images[coverImage].alt}
                   className="aspect-video w-full rounded-md rounded-b-none object-cover transition-transform duration-300 ease-in-out transform hover:scale-110 "
                   width="250"
                   height="140"
-                  src={post.image}
+                  src={
+                    post.images[coverImage].src +
+                    post.images[coverImage].extension
+                  }
                 />
               ) : (
                 <Image
-                  alt={post.title}
+                  alt="image not found"
                   className="aspect-video w-full rounded-md rounded-b-none object-cover transition-transform duration-300 ease-in-out transform hover:scale-110 "
                   width="250"
                   height="140"
@@ -55,11 +62,14 @@ export default function CardPost({ post }: { post: Post }) {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <p className="text-sm">Prix : {FormatPrice(post.price)} €</p>
                 <div className="flex gap-x-4">
-                  <AddFavoritesButton id={post.id} />
-                  <AddLotButton id={post.id} />
+                  <AddFavoritesButton post={post} />
+                  <AddLotButton
+                    postId={post.id}
+                    lots={lots}
+                  />
                 </div>
               </div>
             </CardContent>

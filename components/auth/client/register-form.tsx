@@ -67,128 +67,133 @@ export const RedisterForm = () => {
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-6">
-          <div className="space-y-4">
-            <FormField
-              control={form.control}
-              name={"name"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nom d'utilisateur</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      placeholder="john"
-                      autoComplete="username"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name={"email"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      placeholder="john.doe@me.com"
-                      type="email"
-                      autoComplete="email"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name={"password"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Mot de passe</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      placeholder="******"
-                      type="password"
-                      autoComplete="current-password"
-                    />
-                  </FormControl>
-                  <div className="space-y-1 flex flex-row justify-between items-center pt-2">
-                    <ul className="flex flex-col gap-y-2">
-                      <li>
-                        <div className="flex justify-between gap-x-4 items-center ">
-                          <p className="text-xs">Un chiffre</p>
-                          {/[0-9]/.test(password) ? (
-                            <FaCheckCircle className="w-4 h-4 text-primary" />
-                          ) : (
-                            <FaCircleXmark className="w-4 h-4 text-red-500" />
-                          )}
-                        </div>
-                      </li>
-                      <li>
-                        <div className="flex justify-between gap-x-4 items-center ">
-                          <p className="text-xs">Une majuscule</p>
-                          {/[A-Z]/.test(password) ? (
-                            <FaCheckCircle className="w-4 h-4 text-primary" />
-                          ) : (
-                            <FaCircleXmark className="w-4 h-4 text-red-500" />
-                          )}
-                        </div>
-                      </li>
-                    </ul>
-                    <ul className="flex flex-col gap-y-2">
-                      <li>
-                        <div className="flex justify-between gap-x-4 items-center ">
-                          <p className="text-xs">Min 6 caractères</p>
-                          {password.length >= 6 ? (
-                            <FaCheckCircle className="w-4 h-4 text-primary" />
-                          ) : (
-                            <FaCircleXmark className="w-4 h-4 text-red-500" />
-                          )}
-                        </div>
-                      </li>
-                      <li>
-                        <div className="flex justify-between gap-x-4 items-center ">
-                          <p className="text-xs">Un caractère @/*</p>
-                          {/[^a-zA-Z0-9]/.test(password) ? (
-                            <FaCheckCircle className="w-4 h-4 text-primary" />
-                          ) : (
-                            <FaCircleXmark className="w-4 h-4 text-red-500" />
-                          )}
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name={"confirm_password"}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Confirmez le mot de passe</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      placeholder="******"
-                      type="password"
-                      autoComplete="current-password"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <div className="space-x-6 flex flex-row">
+            <div className="space-y-6 ">
+              <FormField
+                control={form.control}
+                name={"name"}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nom d'utilisateur</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isPending}
+                        placeholder="john"
+                        autoComplete="username"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name={"password"}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Mot de passe</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isPending}
+                        placeholder="******"
+                        type="password"
+                        autoComplete="current-password"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="space-y-6 ">
+              <FormField
+                control={form.control}
+                name={"email"}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isPending}
+                        placeholder="john.doe@me.com"
+                        type="email"
+                        autoComplete="email"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name={"confirm_password"}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirmez le mot de passe</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isPending}
+                        placeholder="******"
+                        type="password"
+                        autoComplete="current-password"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+          <div className="space-y-1 flex flex-row justify-around items-center pt-2">
+            <ul className="flex flex-col gap-y-2">
+              <li>
+                <div className="flex justify-between gap-x-4 items-center ">
+                  <p className="text-xs">Un chiffre</p>
+                  {/[0-9]/.test(password) ? (
+                    <FaCheckCircle className="w-4 h-4 text-primary" />
+                  ) : (
+                    <FaCircleXmark className="w-4 h-4 text-red-500" />
+                  )}
+                </div>
+              </li>
+              <li>
+                <div className="flex justify-between gap-x-4 items-center ">
+                  <p className="text-xs">Une majuscule</p>
+                  {/[A-Z]/.test(password) ? (
+                    <FaCheckCircle className="w-4 h-4 text-primary" />
+                  ) : (
+                    <FaCircleXmark className="w-4 h-4 text-red-500" />
+                  )}
+                </div>
+              </li>
+            </ul>
+            <ul className="flex flex-col gap-y-2">
+              <li>
+                <div className="flex justify-between gap-x-4 items-center ">
+                  <p className="text-xs">Min 6 caractères</p>
+                  {password.length >= 6 ? (
+                    <FaCheckCircle className="w-4 h-4 text-primary" />
+                  ) : (
+                    <FaCircleXmark className="w-4 h-4 text-red-500" />
+                  )}
+                </div>
+              </li>
+              <li>
+                <div className="flex justify-between gap-x-4 items-center ">
+                  <p className="text-xs">Un caractère @/*</p>
+                  {/[^a-zA-Z0-9]/.test(password) ? (
+                    <FaCheckCircle className="w-4 h-4 text-primary" />
+                  ) : (
+                    <FaCircleXmark className="w-4 h-4 text-red-500" />
+                  )}
+                </div>
+              </li>
+            </ul>
           </div>
           <FormError message={error} />
           <FormSuccess message={success} />

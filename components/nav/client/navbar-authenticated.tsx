@@ -8,7 +8,7 @@ import Link from "next/link";
 const NavbarAuthenticated = () => {
   return (
     <nav className="bg-white w-full">
-      <div className=" flex justify-between items-center py-4 mx-[250px]">
+      <div className=" flex justify-between items-center py-4 container">
         <div className="w-auto">
           <Link
             aria-label="logo de l'application Okaze Réunion"

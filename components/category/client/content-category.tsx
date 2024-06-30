@@ -21,6 +21,7 @@ import LoaderOkaze from "@/components/utils/server/loader";
 import { FilterPosts, SortPosts } from "@/lib/filter-posts";
 import { Category } from "@/prisma/category/types";
 import { Post } from "@/prisma/post/types";
+import { Lot } from "@prisma/client";
 import { useState } from "react";
 import { FiSearch } from "react-icons/fi";
 
@@ -28,12 +29,14 @@ interface Props {
   category: Category;
   posts: Post[];
   listAttributs: string[];
+  lots: Lot[];
 }
 
 export default function ContentCategory({
   category,
   posts,
   listAttributs,
+  lots,
 }: Props) {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentSearch, setCurrentSearch] = useState<string>("");
@@ -76,7 +79,7 @@ export default function ContentCategory({
   );
 
   return (
-    <div className="flex flex-row space-x-6 mx-[250px] h-full ">
+    <div className="flex flex-row space-x-6 h-full ">
       <aside className="flex flex-col gap-y-4 bg-white w-1/3 py-4 px-8 shadow-md rounded-sm">
         <div className="space-y-4 my-2">
           <div className="flex w-full items-center space-x-2">
@@ -269,7 +272,10 @@ export default function ContentCategory({
                         key={post.id}
                         className={`space-y-4 my-2 animate-fadeIn`}
                         style={{ animationDelay: `${index * 0.1}s` }}>
-                        <CardPost post={post} />
+                        <CardPost
+                          post={post}
+                          lots={lots}
+                        />
                       </div>
                     ))}
                   </div>

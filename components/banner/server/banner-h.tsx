@@ -4,7 +4,7 @@ const BannerH = ({ variant }: { variant: string }) => {
   switch (variant) {
     case "1":
       return (
-        <div className="space-y-4 my-2 flex justify-center mx-[250px]">
+        <div className="space-y-4 my-2 flex justify-center">
           <Image
             src="/images/banner/banner_h_1.jpg"
             className="object-cover w-full rounded-md shadow-md"
@@ -18,7 +18,7 @@ const BannerH = ({ variant }: { variant: string }) => {
 
     case "2":
       return (
-        <div className="space-y-4 my-2 flex justify-center mx-[250px]">
+        <div className="space-y-4 my-2 flex justify-center">
           <Image
             src="/images/banner/bannier_rassurance.jpg"
             className="object-cover w-full rounded-md shadow-md"
