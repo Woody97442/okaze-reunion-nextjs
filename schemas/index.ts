@@ -1,7 +1,11 @@
 import * as z from "zod";
 
-export const NewLotSchema = z.object({
-    name: z.string().min(3, { message: "Minimum 3 caractères requis" })
+export const SendOfferSchema = z.object({
+    offer: z.preprocess(
+        (val) => parseFloat(val as string),
+        z.number().positive({ message: "L'offre doit être supérieure à 0" })
+    ),
+    message: z.string().min(3, { message: "Un message est requis" }),
 })
 
 export const NewPasswordSchema = z.object({

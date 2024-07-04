@@ -17,7 +17,7 @@ import { Lot } from "@prisma/client";
 
 export default function CardPost({ post, lots }: { post: Post; lots: Lot[] }) {
   //TODO: Ajouter le choix de l'image de cover
-  const coverImage = 1;
+  const coverImage = 0;
 
   return (
     <>

@@ -1,50 +1,71 @@
+import { Lot } from "@/prisma/lot/types";
 import { prisma } from "@/prisma/prismaClient";
 
 // Retourne un Lot par son ID
-export const getLotById = async (id: string) => {
+export const getLotById = async (id: string): Promise<Lot | null> => {
     try {
-        const post = await prisma.lot.findUnique({
+        const lot = await prisma.lot.findUnique({
             where: {
                 id
             }, include: {
-                posts: true,
+                posts: {
+                    include: {
+                        images: true,
+                        categories: true,
+                        attributs: true,
+                        favorites: true
+                    }
+                },
                 user: true
             }
         })
-        return post
+        return lot
     } catch {
         return null
     }
 }
 
 // Retourne les Lots d'un utilisateur
-export const getLotsByUserId = async (userId: string) => {
+export const getLotsByUserId = async (userId: string): Promise<Lot[]> => {
     try {
-        const posts = await prisma.lot.findMany({
+        const lots = await prisma.lot.findMany({
             where: {
                 userId
             }, include: {
-                posts: true,
-                user: true
+                posts: {
+                    include: {
+                        images: true,
+                        categories: true,
+                        attributs: true,
+                        favorites: true
+                    }
+                },
             }
         })
-        return posts
+        return lots
     } catch {
-        return null
+        return []
     }
 }
 
 // Retourne tous les Lots
-export const getLots = async () => {
+export const getLots = async (): Promise<Lot[]> => {
     try {
-        const posts = await prisma.lot.findMany({
+        const lots = await prisma.lot.findMany({
             include: {
-                posts: true,
+                posts: {
+                    include: {
+                        images: true,
+                        categories: true,
+                        attributs: true,
+                        favorites: true
+                    }
+                },
                 user: true
             }
         })
-        return posts
+        return lots
     } catch {
-        return null
+        return []
     }
 }
