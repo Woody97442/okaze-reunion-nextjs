@@ -31,7 +31,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormatPrice } from "@/lib/format-price";
 import { TotalPriceLot } from "@/lib/total-price-lot";
 import { FormatText } from "@/lib/format-text";
-import { FaSearchPlus } from "react-icons/fa";
 
 const Content = ({ lots }: { lots: Lot[] }) => {
   const [currentListLots, setCurrentListLots] = useState<Lot[]>(lots);

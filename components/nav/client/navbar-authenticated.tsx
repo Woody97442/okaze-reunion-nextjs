@@ -1,11 +1,17 @@
-"use client";
+import { auth } from "@/auth";
 import { UserButton } from "@/components/auth/client/user-button";
 import { SearchBar } from "@/components/nav/client/searchbar";
 import { TabButton } from "@/components/nav/client/tab-button";
+import { getUserById } from "@/data/user";
 
 import Link from "next/link";
 
-const NavbarAuthenticated = () => {
+const NavbarAuthenticated = async () => {
+  const session = await auth();
+  if (!session) return <div></div>;
+
+  const user = await getUserById(session.user.id as string);
+
   return (
     <nav className="bg-white w-full">
       <div className=" flex justify-between items-center py-4 container">
@@ -23,7 +29,7 @@ const NavbarAuthenticated = () => {
         <SearchBar />
         <div className="flex gap-x-4 items-center">
           <TabButton />
-          <UserButton />
+          <UserButton user={user} />
         </div>
       </div>
     </nav>
