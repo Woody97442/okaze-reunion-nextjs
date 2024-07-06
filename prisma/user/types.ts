@@ -10,6 +10,9 @@ export type User = {
     emailVerified: Date | null;
     password: string | null;
     image: string | null;
+    gender: String | null;
+    postalCode: String | null;
+    phoneNumber: String | null;
     role: $Enums.UserRole;
     isTwoFactorEnabled: boolean;
     createdAt: Date;

@@ -32,7 +32,7 @@ export const UserButton = ({ user }: { user: User }) => {
             <FaUser className="text-white w-6 h-6" />
           </AvatarFallback>
         </Avatar>
-        {currentUser?.username || ""}
+        {currentUser?.username || "" || currentUser?.name}
       </DropdownMenuTrigger>
       <DropdownMenuContent
         className="w-auto bg-white px-2"

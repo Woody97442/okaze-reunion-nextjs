@@ -1,24 +1,151 @@
 "use client";
 
+import * as z from "zod";
 import { FormatDate } from "@/lib/format-date";
 import { User } from "@/prisma/user/types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { FaUser } from "react-icons/fa6";
+import { FaCircleXmark, FaUser } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input";
 import UploadeFileForm from "./uploade-file-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { UserSchema } from "@/schemas";
+import { FaCheckCircle } from "react-icons/fa";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { DeleteUser, EnabledTowFactor, UpdateUser } from "@/actions/user";
+import { toast } from "@/components/ui/use-toast";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 
 const Content = ({ user }: { user: User }) => {
   const [currentUser, setCurrentUser] = useState(user);
   const [tempFile, setTempFile] = useState("");
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    setCurrentUser(user);
+    setCurrentUser(currentUser);
   }, [user]);
 
   if (!currentUser) return <></>;
+
+  const form = useForm<z.infer<typeof UserSchema>>({
+    resolver: zodResolver(UserSchema),
+    defaultValues: {
+      username: currentUser.username as string,
+      postalCode: (currentUser.postalCode as string) || "",
+      gender: (currentUser.gender as string) || "",
+      phoneNumber: (currentUser.phoneNumber as string) || "",
+      password: "",
+      confirm_password: "",
+    },
+  });
+
+  const { watch } = form;
+  const password = watch("password", "");
+
+  const onSubmit = (values: z.infer<typeof UserSchema>) => {
+    console.log(values);
+    startTransition(() => {
+      UpdateUser(values).then((data) => {
+        if (data) {
+          if (data?.success) {
+            toast({
+              title: "Succès",
+              description: data?.success,
+            });
+            const userUpdate = {
+              ...currentUser,
+              username: values.username,
+              postalCode: values.postalCode,
+              gender: values.gender,
+              phoneNumber: values.phoneNumber,
+              password: values.password,
+            };
+            setCurrentUser(userUpdate as User);
+          }
+          if (data?.error) {
+            toast({
+              variant: "destructive",
+              title: "Erreur",
+              description: data?.error,
+            });
+          }
+        }
+      });
+    });
+  };
+
+  const handleDeleteAccount = () => {
+    console.log("clicked");
+    startTransition(() => {
+      DeleteUser().then((data) => {
+        if (data) {
+          if (data?.error) {
+            toast({
+              variant: "destructive",
+              title: "Erreur",
+              description: data?.error,
+            });
+          } else {
+            setCurrentUser(null);
+          }
+        }
+      });
+    });
+  };
+
+  const handleEnabledTowFactor = (enabled: boolean) => {
+    console.log(enabled);
+    startTransition(() => {
+      EnabledTowFactor(enabled).then((data) => {
+        if (data) {
+          if (data?.success) {
+            const userUpdated = { ...user, isTwoFactorEnabled: data.TwoFactor };
+            setCurrentUser(userUpdated as User);
+            toast({
+              title: "Succès",
+              description: data?.success,
+            });
+          }
+          if (data?.error) {
+            toast({
+              variant: "destructive",
+              title: "Erreur",
+              description: data?.error,
+            });
+          }
+        }
+      });
+    });
+  };
 
   return (
     <>
@@ -29,31 +156,92 @@ const Content = ({ user }: { user: User }) => {
           </h1>
           <div className="flex flex-col gap-y-6 max-w-md">
             <p className="flex justify-between">
-              <span className="font-bold">Date de création du compte : </span>
+              <Label className="font-bold text-md">
+                Date de création du compte :{" "}
+              </Label>
               {FormatDate(currentUser.createdAt)}
             </p>
             <p className="flex justify-between">
-              <span className="font-bold">Email : </span>
+              <Label className="font-bold text-md">Email : </Label>
               {currentUser.email}
             </p>
             <p className="flex justify-between">
-              <span className="font-bold">Email verifier : </span>
+              <Label className="font-bold text-md">Email verifier : </Label>
               {currentUser.emailVerified ? "✔️" : "❌"}
             </p>
             <p className="flex justify-between">
-              <span className="font-bold">Nombre de lot créés : </span>
+              <Label className="font-bold text-md">
+                Nombre de lot créés :{" "}
+              </Label>
               {currentUser.lot.length}
             </p>
             <p className="flex justify-between">
-              <span className="font-bold">
+              <Label className="font-bold text-md">
                 Nombre de post dans les favoris :
-              </span>
+              </Label>
               {currentUser.favorite ? currentUser.favorite.posts.length : 0}
             </p>
             <p className="flex justify-between">
-              <span className="font-bold">Nombre de conversations : </span>
+              <Label className="font-bold text-md">
+                Nombre de conversations :{" "}
+              </Label>
               {currentUser.messages.length}
             </p>
+            <p className="flex justify-between items-center">
+              <Label className="font-bold text-md">
+                Double Authentification :{" "}
+              </Label>
+              {currentUser.isTwoFactorEnabled ? (
+                <span className="text-sm font-bold text-white bg-[#2d8653] px-2 py-1 rounded">
+                  Activé
+                </span>
+              ) : (
+                <span className="text-sm font-bold text-white bg-red-500 px-2 py-1 rounded">
+                  Désactivé
+                </span>
+              )}
+              <Switch
+                id="airplane-mode"
+                checked={currentUser.isTwoFactorEnabled}
+                onCheckedChange={(e) => handleEnabledTowFactor(e.valueOf())}
+              />
+            </p>
+            <Dialog>
+              <DialogTrigger className="flex justify-start">
+                <div className=" text-xs bg-red-500 text-white px-4 py-2 rounded-md cursor-pointer">
+                  Supprimer mon compte !
+                </div>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader className="space-y-4">
+                  <DialogTitle className="text-center text-xl font-bold">
+                    Voulez-vous vraiment supprimer votre compte ?{" "}
+                  </DialogTitle>
+                  <DialogDescription>
+                    <Alert
+                      variant="destructive"
+                      className="w-full text-center ">
+                      <AlertDescription className="flex flex-col">
+                        <strong className="text-lg text-center">
+                          Attention cette action est definitive
+                        </strong>
+                        <strong className="text-2xl text-center">
+                          ⚠ ⚠ ⚠ ⚠
+                        </strong>
+                      </AlertDescription>
+                    </Alert>
+                  </DialogDescription>
+                  <Button
+                    type="submit"
+                    variant={"destructive"}
+                    className="flex justify-center"
+                    disabled={isPending}
+                    onClick={handleDeleteAccount}>
+                    Confirmer la Suppression de mon compte !
+                  </Button>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
           </div>
         </section>
         <section className="flex flex-col gap-y-4 bg-white w-full py-4 px-8 shadow-md rounded-sm">
@@ -74,73 +262,195 @@ const Content = ({ user }: { user: User }) => {
                 />
               </div>
             </div>
-            <div className="flex flex-row justify-between my-2 ">
-              <div className="flex flex-col gap-y-3 ">
-                <div className="flex flex-col gap-y-3 items-start ">
-                  <p className="font-bold">Nom d'utilisateur :</p>
-                  <div>
-                    <Input
-                      type="text"
-                      placeholder={currentUser.username || ""}
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4">
+                <div className="flex flex-row gap-x-6 justify-center">
+                  <div className="space-y-4">
+                    <FormField
+                      control={form.control}
+                      name={"username"}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Nom d'utilisateur :</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              disabled={isPending}
+                              placeholder={currentUser?.username || ""}
+                              type="text"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={"postalCode"}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Code Postale :</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              disabled={isPending}
+                              placeholder={
+                                (currentUser.postalCode as string) || "974.."
+                              }
+                              type="text"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="space-y-4">
+                    <FormField
+                      control={form.control}
+                      name={"gender"}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Genre :</FormLabel>
+                          <FormControl>
+                            <Select
+                              onValueChange={field.onChange}
+                              defaultValue={
+                                (currentUser.gender as string) || ""
+                              }>
+                              <SelectTrigger className="w-full">
+                                <SelectValue
+                                  placeholder={
+                                    (currentUser.gender as string) || "Homme"
+                                  }
+                                />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectGroup>
+                                  <SelectItem value={"Homme"}>Homme</SelectItem>
+                                  <SelectItem value={"Femme"}>Femme</SelectItem>
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={"phoneNumber"}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Numéro de téléphone :</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              disabled={isPending}
+                              placeholder="..."
+                              type="text"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
                   </div>
                 </div>
-                <div className="flex flex-col gap-y-3 items-start">
-                  <p className="font-bold">Code Postale :</p>
-                  <div>
-                    <Input
-                      type="text"
-                      placeholder={"97419"}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-col gap-y-3 ">
-                <div className="flex flex-col gap-y-3 items-start">
-                  <p className="font-bold">Genre :</p>
-                  <div>
-                    <Input
-                      type="text"
-                      placeholder={"Homme"}
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-col gap-y-3 items-start">
-                  <p className="font-bold">Numéro de téléphone :</p>
-                  <div>
-                    <Input
-                      type="text"
-                      placeholder={"06 00 00 00 00"}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-row justify-between ">
-              <div className="flex flex-col gap-y-3 items-start">
-                <p className="font-bold">Mot de passe :</p>
-                <div>
-                  <Input
-                    type="password"
-                    placeholder={"*********"}
+                <div className="flex flex-row gap-x-6 justify-center">
+                  <FormField
+                    control={form.control}
+                    name={"password"}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Mot de passe :</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            disabled={isPending}
+                            placeholder="..."
+                            type="password"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={"confirm_password"}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Confirmation Mot de passe :</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            disabled={isPending}
+                            placeholder="..."
+                            type="text"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
                 </div>
-              </div>
-              <div className="flex flex-col gap-y-3 items-start">
-                <p className="font-bold">Confirmation Mot de passe :</p>
-                <div>
-                  <Input
-                    type="password"
-                    placeholder={""}
-                  />
+                <div className="space-y-2 flex flex-row  justify-around items-center py-2">
+                  <ul className="flex flex-col gap-y-2">
+                    <li>
+                      <div className="flex justify-between gap-x-4 items-center ">
+                        <p className="text-xs">Un chiffre</p>
+                        {/[0-9]/.test(password) ? (
+                          <FaCheckCircle className="w-4 h-4 text-primary" />
+                        ) : (
+                          <FaCircleXmark className="w-4 h-4 text-red-500" />
+                        )}
+                      </div>
+                    </li>
+                    <li>
+                      <div className="flex justify-between gap-x-4 items-center ">
+                        <p className="text-xs">Une majuscule</p>
+                        {/[A-Z]/.test(password) ? (
+                          <FaCheckCircle className="w-4 h-4 text-primary" />
+                        ) : (
+                          <FaCircleXmark className="w-4 h-4 text-red-500" />
+                        )}
+                      </div>
+                    </li>
+                  </ul>
+                  <ul className="flex flex-col gap-y-2">
+                    <li>
+                      <div className="flex justify-between gap-x-4 items-center ">
+                        <p className="text-xs">Min 6 caractères</p>
+                        {password.length >= 6 ? (
+                          <FaCheckCircle className="w-4 h-4 text-primary" />
+                        ) : (
+                          <FaCircleXmark className="w-4 h-4 text-red-500" />
+                        )}
+                      </div>
+                    </li>
+                    <li>
+                      <div className="flex justify-between gap-x-4 items-center ">
+                        <p className="text-xs">Un caractère @/*</p>
+                        {/[^a-zA-Z0-9]/.test(password) ? (
+                          <FaCheckCircle className="w-4 h-4 text-primary" />
+                        ) : (
+                          <FaCircleXmark className="w-4 h-4 text-red-500" />
+                        )}
+                      </div>
+                    </li>
+                  </ul>
                 </div>
-              </div>
-            </div>
-            <Button
-              type="submit"
-              variant={"default"}>
-              Enregistrer
-            </Button>
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={isPending}>
+                  <div>Enregistrer</div>
+                </Button>
+              </form>
+            </Form>
           </div>
         </section>
       </div>

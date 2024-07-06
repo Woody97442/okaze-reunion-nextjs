@@ -7,7 +7,7 @@ body,
 :root {
   height: 100%;
 }
-/* 146 50% 35% vert, 202 100% 37% bleu*/
+/* #2d8653 vert, #0078bd bleu*/
 @layer base {
   :root {
     --background: 0 0% 100%;
