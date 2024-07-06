@@ -11,37 +11,28 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { useCurrentUser } from "@/hooks/use-current-user";
 import { LogoutButton } from "@/components/auth/client/logout-button";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { User } from "@/prisma/user/types";
+import { useEffect, useState } from "react";
 
-export const UserButton = () => {
-  const user = useCurrentUser();
-  const [shouldRefresh, setShouldRefresh] = useState(false);
+export const UserButton = ({ user }: { user: User }) => {
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   useEffect(() => {
-    if (!user) {
-      const timeout = setTimeout(() => {
-        setShouldRefresh(true);
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000); // Attendre 1 seconde avant de rafraîchir à nouveau
-      }, 1000); // Attendre 1 seconde avant de rafraîchir la première fois
-      return () => clearTimeout(timeout);
-    }
+    setCurrentUser(user);
   }, [user]);
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="focus-visible:outline-none">
+      <DropdownMenuTrigger className="focus-visible:outline-none flex flex-col items-center">
         <Avatar className="h-[55px] w-[55px]">
-          <AvatarImage src={user?.image || ""} />
+          <AvatarImage src={currentUser?.image || ""} />
           <AvatarFallback className="bg-[#2D8653]">
             <FaUser className="text-white w-6 h-6" />
           </AvatarFallback>
         </Avatar>
-        {user?.name || ""}
+        {currentUser?.username || "" || currentUser?.name}
       </DropdownMenuTrigger>
       <DropdownMenuContent
         className="w-auto bg-white px-2"

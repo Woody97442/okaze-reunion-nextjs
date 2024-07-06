@@ -27,10 +27,13 @@ model User {
   emailVerified DateTime?
   password      String?
   image         String?
+  gender        String?
+  postalCode    String?
+  phoneNumber   String?
   role          UserRole        @default(USER)
 
   Account       Account?
-  favorite      Favorite?
+  favorite      Favorite?       @relation("UserFavorites")
   lot           Lot[]           @relation("UserLots")
   messages      Message[]       @relation("UserMessages")
 
@@ -45,13 +48,13 @@ model User {
 model Message {
   id                       String  @id @default(cuid()) 
   userId                   String
-  user                     User    @relation(fields: [userId], references: [id], name: "UserMessages")
+  user                     User    @relation(fields: [userId], references: [id], name: "UserMessages", onDelete: Cascade)
 }
 
 model Favorite {
   id                       String  @id @default(cuid()) 
   userId                   String  @unique
-  user                     User    @relation(fields: [userId], references: [id])
+  user                     User    @relation(fields: [userId], references: [id], name: "UserFavorites", onDelete: Cascade)
   posts                    Post[]  @relation("PostsFavorites")
 }
 
@@ -59,7 +62,7 @@ model Lot {
   id                       String  @id @default(cuid())
   name                     String 
   userId                   String 
-  user                     User   @relation(fields: [userId], references: [id], name: "UserLots")
+  user                     User   @relation(fields: [userId], references: [id], name: "UserLots", onDelete: Cascade)
 
   posts                    Post[]  @relation("PostsLots")
 }
@@ -78,7 +81,7 @@ model Account {
   id_token                 String? @db.Text
   session_state            String?
   refresh_token_expires_in Int?
-  user                     User?   @relation(fields: [userId], references: [id])
+  user                     User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
