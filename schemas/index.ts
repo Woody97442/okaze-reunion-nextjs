@@ -1,20 +1,22 @@
 import * as z from "zod";
 
 export const UserSchema = z.object({
-    username: z.string().min(3, { message: "Minimum 3 caractères requis" }),
+    username: z.optional(z.string()),
     postalCode: z.optional(z.string()),
     gender: z.optional(z.string().nullable()),
     phoneNumber: z.optional(z.string()),
-    password: z.string().min(6, { message: "" })
-        .refine(val => /[A-Z]/.test(val), { message: "" })
-        .refine(val => /[0-9]/.test(val), { message: "" })
-        .refine(val => /[^a-zA-Z0-9]/.test(val), { message: "" }),
-
+    password: z.union([
+        z.string().length(0),
+        z.string().min(6, { message: "Minimum 6 caractères requis" })
+            .refine(val => /[A-Z]/.test(val), { message: "Doit contenir au moins une majuscule" })
+            .refine(val => /[0-9]/.test(val), { message: "Doit contenir au moins un chiffre" })
+            .refine(val => /[^a-zA-Z0-9]/.test(val), { message: "Doit contenir au moins un caractère spécial" })
+    ]),
     confirm_password: z.string(),
-}).refine(data => data.password === data.confirm_password, {
+}).refine(data => data.password === data.confirm_password || data.password.length === 0, {
     message: "Les mots de passe ne sont pas identiques",
     path: ["confirm_password"],
-})
+});
 
 export const SendOfferSchema = z.object({
     offer: z.preprocess(

@@ -16,8 +16,6 @@ export const UpdateUser = async (value: z.infer<typeof UserSchema>) => {
 
     const { username, postalCode, gender, phoneNumber, password } = validatedField.data;
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     const session = await auth();
 
     if (!session) {
@@ -33,6 +31,8 @@ export const UpdateUser = async (value: z.infer<typeof UserSchema>) => {
     const existingUser = await prisma.user.findUnique({
         where: {
             id: userId
+        }, include: {
+            Account: true
         }
     })
 
@@ -40,21 +40,44 @@ export const UpdateUser = async (value: z.infer<typeof UserSchema>) => {
         return { error: "utilisateur introuvable !" };
     }
 
+    if (existingUser.Account && existingUser.Account.provider === "google" && password.length > 0) {
+        return { error: "Mot de passe défini par Google ne peut pas être modifié !" };
+    }
 
-    const userUpdate = await prisma.user.update({
-        where: {
-            id: userId
-        },
-        data: {
-            username,
-            postalCode,
-            gender,
-            phoneNumber,
-            password: hashedPassword
-        }
-    })
 
-    return { userUpdate: userUpdate, success: "Information mises à jour !" };
+    if (password.length > 0) {
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const userUpdate = await prisma.user.update({
+            where: {
+                id: userId
+            },
+            data: {
+                username,
+                postalCode,
+                gender,
+                phoneNumber,
+                password: hashedPassword
+            }
+        })
+
+        return { userUpdate: userUpdate, success: "Information mises à jour !" };
+    } else {
+        const userUpdate = await prisma.user.update({
+            where: {
+                id: userId
+            },
+            data: {
+                username,
+                postalCode,
+                gender,
+                phoneNumber,
+                password: existingUser.password
+            }
+        })
+
+        return { userUpdate: userUpdate, success: "Information mises à jour !" };
+    }
 }
 
 

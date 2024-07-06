@@ -42,15 +42,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const Content = ({ user }: { user: User }) => {
   const [currentUser, setCurrentUser] = useState(user);
   const [tempFile, setTempFile] = useState("");
   const [isPending, startTransition] = useTransition();
+  const [isGoogleAccount, setIsGoogleAccount] = useState(false);
 
   useEffect(() => {
+    if (currentUser?.Account?.provider === "google") setIsGoogleAccount(true);
     setCurrentUser(currentUser);
   }, [user]);
 
@@ -59,7 +60,7 @@ const Content = ({ user }: { user: User }) => {
   const form = useForm<z.infer<typeof UserSchema>>({
     resolver: zodResolver(UserSchema),
     defaultValues: {
-      username: currentUser.username as string,
+      username: (currentUser.username as string) || "",
       postalCode: (currentUser.postalCode as string) || "",
       gender: (currentUser.gender as string) || "",
       phoneNumber: (currentUser.phoneNumber as string) || "",
@@ -72,7 +73,6 @@ const Content = ({ user }: { user: User }) => {
   const password = watch("password", "");
 
   const onSubmit = (values: z.infer<typeof UserSchema>) => {
-    console.log(values);
     startTransition(() => {
       UpdateUser(values).then((data) => {
         if (data) {
@@ -280,6 +280,7 @@ const Content = ({ user }: { user: User }) => {
                               disabled={isPending}
                               placeholder={currentUser?.username || ""}
                               type="text"
+                              value={field.value || ""}
                             />
                           </FormControl>
                           <FormMessage />
@@ -369,7 +370,7 @@ const Content = ({ user }: { user: User }) => {
                         <FormControl>
                           <Input
                             {...field}
-                            disabled={isPending}
+                            disabled={isPending || isGoogleAccount}
                             placeholder="..."
                             type="password"
                           />
@@ -387,7 +388,7 @@ const Content = ({ user }: { user: User }) => {
                         <FormControl>
                           <Input
                             {...field}
-                            disabled={isPending}
+                            disabled={isPending || isGoogleAccount}
                             placeholder="..."
                             type="text"
                           />
@@ -397,52 +398,56 @@ const Content = ({ user }: { user: User }) => {
                     )}
                   />
                 </div>
-                <div className="space-y-2 flex flex-row  justify-around items-center py-2">
-                  <ul className="flex flex-col gap-y-2">
-                    <li>
-                      <div className="flex justify-between gap-x-4 items-center ">
-                        <p className="text-xs">Un chiffre</p>
-                        {/[0-9]/.test(password) ? (
-                          <FaCheckCircle className="w-4 h-4 text-primary" />
-                        ) : (
-                          <FaCircleXmark className="w-4 h-4 text-red-500" />
-                        )}
-                      </div>
-                    </li>
-                    <li>
-                      <div className="flex justify-between gap-x-4 items-center ">
-                        <p className="text-xs">Une majuscule</p>
-                        {/[A-Z]/.test(password) ? (
-                          <FaCheckCircle className="w-4 h-4 text-primary" />
-                        ) : (
-                          <FaCircleXmark className="w-4 h-4 text-red-500" />
-                        )}
-                      </div>
-                    </li>
-                  </ul>
-                  <ul className="flex flex-col gap-y-2">
-                    <li>
-                      <div className="flex justify-between gap-x-4 items-center ">
-                        <p className="text-xs">Min 6 caractères</p>
-                        {password.length >= 6 ? (
-                          <FaCheckCircle className="w-4 h-4 text-primary" />
-                        ) : (
-                          <FaCircleXmark className="w-4 h-4 text-red-500" />
-                        )}
-                      </div>
-                    </li>
-                    <li>
-                      <div className="flex justify-between gap-x-4 items-center ">
-                        <p className="text-xs">Un caractère @/*</p>
-                        {/[^a-zA-Z0-9]/.test(password) ? (
-                          <FaCheckCircle className="w-4 h-4 text-primary" />
-                        ) : (
-                          <FaCircleXmark className="w-4 h-4 text-red-500" />
-                        )}
-                      </div>
-                    </li>
-                  </ul>
-                </div>
+                {isGoogleAccount ? (
+                  <div></div>
+                ) : (
+                  <div className="space-y-2 flex flex-row  justify-around items-center py-2">
+                    <ul className="flex flex-col gap-y-2">
+                      <li>
+                        <div className="flex justify-between gap-x-4 items-center ">
+                          <p className="text-xs">Un chiffre</p>
+                          {/[0-9]/.test(password) ? (
+                            <FaCheckCircle className="w-4 h-4 text-primary" />
+                          ) : (
+                            <FaCircleXmark className="w-4 h-4 text-red-500" />
+                          )}
+                        </div>
+                      </li>
+                      <li>
+                        <div className="flex justify-between gap-x-4 items-center ">
+                          <p className="text-xs">Une majuscule</p>
+                          {/[A-Z]/.test(password) ? (
+                            <FaCheckCircle className="w-4 h-4 text-primary" />
+                          ) : (
+                            <FaCircleXmark className="w-4 h-4 text-red-500" />
+                          )}
+                        </div>
+                      </li>
+                    </ul>
+                    <ul className="flex flex-col gap-y-2">
+                      <li>
+                        <div className="flex justify-between gap-x-4 items-center ">
+                          <p className="text-xs">Min 6 caractères</p>
+                          {password.length >= 6 ? (
+                            <FaCheckCircle className="w-4 h-4 text-primary" />
+                          ) : (
+                            <FaCircleXmark className="w-4 h-4 text-red-500" />
+                          )}
+                        </div>
+                      </li>
+                      <li>
+                        <div className="flex justify-between gap-x-4 items-center ">
+                          <p className="text-xs">Un caractère @/*</p>
+                          {/[^a-zA-Z0-9]/.test(password) ? (
+                            <FaCheckCircle className="w-4 h-4 text-primary" />
+                          ) : (
+                            <FaCircleXmark className="w-4 h-4 text-red-500" />
+                          )}
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                )}
                 <Button
                   type="submit"
                   className="w-full"

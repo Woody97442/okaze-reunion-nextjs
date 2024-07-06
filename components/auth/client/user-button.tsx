@@ -25,7 +25,7 @@ export const UserButton = ({ user }: { user: User }) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="focus-visible:outline-none">
+      <DropdownMenuTrigger className="focus-visible:outline-none flex flex-col items-center">
         <Avatar className="h-[55px] w-[55px]">
           <AvatarImage src={currentUser?.image || ""} />
           <AvatarFallback className="bg-[#2D8653]">
