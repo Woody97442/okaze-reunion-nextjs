@@ -34,7 +34,7 @@ const Navbar = ({
               <Link
                 href="/"
                 className=" gap-x-2">
-                <FaArrowLeft className="w-4 h-4" />
+                <FaArrowLeft className="w-4 h-4 font-Lato" />
                 Retour
               </Link>
             </Button>
@@ -81,7 +81,7 @@ const Navbar = ({
                     href="/auth/login"
                     className="flex flex-col items-center gap-y-1">
                     <FaUser className="text-black w-6 h-6" />
-                    <span>Se connecter</span>
+                    <span className="font-Lato">Se connecter</span>
                   </Link>
                 </LoginButton>
               )}

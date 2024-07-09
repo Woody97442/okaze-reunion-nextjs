@@ -1,6 +1,6 @@
 "use client";
 
-import CardPost from "@/components/post/client/card-post";
+import CardPost from "@/components/post/card-post";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";

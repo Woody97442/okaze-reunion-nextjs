@@ -8,7 +8,7 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "@/components/ui/carousel";
-import CardPost from "@/components/post/client/card-post";
+import CardPost from "@/components/post/card-post";
 import { Post } from "@/prisma/post/types";
 
 interface Props {

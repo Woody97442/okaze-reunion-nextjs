@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FiSearch } from "react-icons/fi";
@@ -12,6 +11,7 @@ export const SearchBar = () => {
       <Input
         type="text"
         placeholder="Rechercher..."
+        className="font-Lato"
       />
       <Button
         type="submit"

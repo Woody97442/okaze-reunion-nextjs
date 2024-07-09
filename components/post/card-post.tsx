@@ -7,7 +7,7 @@ import Image from "next/image";
 
 import { FormatDate } from "@/lib/format-date";
 import { FormatPrice } from "@/lib/format-price";
-import { AddLotButton } from "@/components/post/client/add-lot-button";
+import { AddLotButton } from "@/components/post/add-lot-button";
 import { Post } from "@/prisma/post/types";
 import { Badge } from "@/components/ui/badge";
 import { TraductionState } from "@/lib/traduction-state";

@@ -56,7 +56,7 @@ const NavCategories = ({
                         height={42}
                       />
                     )}
-                    <span>
+                    <span className="font-Lato">
                       {category.name.slice(0, 1).toUpperCase() +
                         category.name.slice(1).toLowerCase()}
                     </span>
@@ -74,7 +74,7 @@ const NavCategories = ({
                     width={42}
                     height={42}
                   />
-                  <span>Catégories</span>
+                  <span className="font-Lato">Catégories</span>
                   <FaChevronDown className="w-4 h-4" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
@@ -84,7 +84,9 @@ const NavCategories = ({
                     <DropdownMenuItem
                       key={category.id}
                       className="gap-x-3">
-                      <Link href={"/category/" + category.id}>
+                      <Link
+                        href={"/category/" + category.id}
+                        className="font-Lato">
                         {category.name}
                       </Link>
                     </DropdownMenuItem>

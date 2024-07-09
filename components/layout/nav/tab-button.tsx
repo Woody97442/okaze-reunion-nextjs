@@ -17,7 +17,7 @@ export const TabButton = ({ pathname }: { pathname: string }) => {
               pathname === "/favorites" ? "text-white font-bold" : ""
             }`}>
             <BsHeart className="w-6 h-6" />
-            <span>Favoris</span>
+            <span className="font-Lato">Favoris</span>
           </Link>
         </Button>
       </div>
@@ -31,7 +31,7 @@ export const TabButton = ({ pathname }: { pathname: string }) => {
               pathname === "/my-lots" ? "text-white font-bold" : ""
             }`}>
             <BsBoxSeam className="w-6 h-6" />
-            <span>Mes Lots</span>
+            <span className="font-Lato">Mes Lots</span>
           </Link>
         </Button>
       </div>
@@ -45,7 +45,7 @@ export const TabButton = ({ pathname }: { pathname: string }) => {
               pathname === "/messages" ? "text-white font-bold" : ""
             }`}>
             <FiMail className="w-6 h-6" />
-            <span>Messages</span>
+            <span className="font-Lato">Messages</span>
           </Link>
         </Button>
       </div>
