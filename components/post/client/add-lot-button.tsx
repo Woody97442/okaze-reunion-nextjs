@@ -13,9 +13,8 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { BsBoxSeam } from "react-icons/bs";
+import { BsBoxSeam, BsBoxSeamFill } from "react-icons/bs";
 import { Separator } from "@/components/ui/separator";
-import { useCurrentUser } from "@/hooks/use-current-user";
 import { addToLot, createLot } from "@/actions/lot";
 import { toast } from "@/components/ui/use-toast";
 import {
@@ -26,23 +25,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Lot } from "@prisma/client";
+import FindUserContext from "@/lib/user-context-provider";
+import { Lot } from "@/prisma/lot/types";
 
-export const AddLotButton = ({
-  postId,
-  lots,
-}: {
-  postId: string;
-  lots: Lot[];
-}) => {
+export const AddLotButton = ({ postId }: { postId: string }) => {
   const [titleLot, setTitleLot] = useState("");
   const [selectedLot, setSelectedLot] = useState("");
   const [open, setOpen] = useState(false);
+  const { currentUserLots, setCurrentUserLots } = FindUserContext();
 
-  const user = useCurrentUser();
+  const updateCurrentUserLot = (updatedLot: Lot) => {
+    if (currentUserLots) {
+      const updatedLots =
+        currentUserLots.lot?.map((lot) =>
+          lot.id === updatedLot.id ? updatedLot : lot
+        ) || [];
+      setCurrentUserLots({ ...currentUserLots, lot: updatedLots });
+    }
+  };
 
   const CreatLot = () => {
-    if (user) {
+    if (currentUserLots) {
       startTransition(() => {
         createLot(titleLot, postId).then((data) => {
           if (data) {
@@ -52,7 +55,14 @@ export const AddLotButton = ({
                 description: data?.success,
               });
               setOpen(false);
-              window.location.reload();
+              const listLots = currentUserLots.lot;
+              if (listLots) {
+                listLots.push(data.lot as Lot);
+                setCurrentUserLots({
+                  ...currentUserLots,
+                  lot: listLots,
+                });
+              }
             }
 
             if (data?.error) {
@@ -77,7 +87,7 @@ export const AddLotButton = ({
   };
 
   const AddLot = () => {
-    if (user) {
+    if (currentUserLots) {
       startTransition(() => {
         addToLot(selectedLot, postId).then((data) => {
           if (data) {
@@ -87,6 +97,7 @@ export const AddLotButton = ({
                 description: data?.success,
               });
               setOpen(false);
+              updateCurrentUserLot(data?.lot as Lot);
             }
 
             if (data?.error) {
@@ -115,10 +126,19 @@ export const AddLotButton = ({
       open={open}
       onOpenChange={setOpen}>
       <DialogTrigger>
-        <BsBoxSeam
-          className="w-6 h-6 cursor-pointer"
-          onClick={() => setOpen(true)}
-        />
+        {currentUserLots?.lot?.some((lot) =>
+          lot.posts.some((lotPost) => lotPost.id === postId)
+        ) ? (
+          <BsBoxSeamFill
+            className="w-6 h-6 cursor-pointer fill-[#ad8762]"
+            onClick={() => setOpen(true)}
+          />
+        ) : (
+          <BsBoxSeam
+            className="w-6 h-6 cursor-pointer"
+            onClick={() => setOpen(true)}
+          />
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -155,8 +175,8 @@ export const AddLotButton = ({
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                {lots
-                  ? lots.map((lot) => (
+                {currentUserLots?.lot
+                  ? currentUserLots?.lot.map((lot) => (
                       <SelectItem
                         key={lot.id}
                         value={lot.id}>

@@ -17,11 +17,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import LoaderOkaze from "@/components/utils/server/loader";
+import LoaderOkaze from "@/components/utils/loader";
 import { FilterPosts, SortPosts } from "@/lib/filter-posts";
 import { Category } from "@/prisma/category/types";
 import { Post } from "@/prisma/post/types";
-import { Lot } from "@prisma/client";
 import { useState } from "react";
 import { FiSearch } from "react-icons/fi";
 
@@ -29,14 +28,12 @@ interface Props {
   category: Category;
   posts: Post[];
   listAttributs: string[];
-  lots: Lot[];
 }
 
 export default function ContentCategory({
   category,
   posts,
   listAttributs,
-  lots,
 }: Props) {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentSearch, setCurrentSearch] = useState<string>("");
@@ -255,7 +252,9 @@ export default function ContentCategory({
       <section className="flex flex-col gap-y-4 bg-white w-full py-4 px-8 shadow-md rounded-sm">
         <>
           {!posts || posts.length === 0 ? (
-            <LoaderOkaze />
+            <h1 className="text-2xl text-black drop-shadow-md">
+              Aucun article Disponible pour le moment
+            </h1>
           ) : (
             <>
               <div className="space-y-4 my-2">
@@ -272,10 +271,7 @@ export default function ContentCategory({
                         key={post.id}
                         className={`space-y-4 my-2 animate-fadeIn`}
                         style={{ animationDelay: `${index * 0.1}s` }}>
-                        <CardPost
-                          post={post}
-                          lots={lots}
-                        />
+                        <CardPost post={post} />
                       </div>
                     ))}
                   </div>

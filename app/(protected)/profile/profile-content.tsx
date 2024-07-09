@@ -9,7 +9,7 @@ import { FaCircleXmark, FaUser } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input";
-import UploadeFileForm from "./uploade-file-form";
+import UploadeFileForm from "@/components/form-components/uploade-file-form";
 import {
   Form,
   FormControl,
@@ -43,19 +43,18 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import FindUserContext from "@/lib/user-context-provider";
+import LoaderOkaze from "@/components/utils/loader";
 
-const Content = ({ user }: { user: User }) => {
-  const [currentUser, setCurrentUser] = useState(user);
+const ProfileContent = () => {
+  const { currentUser, setCurrentUser } = FindUserContext();
   const [tempFile, setTempFile] = useState("");
   const [isPending, startTransition] = useTransition();
   const [isGoogleAccount, setIsGoogleAccount] = useState(false);
 
-  useEffect(() => {
-    if (currentUser?.Account?.provider === "google") setIsGoogleAccount(true);
-    setCurrentUser(currentUser);
-  }, [user]);
+  if (currentUser?.Account?.provider === "google") setIsGoogleAccount(true);
 
-  if (!currentUser) return <></>;
+  if (!currentUser) return <LoaderOkaze />;
 
   const form = useForm<z.infer<typeof UserSchema>>({
     resolver: zodResolver(UserSchema),
@@ -104,7 +103,6 @@ const Content = ({ user }: { user: User }) => {
   };
 
   const handleDeleteAccount = () => {
-    console.log("clicked");
     startTransition(() => {
       DeleteUser().then((data) => {
         if (data) {
@@ -123,12 +121,14 @@ const Content = ({ user }: { user: User }) => {
   };
 
   const handleEnabledTowFactor = (enabled: boolean) => {
-    console.log(enabled);
     startTransition(() => {
       EnabledTowFactor(enabled).then((data) => {
         if (data) {
           if (data?.success) {
-            const userUpdated = { ...user, isTwoFactorEnabled: data.TwoFactor };
+            const userUpdated = {
+              ...currentUser,
+              isTwoFactorEnabled: data.TwoFactor,
+            };
             setCurrentUser(userUpdated as User);
             toast({
               title: "Succès",
@@ -463,4 +463,4 @@ const Content = ({ user }: { user: User }) => {
   );
 };
 
-export default Content;
+export default ProfileContent;

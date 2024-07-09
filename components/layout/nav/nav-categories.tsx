@@ -1,12 +1,7 @@
-"use client";
-
-import { Category } from "@prisma/client";
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
-import { usePathname } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,24 +9,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { FaChevronDown } from "react-icons/fa6";
+import { NavCategory } from "@/prisma/category/types";
 
-const NavCategories = () => {
-  const [categories, setCategories] = useState<Category[] | null>();
-  const pathname = usePathname();
-
-  const fetchCategory = async () => {
-    if (categories) return;
-    const response = await fetch("/api/categories");
-    const data = await response.json();
-    setCategories(data);
-  };
-
-  useEffect(() => {
-    fetchCategory();
-  }, [categories]);
-
-  if (!categories) return <div></div>;
-
+const NavCategories = ({
+  categories,
+  pathname,
+}: {
+  categories: NavCategory[];
+  pathname: string;
+}) => {
   return (
     <>
       {pathname === "/auth/login" || pathname === "/auth/register" ? (

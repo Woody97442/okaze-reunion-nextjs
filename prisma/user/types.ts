@@ -23,3 +23,12 @@ export type User = {
     Account: Account | null;
 } | null
 
+export type UserFavorite = {
+    id: string;
+    favorite: Favorite | null;
+} | null
+
+export type UserLots = {
+    id: string;
+    lot: Lot[];
+} | null

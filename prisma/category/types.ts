@@ -11,3 +11,10 @@ export type Category = {
     createdAt: Date
     updatedAt: Date
 }
+
+export type NavCategory = {
+    id: string;
+    name: string;
+    icon: string | null;
+    altIcon: string | null;
+}

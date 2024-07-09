@@ -1,9 +1,14 @@
-import TemplateLots from "@/components/lots/server/template-lots";
+import { auth } from "@/auth";
+import LoaderOkaze from "@/components/utils/loader";
+import MyLotsContent from "@/app/(protected)/my-lots/my-lots-content";
 
-const MyLotsPage = () => {
+const MyLotsPage = async () => {
+  const session = await auth();
+  if (!session) return <LoaderOkaze />;
+
   return (
     <main className="flex flex-col py-8 space-y-6 container">
-      <TemplateLots />
+      <MyLotsContent />
     </main>
   );
 };

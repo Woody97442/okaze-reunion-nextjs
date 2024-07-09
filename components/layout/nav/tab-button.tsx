@@ -1,15 +1,10 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 import { BsBoxSeam, BsHeart } from "react-icons/bs";
 import { FiMail } from "react-icons/fi";
 
-export const TabButton = () => {
-  const pathname = usePathname();
-
+export const TabButton = ({ pathname }: { pathname: string }) => {
   return (
     <>
       <div className="flex">

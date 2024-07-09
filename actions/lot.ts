@@ -4,7 +4,6 @@ import { prisma } from "@/prisma/prismaClient";
 import { auth } from "@/auth";
 
 export const createLot = async (name: string, postId: string) => {
-
     const session = await auth();
 
     if (!session) {
@@ -32,6 +31,13 @@ export const createLot = async (name: string, postId: string) => {
                 },
             },
         },
+        include: {
+            posts: {
+                include: {
+                    images: true,
+                },
+            },
+        }
     });
 
     return { lot: newLot, success: "Nouveau lot creé !" };
@@ -40,7 +46,6 @@ export const createLot = async (name: string, postId: string) => {
 
 export const addToLot = async (lotId: string, postId: string) => {
     const session = await auth();
-
     if (!session) {
         return { error: "Veuillez vous connecter !" };
     }
@@ -93,6 +98,13 @@ export const addToLot = async (lotId: string, postId: string) => {
             posts: {
                 connect: {
                     id: postId,
+                },
+            },
+        },
+        include: {
+            posts: {
+                include: {
+                    images: true,
                 },
             },
         },

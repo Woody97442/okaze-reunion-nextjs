@@ -10,15 +10,13 @@ import {
 } from "@/components/ui/carousel";
 import CardPost from "@/components/post/client/card-post";
 import { Post } from "@/prisma/post/types";
-import { Lot } from "@prisma/client";
 
 interface Props {
   posts?: Post[] | null;
   categoryName: string;
-  lots?: Lot[] | null;
 }
 
-const CarouselCategories: React.FC<Props> = ({ posts, categoryName, lots }) => {
+const CarouselCategories: React.FC<Props> = ({ posts, categoryName }) => {
   if (!posts || posts.length === 0) {
     return (
       <h1 className="text-2xl text-black drop-shadow-md">
@@ -42,7 +40,7 @@ const CarouselCategories: React.FC<Props> = ({ posts, categoryName, lots }) => {
           align: "start",
           loop: true,
         }}
-        className="w-full max-w-[1400px] mx-auto">
+        className="w-full max-w-[1400px] mx-auto px-4">
         <CarouselContent>
           {posts
             .sort((a, b) => b!.createdAt.getTime() - a!.createdAt.getTime())
@@ -52,11 +50,8 @@ const CarouselCategories: React.FC<Props> = ({ posts, categoryName, lots }) => {
                 post && (
                   <CarouselItem
                     key={post.id}
-                    className="pl-1 md:basis-1/4 lg:basis-1/5">
-                    <CardPost
-                      post={post}
-                      lots={lots || []}
-                    />
+                    className=" md:basis-1/4 lg:basis-1/5">
+                    <CardPost post={post} />
                   </CarouselItem>
                 )
             )}

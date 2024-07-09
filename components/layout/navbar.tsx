@@ -1,6 +1,6 @@
 "use client";
-import { SearchBar } from "@/components/nav/client/searchbar";
-import { TabButton } from "@/components/nav/client/tab-button";
+import { SearchBar } from "@/components/layout/nav/searchbar";
+import { TabButton } from "@/components/layout/nav/tab-button";
 
 import Link from "next/link";
 import { LoginButton } from "@/components/auth/client/login-button";
@@ -9,8 +9,18 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { FaArrowLeft } from "react-icons/fa6";
 import Image from "next/image";
+import { User } from "@/prisma/user/types";
+import { UserButton } from "@/components/auth/client/user-button";
+import NavCategories from "./nav/nav-categories";
+import { NavCategory } from "@/prisma/category/types";
 
-const Navbar = () => {
+const Navbar = ({
+  user,
+  categories,
+}: {
+  user: User;
+  categories: NavCategory[];
+}) => {
   const pathname = usePathname();
 
   return (
@@ -29,7 +39,7 @@ const Navbar = () => {
               </Link>
             </Button>
             <div className="flex gap-x-4 items-center">
-              <TabButton />
+              <TabButton pathname={pathname} />
               <Link
                 aria-label="logo de l'application Okaze Réunion"
                 href="/">
@@ -62,19 +72,27 @@ const Navbar = () => {
             </div>
             <SearchBar />
             <div className="flex gap-x-4 items-center">
-              <TabButton />
-              <LoginButton>
-                <Link
-                  href="/auth/login"
-                  className="flex flex-col items-center gap-y-1">
-                  <FaUser className="text-black w-6 h-6" />
-                  <span>Se connecter</span>
-                </Link>
-              </LoginButton>
+              <TabButton pathname={pathname} />
+              {user ? (
+                <UserButton user={user} />
+              ) : (
+                <LoginButton>
+                  <Link
+                    href="/auth/login"
+                    className="flex flex-col items-center gap-y-1">
+                    <FaUser className="text-black w-6 h-6" />
+                    <span>Se connecter</span>
+                  </Link>
+                </LoginButton>
+              )}
             </div>
           </div>
         </nav>
       )}
+      <NavCategories
+        categories={categories}
+        pathname={pathname}
+      />
     </>
   );
 };

@@ -19,8 +19,8 @@ import {
 import { CardWrapper } from "@/components/auth/client/card-wrapper";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FormError } from "@/components/form-error";
-import { FormSuccess } from "@/components/form-success";
+import { FormError } from "@/components/form-components/form-error";
+import { FormSuccess } from "@/components/form-components/form-success";
 import { login } from "@/actions/login";
 import { FaArrowRight } from "react-icons/fa6";
 

@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import LoaderOkaze from "@/components/utils/server/loader";
+import LoaderOkaze from "@/components/utils/loader";
 
 import { getPostById } from "@/data/post";
 import { FormatDate } from "@/lib/format-date";
@@ -9,7 +9,6 @@ import { TraductionState } from "@/lib/traduction-state";
 import { Post } from "@/prisma/post/types";
 
 import Image from "next/image";
-import { AddFavoritesButton } from "@/components/post/client/add-favorites-button";
 import { AddLotButton } from "@/components/post/client/add-lot-button";
 import { SendMessageButton } from "@/components/post/client/send-message-button";
 import { BookButton } from "@/components/post/client/book-button";
@@ -23,6 +22,7 @@ import {
 } from "@/components/ui/dialog";
 import { auth } from "@/auth";
 import { getLotsByUserId } from "@/data/lot";
+import { AddFavoriteButton } from "../client/add-favorite-button";
 
 const TemplatePost = async ({ idPost }: { idPost: string }) => {
   const post: Post | null = await getPostById(idPost);
@@ -98,11 +98,8 @@ const TemplatePost = async ({ idPost }: { idPost: string }) => {
           <div className="flex justify-between">
             <p className="text-sm">Prix : {FormatPrice(post.price)} €</p>
             <div className="flex gap-x-4">
-              <AddFavoritesButton post={post} />
-              <AddLotButton
-                postId={post.id}
-                lots={lots || []}
-              />
+              <AddFavoriteButton post={post} />
+              <AddLotButton postId={post.id} />
             </div>
           </div>
           <Separator />

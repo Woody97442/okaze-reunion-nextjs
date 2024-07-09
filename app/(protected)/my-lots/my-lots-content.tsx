@@ -31,17 +31,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormatPrice } from "@/lib/format-price";
 import { TotalPriceLot } from "@/lib/total-price-lot";
 import { FormatText } from "@/lib/format-text";
+import FindUserContext from "@/lib/user-context-provider";
 
-const Content = ({ lots }: { lots: Lot[] }) => {
-  const [currentListLots, setCurrentListLots] = useState<Lot[]>(lots);
+const MyLotsContent = () => {
+  const { currentUser, setCurrentUser } = FindUserContext();
+
   const [currentLot, setCurrentLot] = useState<Lot>();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentSearch, setCurrentSearch] = useState<string>("");
   const [isPending, startTransition] = useTransition();
-
-  useEffect(() => {
-    setCurrentListLots(lots);
-  }, [lots]);
 
   const handleChooseLot = (lot: Lot) => {
     setCurrentLot(lot);
@@ -60,9 +58,14 @@ const Content = ({ lots }: { lots: Lot[] }) => {
             if (currentLot && id === currentLot?.id) {
               setCurrentLot(undefined);
             }
-            setCurrentListLots((prevList) =>
-              prevList.filter((lot) => lot.id !== id)
-            );
+            const currentListLots = currentUser?.lot;
+
+            if (currentListLots) {
+              setCurrentUser({
+                ...currentUser,
+                lot: currentListLots.filter((lot) => lot.id !== id),
+              });
+            }
           }
           if (data?.error) {
             toast({
@@ -86,24 +89,31 @@ const Content = ({ lots }: { lots: Lot[] }) => {
               title: "Succès",
               description: data?.success,
             });
+            const currentListLots = currentUser?.lot;
 
             if (data.delete) {
-              setCurrentListLots((prevList) =>
-                prevList.filter((lot) => lot.id !== idLot)
-              );
+              if (currentListLots) {
+                setCurrentUser({
+                  ...currentUser,
+                  lot: currentListLots.filter((lot) => lot.id !== idLot),
+                });
+              }
               setCurrentLot(undefined);
             }
 
             const lotUpdated = data.lot;
             if (lotUpdated) {
-              setCurrentListLots((prevList) =>
-                prevList.map((lot) => {
-                  if (lot.id === lotUpdated.id) {
-                    return lotUpdated;
-                  }
-                  return lot;
-                })
-              );
+              if (currentListLots) {
+                setCurrentUser({
+                  ...currentUser,
+                  lot: currentListLots.map((lot) => {
+                    if (lot.id === lotUpdated.id) {
+                      return lotUpdated;
+                    }
+                    return lot;
+                  }),
+                });
+              }
 
               if (currentLot && idLot === currentLot?.id) {
                 setCurrentLot(lotUpdated);
@@ -171,7 +181,7 @@ const Content = ({ lots }: { lots: Lot[] }) => {
           <div className="h-full justify-between flex flex-col">
             <ScrollArea className="h-[650px] w-full">
               <div className="grid grid-rows-1 md:grid-rows-3 gap-4">
-                {currentListLots
+                {currentUser?.lot
                   .filter((lot) =>
                     lot.name.toLowerCase().includes(searchTerm.toLowerCase())
                   )
@@ -346,4 +356,4 @@ const Content = ({ lots }: { lots: Lot[] }) => {
   );
 };
 
-export default Content;
+export default MyLotsContent;
