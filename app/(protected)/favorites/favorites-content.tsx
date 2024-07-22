@@ -2,7 +2,7 @@
 
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import CardPost from "@/components/post/client/card-post";
+import CardPost from "@/components/post/card-post";
 import Image from "next/image";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
