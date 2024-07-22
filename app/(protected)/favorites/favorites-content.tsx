@@ -1,26 +1,20 @@
 "use client";
 
-import LoaderOkaze from "@/components/utils/server/loader";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import CardPost from "@/components/post/client/card-post";
-import { Lot } from "@prisma/client";
+import CardPost from "@/components/post/card-post";
 import Image from "next/image";
-import { Post } from "@/prisma/post/types";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FiSearch } from "react-icons/fi";
+import FindUserContext from "@/lib/user-context-provider";
+import { Post } from "@/prisma/post/types";
 
-const Content = ({
-  postInFavorites,
-  lots,
-}: {
-  postInFavorites: Post[];
-  lots: Lot[];
-}) => {
+const FavoritesContent = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentSearch, setCurrentSearch] = useState<string>("");
+  const { currentUserFavorite } = FindUserContext();
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -28,9 +22,7 @@ const Content = ({
     }
   };
 
-  console.log(postInFavorites);
-
-  const filteredPosts = postInFavorites.filter(
+  const filteredPosts = currentUserFavorite?.favorite?.posts.filter(
     (post) =>
       (post &&
         post.title &&
@@ -73,8 +65,9 @@ const Content = ({
         </aside>
         <section className="flex flex-col gap-y-4 bg-white w-full py-4 px-8 shadow-md rounded-sm">
           <>
-            {!postInFavorites || postInFavorites.length === 0 ? (
-              <LoaderOkaze />
+            {!currentUserFavorite?.favorite?.posts ||
+            currentUserFavorite?.favorite?.posts.length === 0 ? (
+              <h1 className="text-2xl text-black">Aucun favoris</h1>
             ) : (
               <>
                 <div className="space-y-4 my-2">
@@ -83,23 +76,18 @@ const Content = ({
                   </h2>
                 </div>
                 <Separator />
-                <div className="h-full justify-between flex flex-col">
-                  <ScrollArea className="h-[650px] w-full">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      {filteredPosts.map((post, index) => (
-                        <div
-                          key={post.id}
-                          className={`space-y-4 my-2 animate-fadeIn`}
-                          style={{ animationDelay: `${index * 0.1}s` }}>
-                          <CardPost
-                            post={post}
-                            lots={lots}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </ScrollArea>
-                </div>
+                <ScrollArea className="h-[650px] w-full">
+                  <div className="grid grid-cols-1 md:grid-cols-3 grid-rows-3 gap-4 mx-6">
+                    {filteredPosts?.map((post, index) => (
+                      <div
+                        key={post.id}
+                        className={`animate-fadeIn`}
+                        style={{ animationDelay: `${index * 0.1}s` }}>
+                        <CardPost post={post as Post} />
+                      </div>
+                    ))}
+                  </div>
+                </ScrollArea>
               </>
             )}
           </>
@@ -109,4 +97,4 @@ const Content = ({
   );
 };
 
-export default Content;
+export default FavoritesContent;

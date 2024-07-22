@@ -1,9 +1,14 @@
-import TemplateProfile from "@/components/profile/server/template-profile";
+import { auth } from "@/auth";
+import LoaderOkaze from "@/components/utils/loader";
+import ProfileContent from "@/app/(protected)/profile/profile-content";
 
-const ProfilePage = () => {
+const ProfilePage = async () => {
+  const session = await auth();
+  if (!session) return <LoaderOkaze />;
+
   return (
     <main className="flex flex-col py-8 space-y-6 container">
-      <TemplateProfile />
+      <ProfileContent />
     </main>
   );
 };

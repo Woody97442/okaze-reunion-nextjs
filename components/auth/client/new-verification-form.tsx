@@ -5,8 +5,8 @@ import { CardWrapper } from "@/components/auth/client/card-wrapper";
 import { useSearchParams } from "next/navigation";
 import { newVerification } from "@/actions/new-verification";
 import { BeatLoader } from "react-spinners";
-import { FormError } from "@/components/form-error";
-import { FormSuccess } from "@/components/form-success";
+import { FormError } from "@/components/form-components/form-error";
+import { FormSuccess } from "@/components/form-components/form-success";
 
 const NewVerificationForm = () => {
   const searchParams = useSearchParams();

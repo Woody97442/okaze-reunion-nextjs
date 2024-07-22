@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Montserrat, Lato } from "next/font/google";
 import "./globals.css";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import { Toaster } from "@/components/ui/toaster";
+import { getUserById } from "@/data/user";
+import UserContextProvider from "@/components/layout/user-context";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Okaze Réunion",
@@ -20,6 +22,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
+
+  const user = await getUserById(session?.user.id as string);
+
   return (
     <SessionProvider session={session}>
       <html
@@ -30,10 +35,12 @@ export default async function RootLayout({
             inter.className +
             " bg-[#f5f5f5] flex flex-col justify-between min-h-screen"
           }>
-          <Header />
-          {children}
+          <UserContextProvider user={user}>
+            <Header />
+            {children}
+            <Footer />
+          </UserContextProvider>
           <Toaster />
-          <Footer />
         </body>
       </html>
     </SessionProvider>

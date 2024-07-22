@@ -44,7 +44,7 @@ export const updateFavorite = async (postId: string) => {
             }
         });
 
-        return { success: "Post ajouter au favoris !" };
+        return { isFavorites: true, success: "Post ajouter au favoris !" };
     }
 
     const postAlreadyFavorited = existingFavorite.posts.some(post => post.id === postId);
@@ -59,7 +59,7 @@ export const updateFavorite = async (postId: string) => {
             }
         });
 
-        return { success: "Post retiré des favoris." };
+        return { isFavorites: false, success: "Post retiré des favoris." };
     } else {
         await prisma.favorite.update({
             where: { userId: userId },
@@ -70,7 +70,7 @@ export const updateFavorite = async (postId: string) => {
             }
         });
 
-        return { success: "Post ajouté aux favoris !" };
+        return { isFavorites: true, success: "Post ajouté aux favoris !" };
     }
 
 }

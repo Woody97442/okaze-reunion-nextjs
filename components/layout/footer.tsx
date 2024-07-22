@@ -22,17 +22,17 @@ export default async function Footer() {
         </aside>
         <nav className="gap-6 w-full flex flex-col md:flex-row justify-between">
           <Link
-            className="link link-hover text-lg"
+            className="link link-hover text-lg font-Lato"
             href="/">
             Politique de Confidentialité
           </Link>
           <Link
-            className="link link-hover text-lg"
+            className="link link-hover text-lg font-Lato"
             href="/">
             Termes et Conditions
           </Link>
           <Link
-            className="link link-hover text-lg"
+            className="link link-hover text-lg font-Lato"
             href="/">
             Contact
           </Link>

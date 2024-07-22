@@ -1,15 +1,10 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 import { BsBoxSeam, BsHeart } from "react-icons/bs";
 import { FiMail } from "react-icons/fi";
 
-export const TabButton = () => {
-  const pathname = usePathname();
-
+export const TabButton = ({ pathname }: { pathname: string }) => {
   return (
     <>
       <div className="flex">
@@ -22,7 +17,7 @@ export const TabButton = () => {
               pathname === "/favorites" ? "text-white font-bold" : ""
             }`}>
             <BsHeart className="w-6 h-6" />
-            <span>Favoris</span>
+            <span className="font-Lato">Favoris</span>
           </Link>
         </Button>
       </div>
@@ -36,7 +31,7 @@ export const TabButton = () => {
               pathname === "/my-lots" ? "text-white font-bold" : ""
             }`}>
             <BsBoxSeam className="w-6 h-6" />
-            <span>Mes Lots</span>
+            <span className="font-Lato">Mes Lots</span>
           </Link>
         </Button>
       </div>
@@ -50,7 +45,7 @@ export const TabButton = () => {
               pathname === "/messages" ? "text-white font-bold" : ""
             }`}>
             <FiMail className="w-6 h-6" />
-            <span>Messages</span>
+            <span className="font-Lato">Messages</span>
           </Link>
         </Button>
       </div>

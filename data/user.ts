@@ -30,10 +30,22 @@ export const getUserById = async (id: string): Promise<User | null> => {
                 Account: true,
                 favorite: {
                     include: {
-                        posts: true
+                        posts: {
+                            include: {
+                                images: true
+                            }
+                        }
                     }
                 },
-                lot: true,
+                lot: {
+                    include: {
+                        posts: {
+                            include: {
+                                images: true
+                            }
+                        }
+                    },
+                },
                 messages: true
             }
         })
