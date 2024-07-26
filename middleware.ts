@@ -4,7 +4,7 @@ import {
     DEFAULT_LOGIN_REDIRECT,
     apiAuthPrefix,
     authRoutes,
-    publicRoutes
+    publicRoutes,
 } from "@/routes"
 const { auth } = NextAuth(authConfig)
 
@@ -14,14 +14,17 @@ export default auth((req) => {
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+
     // Vérifier si la route est une route dynamique sous /category
     const isDynamicCategoryRoute = /^\/category\/c[a-z0-9]{24,}$/.test(nextUrl.pathname);
     const isDynamicPostsApiRoute = /^\/api\/posts\/c[a-z0-9]{24,}$/.test(nextUrl.pathname);
     const isDynamicPostRoute = /^\/post\/c[a-z0-9]{24,}$/.test(nextUrl.pathname);
+
     // Si la requête est pour une route d'authentification API, ne rien faire
     if (isApiAuthRoute) {
         return;
     }
+
     // Si la requête est pour une route d'authentification et 
     // que l'utilisateur est connecté, rediriger vers la redirection 
     // de connexion par défaut
@@ -31,8 +34,9 @@ export default auth((req) => {
         }
         return;
     }
+
     // Si l'utilisateur n'est pas connecté et que la route n'est pas publique, rediriger vers la page de connexion
-    if (!isLoggedIn && !isPublicRoute && !isDynamicCategoryRoute && !isDynamicPostRoute && !isDynamicPostsApiRoute) {
+    if (!isLoggedIn && !isPublicRoute && !isDynamicCategoryRoute && !isDynamicPostRoute && !isDynamicPostsApiRoute && !isAuthRoute) {
         return Response.redirect(new URL("/auth/login", nextUrl))
     }
     return;

@@ -26,6 +26,17 @@ export const SendOfferSchema = z.object({
     message: z.string().min(3, { message: "Un message est requis" }),
 })
 
+export const CreatPostSchema = z.object({
+    title: z.string().min(3, { message: "Un titre est requis" }),
+    description: z.string().min(3, { message: "Une description est requise" }),
+    price: z.preprocess(
+        (val) => parseFloat(val as string),
+        z.number().positive({ message: "Le prix doit être supérieure à 0" })
+    ),
+    state: z.string(),
+    categories: z.array(z.string()),
+})
+
 export const NewPasswordSchema = z.object({
     password: z.string().min(6, { message: "Minimum 6 caractères requis" })
 })
