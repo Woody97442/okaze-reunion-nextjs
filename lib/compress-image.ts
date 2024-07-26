@@ -14,11 +14,22 @@ const IconeOptions = {
     maxIteration: 10
 }
 
+const PostOptions = {
+    maxSizeMB: 0.4,
+    maxWidthOrHeight: 400,
+    useWebWorker: true,
+    maxIteration: 10
+}
+
 export function compressFile(imageFile: File, options = defaultOptions) {
     return imageCompression(imageFile, options);
 }
 
 
 export function compressIcon(imageFile: File, options = IconeOptions) {
+    return imageCompression(imageFile, options);
+}
+
+export function compressImagePost(imageFile: File, options = IconeOptions) {
     return imageCompression(imageFile, options);
 }

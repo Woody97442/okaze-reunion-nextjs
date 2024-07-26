@@ -3,7 +3,7 @@
 import * as z from "zod";
 import { FormatDate } from "@/lib/format-date";
 import { User } from "@/prisma/user/types";
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useState, useTransition } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FaCircleXmark, FaUser } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";

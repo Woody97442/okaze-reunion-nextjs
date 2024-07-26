@@ -33,8 +33,10 @@ export const CreatPostSchema = z.object({
         (val) => parseFloat(val as string),
         z.number().positive({ message: "Le prix doit être supérieure à 0" })
     ),
-    state: z.string(),
-    categories: z.array(z.string()),
+    state: z.string().min(3, { message: "Un statut est requis" }),
+    categories: z.array(z.string()).optional(),
+    attributes: z.array(z.string()).optional(),
+    images: z.array(z.string()).optional(),
 })
 
 export const NewPasswordSchema = z.object({

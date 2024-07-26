@@ -1,4 +1,4 @@
-import { UserContext } from "@/components/layout/user-context";
+import { UserContext } from "@/components/context/user-context";
 import { useContext } from "react";
 
 export default function FindUserContext() {

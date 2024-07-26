@@ -35,3 +35,31 @@ export const GetAllPosts = async () => {
 
     return posts as Post[];
 }
+
+export const CreatePost = async (data: Object) => {
+
+    const session = await auth();
+
+    if (!session) {
+        return { error: "Veuillez vous connecter !" };
+    }
+
+    const userId = session.user.id;
+
+    if (!userId) {
+        return { error: "utilisateur introuvable !" };
+    }
+
+    const userIsAdmin = session.user.role === "ADMIN";
+
+    if (!userIsAdmin) {
+        return { error: "Vous n'avez pas les droits administrateurs !" };
+    }
+
+    const newPost = await prisma.post.create({
+        data: {
+            ...post
+        }
+    });
+
+}

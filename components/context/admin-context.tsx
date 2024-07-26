@@ -1,5 +1,6 @@
 "use client";
 
+import { Attribut } from "@/prisma/attribut/types";
 import { Category } from "@/prisma/category/types";
 import { Post } from "@/prisma/post/types";
 import { User } from "@/prisma/user/types";
@@ -15,6 +16,8 @@ interface AdminContextType {
   setAllCategories: Dispatch<SetStateAction<Category[] | null>>;
   currentContent: string;
   setCurrentContent: Dispatch<SetStateAction<string>>;
+  allAttributes: Attribut[] | null;
+  setAllAttributes: Dispatch<SetStateAction<Attribut[] | null>>;
 }
 
 export const AdminContext = createContext<AdminContextType | null>(null);
@@ -24,16 +27,21 @@ export default function AdminContextProvider({
   dataPosts,
   dataUsers,
   dataCategory,
+  dataAttributes,
 }: {
   children: React.ReactNode;
   dataPosts: Post[];
   dataUsers: User[];
   dataCategory: Category[];
+  dataAttributes: Attribut[];
 }) {
   const [allUsers, setAllUsers] = useState<User[] | null>(dataUsers);
   const [allPosts, setAllPosts] = useState<Post[] | null>(dataPosts);
   const [allCategories, setAllCategories] = useState<Category[] | null>(
     dataCategory
+  );
+  const [allAttributes, setAllAttributes] = useState<Attribut[] | null>(
+    dataAttributes
   );
   const [currentContent, setCurrentContent] = useState("posts");
 
@@ -48,6 +56,8 @@ export default function AdminContextProvider({
         setAllCategories,
         currentContent,
         setCurrentContent,
+        allAttributes,
+        setAllAttributes,
       }}>
       {children}
     </AdminContext.Provider>
