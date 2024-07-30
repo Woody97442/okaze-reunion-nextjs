@@ -46,8 +46,8 @@ export default async function PostId({ params: { id } }: Props) {
                     alt={picture.alt}
                     width="300"
                     height="300"
-                    className="object-fit rounded-md aspect-square"
-                    src={picture.src + picture.extension}
+                    className="object-cover rounded-md aspect-square"
+                    src={picture.src}
                   />
                 </DialogTrigger>
                 <DialogContent className="bg-transparent border-none p-0">
@@ -62,11 +62,8 @@ export default async function PostId({ params: { id } }: Props) {
                     alt={post.title}
                     width="800"
                     height="800"
-                    className=" rounded-md "
-                    src={
-                      picture.src + picture.extension ||
-                      "/images/image_not_found_2.jpg"
-                    }
+                    className=" rounded-md object-cover"
+                    src={picture.src || "/images/image_not_found_2.jpg"}
                   />
                 </DialogContent>
               </Dialog>
@@ -76,7 +73,7 @@ export default async function PostId({ params: { id } }: Props) {
               alt={post.title}
               width="300"
               height="300"
-              className="object-fit rounded-md aspect-square "
+              className="object-cover rounded-md aspect-square "
               src="/images/image_not_found_2.jpg"
             />
           )}

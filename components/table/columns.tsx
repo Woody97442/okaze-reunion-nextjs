@@ -50,7 +50,7 @@ export const columnsPost: ColumnDef<Post>[] = [
         return (
           <Avatar>
             <AvatarImage
-              src={images[0].src + images[0].extension}
+              src={images[0].src}
               alt={images[0].alt}
               className="w-10 h-10"
             />

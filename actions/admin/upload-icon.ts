@@ -1,8 +1,9 @@
 "use server";
 
+import fs from 'fs';
+import path from 'path';
 import { prisma } from "@/prisma/prismaClient";
 import { auth } from "@/auth";
-import { put } from "@vercel/blob";
 
 export const UploadIcon = async (formData: FormData) => {
     const file = formData.get("file") as File;
@@ -38,16 +39,34 @@ export const UploadIcon = async (formData: FormData) => {
         return { error: "utilisateur introuvable !" };
     }
 
+    const userIsAdmin = session.user.role === "ADMIN";
+
+    if (!userIsAdmin) {
+        return { error: "Vous n'avez pas les droits administrateurs !" };
+    }
+
     // Télécharger l'icone compressée
     try {
-        const blob = await put(("icons/" + file.name), file, {
-            access: 'public',
-        });
+        // Assurez-vous que le répertoire existe
+        const uploadDir = path.join(process.cwd(), 'public/upload/icons');
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+        }
 
-        return { url: blob.url, success: "Icone catégorie importée !" };
+        // Créer un chemin unique pour le fichier
+        const filePath = path.join(uploadDir, `${Date.now()}-${file.name}`);
+
+        // Écrire le fichier sur le disque
+        const buffer = Buffer.from(await file.arrayBuffer());
+        fs.writeFileSync(filePath, buffer);
+
+        // Générer le chemin d'accès URL
+        const urlIcon = `/upload/icons/${path.basename(filePath)}`;
+
+        return { url: urlIcon, success: "Icone catégorie importée !" };
     } catch (error) {
+        console.error('Error uploading image:', error);
         return { error: "Une erreur est survenue !" };
     }
 
 }
-

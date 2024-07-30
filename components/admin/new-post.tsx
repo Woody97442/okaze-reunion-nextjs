@@ -1,7 +1,6 @@
 "use client";
 
 import * as z from "zod";
-
 import { TbCamera } from "react-icons/tb";
 import React, { useState, useTransition } from "react";
 import { Button } from "../ui/button";
@@ -50,17 +49,25 @@ import { CreateAttribut } from "@/actions/admin/attributes";
 import { Post } from "@/prisma/post/types";
 import { $Enums } from "@prisma/client";
 import { CreatePost } from "@/actions/admin/post";
+import LoaderOkaze from "../utils/loader";
+import { UploadImage } from "@/actions/admin/upload-image";
+
+interface PropsImagesPost {
+  file: File;
+  fileUrl: string;
+}
 
 export default function NewPost() {
   const {
+    allPosts,
     setAllPosts,
     allCategories,
     setAllCategories,
     allAttributes,
     setAllAttributes,
   } = FindAdminContext();
+
   const [isPending, startTransition] = useTransition();
-  const [tempFiles, setTempFiles] = useState<string[]>([]);
   const [currentCategoriesForPost, setCurrentCategoriesForPost] = useState<
     Category[]
   >([]);
@@ -75,7 +82,9 @@ export default function NewPost() {
   const [labelNewCategory, setLabelNewCategory] = useState("");
   const [currentIcon, setCurrentIcon] = useState<string>("");
   const [currentFileIcon, setCurrentFileIcon] = useState<File | null>(null);
-  const [currentFilePosts, setCurrentFilePosts] = useState<File[] | null>(null);
+  const [currentFilePosts, setCurrentFilePosts] = useState<PropsImagesPost[]>(
+    []
+  );
 
   const [disabled, setDisabled] = useState(false);
 
@@ -93,6 +102,7 @@ export default function NewPost() {
   });
 
   const onSubmit = (values: z.infer<typeof CreatPostSchema>) => {
+    setDisabled(true);
     const postState = (values.state as $Enums.PostState) || "new";
 
     if (!currentCategoriesForPost || !currentCategoriesForPost.length) {
@@ -101,91 +111,73 @@ export default function NewPost() {
         title: "Erreur",
         description: "Veuillez selectionner au moins une categorie",
       });
+      setDisabled(false);
       return;
     }
 
-    const newPost: Object = {
-      title: values.title,
-      description: values.description,
-      price: values.price,
-      state: postState,
-      categories: currentCategoriesForPost,
-      attributs: currentAttributsForPost,
-    };
+    const formData = new FormData();
+    formData.append("title", values.title);
+    formData.append("description", values.description);
+    formData.append("price", values.price.toString());
+    formData.append("state", postState);
 
     startTransition(() => {
-      if (currentFilePosts) {
-        for (let file = 0; file < currentFilePosts.length; file++) {
-          const currentFile = currentFilePosts[file];
-          compressImagePost(currentFile as File).then((data) => {
-            if (data) {
-              const formData = new FormData();
-              formData.append("file", data);
+      CreatePost(
+        formData,
+        currentCategoriesForPost,
+        currentAttributsForPost
+      ).then((data) => {
+        if (data?.success) {
+          if (currentFilePosts.length > 0) {
+            const formDataImage = new FormData();
 
-              // UploadIcon(formData).then((data) => {
-              //   if (data) {
-              //     if (data?.success) {
-              //       const iconUrl = data.url;
-              //       if (iconUrl) {
-              //         // CreatePost(labelNewCategory, iconUrl).then((data) => {
-              //         //   if (data?.success) {
-              //         //     setOpenSecondDialog(false);
-              //         //     setLabelNewCategory("");
-              //         //     setCurrentFileIcon(null);
-              //         //     const newCategories = [
-              //         //       ...(allCategories as Category[]),
-              //         //       data.category,
-              //         //     ];
-              //         //     setAllCategories(newCategories);
-              //         //     setCurrentCategoriesForPost([
-              //         //       ...currentCategoriesForPost,
-              //         //       data.category,
-              //         //     ]);
-              //         //     toast({
-              //         //       title: "Succès",
-              //         //       description: data?.success,
-              //         //     });
-              //         //     setOpenSecondDialog(false);
-              //         //   } else {
-              //         //     toast({
-              //         //       variant: "destructive",
-              //         //       title: "Erreur",
-              //         //       description: data?.error,
-              //         //     });
-              //         //     setOpenSecondDialog(false);
-              //         //   }
-              //         // });
-              //       } else {
-              //         toast({
-              //           variant: "destructive",
-              //           title: "Erreur",
-              //           description:
-              //             "Une erreur est survenue pendant l'upload de l'icône !",
-              //         });
-              //         setOpenSecondDialog(false);
-              //       }
-              //     } else {
-              //       toast({
-              //         variant: "destructive",
-              //         title: "Erreur",
-              //         description: data?.error,
-              //       });
-              //       setOpenSecondDialog(false);
-              //     }
-              //   } else {
-              //     toast({
-              //       variant: "destructive",
-              //       title: "Erreur",
-              //       description: "Une erreur est survenue !",
-              //     });
-              //     setOpenSecondDialog(false);
-              //   }
-              // });
+            for (let i = 0; i < currentFilePosts.length; i++) {
+              formDataImage.append("images", currentFilePosts[i].file);
             }
+
+            // Upload image
+            UploadImage(formDataImage, data.post as Post).then((data) => {
+              if (data) {
+                if (data?.success) {
+                  toast({
+                    title: "Succès",
+                    description: data?.success,
+                  });
+                  form.reset();
+                  setOpenFirstDialog(false);
+                  setOpenSecondDialog(false);
+                  setCurrentFilePosts([]);
+                  setCurrentCategoriesForPost([]);
+                  setCurrentAttributsForPost([]);
+                  setDisabled(false);
+                  setAllPosts([...(allPosts || []), data?.newPost as Post]);
+                  setDisabled(false);
+                } else {
+                  toast({
+                    variant: "destructive",
+                    title: "Erreur",
+                    description: data?.error,
+                  });
+                  setDisabled(false);
+                }
+              }
+            });
+          } else {
+            toast({
+              title: "Succès",
+              description: data?.success,
+            });
+            setDisabled(false);
+          }
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Erreur",
+            description: data?.error,
           });
+          setDisabled(false);
         }
-      } else {
-      }
+      });
     });
   };
 
@@ -341,12 +333,34 @@ export default function NewPost() {
     }
   };
 
+  const HandleAddImageToPost = (file: File) => {
+    setDisabled(true);
+    startTransition(() => {
+      compressImagePost(file).then((dataImageCompressed) => {
+        if (dataImageCompressed) {
+          const postTableFile: PropsImagesPost = {
+            file: dataImageCompressed,
+            fileUrl: URL.createObjectURL(dataImageCompressed),
+          };
+          const tempFiles = [...currentFilePosts, postTableFile];
+          setCurrentFilePosts(tempFiles);
+          setDisabled(false);
+        }
+      });
+    });
+  };
+
   return (
     <div className="space-y-4 my-2">
+      {disabled && (
+        <div className="flex justify-center items-center h-screen w-full bg-black bg-opacity-70 fixed z-50 top-0 left-0">
+          <LoaderOkaze variant="light" />
+        </div>
+      )}
       <ScrollArea className="  whitespace-nowrap">
         <div className="flex space-x-4 w-max p-4 pb-6">
-          {tempFiles.length > 0 &&
-            tempFiles.map((file, index) => (
+          {currentFilePosts.length > 0 &&
+            currentFilePosts.map((file, index) => (
               <Card
                 className="relative transition-transform duration-300 ease-in-out transform hover:scale-105"
                 key={index}>
@@ -355,13 +369,15 @@ export default function NewPost() {
                   className="rounded-md w-40 h-40 object-cover"
                   width="160"
                   height="160"
-                  src={file}
+                  src={file.fileUrl}
                 />
                 <Button
                   variant={"ghost"}
                   disabled={isPending}
                   onClick={() => {
-                    setTempFiles(tempFiles.filter((f) => f !== file));
+                    setCurrentFilePosts(
+                      currentFilePosts.filter((f) => f.fileUrl !== file.fileUrl)
+                    );
                   }}
                   className="hover:bg-transparent p-0 hover:scale-110 transition-all absolute top-0 left-2 z-10">
                   <FaXmark className="w-[24px] h-[24px] cursor-pointer fill-white" />
@@ -383,15 +399,14 @@ export default function NewPost() {
           accept="image/png, image/jpeg"
           onChange={(e) => {
             const file = e.target.files?.[0];
+            if (!file) return;
             if (file && file.size > 0 && file.type.includes("image")) {
-              const File = URL.createObjectURL(file);
-              const Files: string[] = [...tempFiles, File];
-              setTempFiles(Files);
+              HandleAddImageToPost(file);
             }
           }}
         />
         <span className="text-sm font-bold">
-          Nombre d'images : {tempFiles.length}
+          Nombre d'images : {currentFilePosts.length}
         </span>
       </div>
 
