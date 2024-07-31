@@ -7,11 +7,11 @@ export default function FindAdminContext() {
     if (!adminContext) {
         throw new Error("AdminContext not found");
     }
-    const { allUsers, setAllUsers, allPosts, setAllPosts, allCategories, setAllCategories, currentContent, setCurrentContent, allAttributes, setAllAttributes } = adminContext;
+    const { allUsers, setAllUsers, allPosts, setAllPosts, allCategories, setAllCategories, currentContent, setCurrentContent, allAttributes, setAllAttributes, currentPostEdit, setCurrentPostEdit, currentCategoriesForPost, setCurrentCategoriesForPost, currentAttributsForPost, setCurrentAttributsForPost } = adminContext;
 
 
 
-    return { allUsers, setAllUsers, allPosts, setAllPosts, allCategories, setAllCategories, currentContent, setCurrentContent, allAttributes, setAllAttributes };
+    return { allUsers, setAllUsers, allPosts, setAllPosts, allCategories, setAllCategories, currentContent, setCurrentContent, allAttributes, setAllAttributes, currentPostEdit, setCurrentPostEdit, currentCategoriesForPost, setCurrentCategoriesForPost, currentAttributsForPost, setCurrentAttributsForPost };
 }
 
 

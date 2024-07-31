@@ -51,6 +51,16 @@ import { $Enums } from "@prisma/client";
 import { CreatePost } from "@/actions/admin/post";
 import LoaderOkaze from "../utils/loader";
 import { UploadImage } from "@/actions/admin/upload-image";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
 
 interface PropsImagesPost {
   file: File;
@@ -87,6 +97,9 @@ export default function NewPost() {
   );
 
   const [disabled, setDisabled] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+
+  const [icodePostCreated, setIcodePostCreated] = useState<string>("0000");
 
   const form = useForm<z.infer<typeof CreatPostSchema>>({
     resolver: zodResolver(CreatPostSchema),
@@ -152,6 +165,10 @@ export default function NewPost() {
                   setDisabled(false);
                   setAllPosts([...(allPosts || []), data?.newPost as Post]);
                   setDisabled(false);
+                  if (data?.newPost?.icode) {
+                    setIcodePostCreated(data.newPost?.icode);
+                    setOpenAlert(true);
+                  }
                 } else {
                   toast({
                     variant: "destructive",
@@ -770,6 +787,38 @@ export default function NewPost() {
           </form>
         </Form>
       </div>
+
+      <AlertDialog
+        open={openAlert}
+        onOpenChange={setOpenAlert}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Voici le Code unique de l'annonce
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              <div className="flex flex-col space-y-6">
+                <p>
+                  Ce code est le code unique de l'annonce. Il sera utilisé pour
+                  supprimer l'annonce rapidement. Noté le sur le produit.
+                </p>
+                <strong className="text-secondary font-bold text-3xl text-center">
+                  {" "}
+                  {icodePostCreated}
+                </strong>
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction
+              onClick={() => {
+                setIcodePostCreated("");
+              }}>
+              Fermer
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

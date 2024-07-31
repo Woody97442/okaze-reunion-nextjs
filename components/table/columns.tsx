@@ -1,22 +1,23 @@
 "use client";
+import { Post } from "@/prisma/post/types";
+import { User } from "@/prisma/user/types";
+import { Category } from "@/prisma/category/types";
+import { Image } from "@prisma/client";
 
 import { ColumnDef } from "@tanstack/react-table";
+import { FaArrowsUpDown } from "react-icons/fa6";
+import { FiMoreHorizontal } from "react-icons/fi";
+import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
-import { FiMoreHorizontal } from "react-icons/fi";
-import { FaArrowsUpDown } from "react-icons/fa6";
-import { Post } from "@/prisma/post/types";
-import { Avatar, AvatarImage } from "../ui/avatar";
-import { Image } from "@prisma/client";
-import { User } from "@/prisma/user/types";
-import { Category } from "@/prisma/category/types";
+} from "../ui/dropdown-menu";
+import FindAdminContext from "@/lib/admin-context-provider";
 
 export const columnsPost: ColumnDef<Post>[] = [
   {
@@ -43,7 +44,9 @@ export const columnsPost: ColumnDef<Post>[] = [
   },
   {
     accessorKey: "images",
-    header: "Images",
+    header: () => {
+      return <div className="w-auto">Image</div>;
+    },
     cell: ({ row }) => {
       const images: Image[] = row.getValue("images");
       if (images.length > 0) {
@@ -75,7 +78,8 @@ export const columnsPost: ColumnDef<Post>[] = [
       return (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="w-auto">
           ICode
           <FaArrowsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -89,7 +93,8 @@ export const columnsPost: ColumnDef<Post>[] = [
       return (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="w-auto">
           Titre
           <FaArrowsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -103,7 +108,8 @@ export const columnsPost: ColumnDef<Post>[] = [
       return (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="w-auto">
           Prix
           <FaArrowsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -112,15 +118,20 @@ export const columnsPost: ColumnDef<Post>[] = [
     cell: ({ row }) => {
       const price = parseFloat(row.getValue("price"));
 
-      return <div className="text-right font-medium">{price} €</div>;
+      return <div className="text-start font-medium">{price} €</div>;
     },
   },
   {
-    header: () => <div className="text-center">Actions</div>,
+    header: () => <div className="w-auto">Actions</div>,
     id: "actions",
     cell: ({ row }) => {
       const post = row.original;
+      const { setCurrentContent, setCurrentPostEdit } = FindAdminContext();
 
+      const handleEditPost = (value: string, post: Post) => {
+        setCurrentContent(value);
+        setCurrentPostEdit(post);
+      };
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -141,7 +152,7 @@ export const columnsPost: ColumnDef<Post>[] = [
             <DropdownMenuItem className="cursor-pointer">
               <Button
                 variant="ghost"
-                onClick={() => setCurrentContent("edit-post")}>
+                onClick={() => handleEditPost("edit-post", post)}>
                 Modifier
               </Button>
             </DropdownMenuItem>
@@ -180,7 +191,9 @@ export const columnsUser: ColumnDef<User>[] = [
   },
   {
     accessorKey: "image",
-    header: "Image",
+    header: () => {
+      return <div className="w-auto">Images</div>;
+    },
     cell: ({ row }) => {
       const image: string = row.getValue("image");
       return (
@@ -201,7 +214,8 @@ export const columnsUser: ColumnDef<User>[] = [
       return (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="w-auto">
           Nom
           <FaArrowsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -215,7 +229,8 @@ export const columnsUser: ColumnDef<User>[] = [
       return (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="w-auto">
           Nom d'utilisateur
           <FaArrowsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -229,7 +244,8 @@ export const columnsUser: ColumnDef<User>[] = [
       return (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="w-auto">
           E-mail
           <FaArrowsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -243,7 +259,8 @@ export const columnsUser: ColumnDef<User>[] = [
       return (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="w-auto">
           Genre
           <FaArrowsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -257,7 +274,8 @@ export const columnsUser: ColumnDef<User>[] = [
       return (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="w-auto">
           Code postal
           <FaArrowsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -271,7 +289,8 @@ export const columnsUser: ColumnDef<User>[] = [
       return (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="w-auto">
           Numero
           <FaArrowsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -279,7 +298,7 @@ export const columnsUser: ColumnDef<User>[] = [
     },
   },
   {
-    header: () => <div className="text-center">Actions</div>,
+    header: () => <div className="w-auto">Actions</div>,
     id: "actions",
     cell: ({ row }) => {
       const post = row.original;
@@ -374,7 +393,8 @@ export const columnsCategory: ColumnDef<Category>[] = [
       return (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="w-auto">
           Nom
           <FaArrowsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -388,7 +408,8 @@ export const columnsCategory: ColumnDef<Category>[] = [
       return (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="w-auto">
           Alt Icon
           <FaArrowsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -402,8 +423,9 @@ export const columnsCategory: ColumnDef<Category>[] = [
       return (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Annonces dans la catégorie
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="w-auto">
+          Nb Annonces
           <FaArrowsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -411,12 +433,12 @@ export const columnsCategory: ColumnDef<Category>[] = [
     cell: ({ row }) => {
       const category: Category = row.original;
       return (
-        <div className="text-right font-medium">{category.posts.length}</div>
+        <div className="text-center font-medium">{category.posts.length}</div>
       );
     },
   },
   {
-    header: () => <div className="text-center">Actions</div>,
+    header: () => <div className="w-auto">Actions</div>,
     id: "actions",
     cell: ({ row }) => {
       const post = row.original;

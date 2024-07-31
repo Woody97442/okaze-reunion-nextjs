@@ -95,3 +95,60 @@ export const CreatePost = async (formData: FormData, categories: Category[], att
     }
 
 }
+
+
+export const UpdatePost = async (formData: FormData, categories: Category[], attributes?: Attribut[]) => {
+
+    const title = formData.get("title") as string;
+    const description = formData.get("description") as string;
+    const price = formData.get("price") as string;
+    const state = formData.get("state") as string;
+
+    const session = await auth();
+
+    if (!session) {
+        return { error: "Veuillez vous connecter !" };
+    }
+
+    const userId = session.user.id;
+
+    if (!userId) {
+        return { error: "utilisateur introuvable !" };
+    }
+
+    const userIsAdmin = session.user.role === "ADMIN";
+
+    if (!userIsAdmin) {
+        return { error: "Vous n'avez pas les droits administrateurs !" };
+    }
+
+    const icode = await generateIcode();
+
+    try {
+        const newPost = await prisma.post.create({
+            data: {
+                icode,
+                title,
+                price: Number(price),
+                description,
+                state: state as $Enums.PostState,
+                categories: {
+                    connect: categories.map((category) => ({
+                        id: category.id
+                    }))
+                },
+                attributs: {
+                    connect: attributes?.map((attribute) => ({
+                        id: attribute.id
+                    }))
+                }
+            }
+        });
+
+        return { post: newPost, success: "Post cree avec succes" };
+    } catch (error) {
+        console.log(error);
+        return { error: "Une erreur est survenue !" };
+    }
+
+}

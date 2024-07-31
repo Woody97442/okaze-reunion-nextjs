@@ -115,7 +115,9 @@ export function DataTableUser<TData, TValue>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead
+                      key={header.id}
+                      className="text-start">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -133,9 +135,12 @@ export function DataTableUser<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}>
+                  data-state={row.getIsSelected() && "selected"}
+                  className="cursor-pointer">
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      className="text-start">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
