@@ -16,7 +16,7 @@ const LoaderOkaze = ({ variant }: { variant?: string }) => {
           color="#2D8653"
           size={64}
         />
-        <p className={"text-2xl text-black "}>Chargement</p>
+        <span className={"text-2xl text-black "}>Chargement</span>
       </div>
     );
   }
@@ -35,7 +35,7 @@ const LoaderOkaze = ({ variant }: { variant?: string }) => {
           color="#2D8653"
           size={64}
         />
-        <p className={"text-2xl text-white "}>Chargement</p>
+        <span className={"text-2xl text-white "}>Chargement</span>
       </div>
     );
   }

@@ -49,7 +49,7 @@ export const columnsPost: ColumnDef<Post>[] = [
     },
     cell: ({ row }) => {
       const images: Image[] = row.getValue("images");
-      if (images.length > 0) {
+      if (images && images.length > 0) {
         return (
           <Avatar>
             <AvatarImage
@@ -126,11 +126,11 @@ export const columnsPost: ColumnDef<Post>[] = [
     id: "actions",
     cell: ({ row }) => {
       const post = row.original;
-      const { setCurrentContent, setCurrentPostEdit } = FindAdminContext();
+      const { setCurrentContent, setCurrentPost } = FindAdminContext();
 
       const handleEditPost = (value: string, post: Post) => {
         setCurrentContent(value);
-        setCurrentPostEdit(post);
+        setCurrentPost(post);
       };
       return (
         <DropdownMenu>
@@ -196,15 +196,28 @@ export const columnsUser: ColumnDef<User>[] = [
     },
     cell: ({ row }) => {
       const image: string = row.getValue("image");
-      return (
-        <Avatar>
-          <AvatarImage
-            src={image}
-            alt="image de l'utilisateur"
-            className="w-10 h-10"
-          />
-        </Avatar>
-      );
+
+      if (image) {
+        return (
+          <Avatar>
+            <AvatarImage
+              src={image}
+              alt="image de l'utilisateur"
+              className="w-10 h-10"
+            />
+          </Avatar>
+        );
+      } else {
+        return (
+          <Avatar>
+            <AvatarImage
+              src="/images/image_not_found.png"
+              alt="image not found"
+              className="w-10 h-10"
+            />
+          </Avatar>
+        );
+      }
     },
   },
   {

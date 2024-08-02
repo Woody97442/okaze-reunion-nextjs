@@ -40,12 +40,12 @@ export const GetAllPosts = async () => {
     return posts as Post[];
 }
 
-export const CreatePost = async (formData: FormData, categories: Category[], attributes?: Attribut[]) => {
+export const CreatePost = async (post: Post) => {
 
-    const title = formData.get("title") as string;
-    const description = formData.get("description") as string;
-    const price = formData.get("price") as string;
-    const state = formData.get("state") as string;
+    const title = post.title;
+    const description = post.description;
+    const price = post.price;
+    const state = post.state;
 
     const session = await auth();
 
@@ -76,19 +76,19 @@ export const CreatePost = async (formData: FormData, categories: Category[], att
                 description,
                 state: state as $Enums.PostState,
                 categories: {
-                    connect: categories.map((category) => ({
+                    connect: post.categories.map((category) => ({
                         id: category.id
                     }))
                 },
                 attributs: {
-                    connect: attributes?.map((attribute) => ({
+                    connect: post.attributs?.map((attribute) => ({
                         id: attribute.id
                     }))
                 }
             }
         });
 
-        return { post: newPost, success: "Post cree avec succes" };
+        return { post: newPost, success: "Post créé avec succes" };
     } catch (error) {
         console.log(error);
         return { error: "Une erreur est survenue !" };
@@ -97,12 +97,7 @@ export const CreatePost = async (formData: FormData, categories: Category[], att
 }
 
 
-export const UpdatePost = async (formData: FormData, categories: Category[], attributes?: Attribut[]) => {
-
-    const title = formData.get("title") as string;
-    const description = formData.get("description") as string;
-    const price = formData.get("price") as string;
-    const state = formData.get("state") as string;
+export const UpdatePost = async (updateCurrentPost: Post) => {
 
     const session = await auth();
 
@@ -122,30 +117,68 @@ export const UpdatePost = async (formData: FormData, categories: Category[], att
         return { error: "Vous n'avez pas les droits administrateurs !" };
     }
 
-    const icode = await generateIcode();
+    const existingPost = await prisma.post.findUnique({
+        where: {
+            id: updateCurrentPost.id
+        },
+        include: {
+            categories: true,
+            attributs: true,
+            images: true
+        }
+    });
+
+    if (!existingPost) {
+        return { error: "Post introuvable !" };
+    }
+
+    // Extraire les IDs des catégories et attributs existants
+    const existingCategoryIds = existingPost.categories.map(category => category.id);
+    const existingAttributeIds = existingPost.attributs.map(attribute => attribute.id);
+
+    // Extraire les IDs des nouvelles catégories et attributs à partir des données mises à jour
+    const newCategoryIds = updateCurrentPost.categories.map(category => category.id);
+    const newAttributeIds = updateCurrentPost.attributs.map(attribute => attribute.id);
+
+    // Déterminer les IDs à connecter (ajouter)
+    const categoriesToConnect = newCategoryIds.filter(id => !existingCategoryIds.includes(id));
+    const attributsToConnect = newAttributeIds.filter(id => !existingAttributeIds.includes(id));
+
+    // Déterminer les IDs à déconnecter (retirer)
+    const categoriesToDisconnect = existingCategoryIds.filter(id => !newCategoryIds.includes(id));
+    const attributsToDisconnect = existingAttributeIds.filter(id => !newAttributeIds.includes(id));
+
 
     try {
-        const newPost = await prisma.post.create({
+        const updatedPost = await prisma.post.update({
+            where: {
+                id: updateCurrentPost.id
+            },
             data: {
-                icode,
-                title,
-                price: Number(price),
-                description,
-                state: state as $Enums.PostState,
+                title: updateCurrentPost.title,
+                description: updateCurrentPost.description,
+                price: Number(updateCurrentPost.price),
+                state: updateCurrentPost.state as $Enums.PostState,
+                // Gérer les catégories
                 categories: {
-                    connect: categories.map((category) => ({
-                        id: category.id
-                    }))
+                    connect: categoriesToConnect.map(id => ({ id })),
+                    disconnect: categoriesToDisconnect.map(id => ({ id })),
                 },
+
+                // Gérer les attributs
                 attributs: {
-                    connect: attributes?.map((attribute) => ({
-                        id: attribute.id
-                    }))
+                    connect: attributsToConnect.map(id => ({ id })),
+                    disconnect: attributsToDisconnect.map(id => ({ id })),
                 }
+            },
+            include: {
+                categories: true,
+                attributs: true,
+                images: true
             }
         });
 
-        return { post: newPost, success: "Post cree avec succes" };
+        return { post: updatedPost, success: "Post mise a jour avec succes" };
     } catch (error) {
         console.log(error);
         return { error: "Une erreur est survenue !" };

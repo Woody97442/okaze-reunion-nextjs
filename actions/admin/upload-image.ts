@@ -75,6 +75,11 @@ export const UploadImage = async (formData: FormData, post: Post) => {
         const findPostUpdate = await prisma.post.findUnique({
             where: {
                 id: post.id
+            },
+            include: {
+                images: true,
+                categories: true,
+                attributs: true
             }
         })
 

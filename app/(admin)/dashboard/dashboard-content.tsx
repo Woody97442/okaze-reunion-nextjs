@@ -1,21 +1,18 @@
 "use client";
 
-import { Post } from "@/prisma/post/types";
-
 import { DataTableCategory } from "@/components/table/data-table-categories";
 import { DataTablePost } from "@/components/table/data-table-post";
 import { DataTableUser } from "@/components/table/data-table-user";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import FindAdminContext from "@/lib/admin-context-provider";
-
-import EditPost from "@/components/admin/edit-post";
 import NewPost from "@/components/admin/new-post";
 import {
   columnsCategory,
   columnsPost,
   columnsUser,
 } from "@/components/table/columns";
+import EditPost from "@/components/admin/edit-post";
 
 const DashboardContent = () => {
   const {
@@ -24,7 +21,8 @@ const DashboardContent = () => {
     allPosts,
     allUsers,
     allCategories,
-    currentPostEdit,
+    setCurrentPost,
+    currentPost,
   } = FindAdminContext();
 
   const renderButton = (
@@ -36,7 +34,14 @@ const DashboardContent = () => {
       <Button
         className="w-full text-white"
         variant={variant}
-        onClick={() => setCurrentContent(content)}>
+        onClick={() => {
+          if (content === "new-post") {
+            setCurrentPost(null);
+            setCurrentContent(content);
+          } else {
+            setCurrentContent(content);
+          }
+        }}>
         {label}
       </Button>
     </div>
@@ -71,7 +76,7 @@ const DashboardContent = () => {
       case "edit-post":
         return (
           <h2 className="text-2xl text-black drop-shadow-md">
-            Modifier L'annonce {currentPostEdit?.title}
+            Modifier L'annonce {currentPost?.title}
           </h2>
         );
 
@@ -105,8 +110,10 @@ const DashboardContent = () => {
         );
       case "new-post":
         return <NewPost />;
+
       case "edit-post":
-        return <EditPost post={currentPostEdit as Post} />;
+        return <EditPost />;
+
       default:
         return null;
     }
