@@ -6,7 +6,8 @@ export const getPostById = async (id: string): Promise<Post | null> => {
     try {
         const post = await prisma.post.findUnique({
             where: {
-                id
+                id,
+                isActive: true
             }, include: {
                 categories: true,
                 attributs: true,
@@ -29,7 +30,8 @@ export const getPostsByCategoryId = async (categoryId: string): Promise<Post[] |
                     some: {
                         id: categoryId
                     }
-                }
+                },
+                isActive: true
             }, include: {
                 categories: true,
                 attributs: true,
@@ -48,6 +50,9 @@ export const getPostsByCategoryId = async (categoryId: string): Promise<Post[] |
 export const getPosts = async (): Promise<Post[] | null> => {
     try {
         const posts = await prisma.post.findMany({
+            where: {
+                isActive: true
+            },
             include: {
                 categories: true,
                 attributs: true,

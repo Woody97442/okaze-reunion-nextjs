@@ -18,6 +18,8 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import FindAdminContext from "@/lib/admin-context-provider";
+import DeletePostButton from "../admin/delete-post-button";
+import PublishSwitch from "../admin/publish-switch";
 
 export const columnsPost: ColumnDef<Post>[] = [
   {
@@ -45,7 +47,7 @@ export const columnsPost: ColumnDef<Post>[] = [
   {
     accessorKey: "images",
     header: () => {
-      return <div className="w-auto">Image</div>;
+      return <div className="w-auto text-center">Image</div>;
     },
     cell: ({ row }) => {
       const images: Image[] = row.getValue("images");
@@ -55,7 +57,7 @@ export const columnsPost: ColumnDef<Post>[] = [
             <AvatarImage
               src={images[0].src}
               alt={images[0].alt}
-              className="w-10 h-10"
+              className="w-10 h-10 object-cover"
             />
           </Avatar>
         );
@@ -65,7 +67,7 @@ export const columnsPost: ColumnDef<Post>[] = [
             <AvatarImage
               src="/images/image_not_found.png"
               alt="image not found"
-              className="w-10 h-10"
+              className="w-10 h-10 object-cover"
             />
           </Avatar>
         );
@@ -79,11 +81,15 @@ export const columnsPost: ColumnDef<Post>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="w-auto">
+          className="w-auto text-center">
           ICode
           <FaArrowsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
+    },
+    cell: ({ row }) => {
+      const post = row.original;
+      return <div className="w-auto font-bold text-center">{post.icode}</div>;
     },
   },
   {
@@ -94,10 +100,38 @@ export const columnsPost: ColumnDef<Post>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="w-auto">
+          className="w-auto text-center">
           Titre
           <FaArrowsUpDown className="ml-2 h-4 w-4" />
         </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const post = row.original;
+      return <div className="w-auto text-center">{post.title}</div>;
+    },
+  },
+  {
+    accessorKey: "isActive",
+    id: "publier",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="w-auto text-center">
+          Publier
+          <FaArrowsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const post = row.original;
+      return (
+        <PublishSwitch
+          idPost={post.id}
+          isActive={post.isActive}
+        />
       );
     },
   },
@@ -109,7 +143,7 @@ export const columnsPost: ColumnDef<Post>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="w-auto">
+          className="w-auto text-center">
           Prix
           <FaArrowsUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -118,49 +152,54 @@ export const columnsPost: ColumnDef<Post>[] = [
     cell: ({ row }) => {
       const price = parseFloat(row.getValue("price"));
 
-      return <div className="text-start font-medium">{price} €</div>;
+      return <div className="w-auto text-center">{price} €</div>;
     },
   },
   {
-    header: () => <div className="w-auto">Actions</div>,
+    accessorKey: "category",
+    id: "Categorie",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="w-auto text-center">
+          Catégories
+          <FaArrowsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const post = row.original;
+      return (
+        <div>
+          <div className="w-auto text-center">{post.categories[0].name}</div>
+        </div>
+      );
+    },
+  },
+  {
+    header: () => <div className="w-auto text-center">Actions</div>,
     id: "actions",
     cell: ({ row }) => {
       const post = row.original;
       const { setCurrentContent, setCurrentPost } = FindAdminContext();
 
+      // Edit post
       const handleEditPost = (value: string, post: Post) => {
         setCurrentContent(value);
         setCurrentPost(post);
       };
+
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="default"
-              className="h-8 w-full p-0 ">
-              <span className="sr-only">Ouvrir le menu</span>
-              <FiMoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={() => navigator.clipboard.writeText(post.icode)}>
-              Copier l'ICode
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer">
-              <Button
-                variant="ghost"
-                onClick={() => handleEditPost("edit-post", post)}>
-                Modifier
-              </Button>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer">
-              <Button variant="destructive">Supprimer</Button>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex justify-center space-x-2 items-center">
+          <Button
+            variant="default"
+            onClick={() => handleEditPost("edit-post", post)}>
+            Modifier
+          </Button>
+          <DeletePostButton postId={post.id} />
+        </div>
       );
     },
   },

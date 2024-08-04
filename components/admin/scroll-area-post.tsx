@@ -10,6 +10,7 @@ import { compressImagePost } from "@/lib/compress-image";
 import { Image as ImageType } from "@prisma/client";
 import { DeleteImage } from "@/actions/admin/delete-image";
 import { toast } from "../ui/use-toast";
+import PublishSwitch from "./publish-switch";
 
 interface PropsImagesPost {
   file: File;
@@ -135,26 +136,39 @@ export default function ScrollAreaPost() {
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
 
-      <div className="flex flex-row space-x-4 items-center">
-        <Input
-          className="cursor-pointer w-auto"
-          type="file"
-          name="file"
-          accept="image/png, image/jpeg"
-          onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (!file) return;
-            if (file && file.size > 0 && file.type.includes("image")) {
-              HandleAddImageToPost(file);
-            }
-          }}
-        />
-        <span className="text-sm font-bold">
-          <span>Nombre d'images : </span>
-          {currentPost && currentPost.images && currentPost.images.length
-            ? currentPost.images.length + tempUploadFiles.length
-            : tempUploadFiles.length}
-        </span>
+      <div className="flex flex-row items-center justify-between ">
+        <div className="flex flex-row space-x-2 items-center">
+          <Input
+            className="cursor-pointer w-auto"
+            type="file"
+            name="file"
+            accept="image/png, image/jpeg"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              if (file && file.size > 0 && file.type.includes("image")) {
+                HandleAddImageToPost(file);
+              }
+            }}
+          />
+          <span className="text-sm font-bold">
+            <span>Nombre d'images : </span>
+            {currentPost && currentPost.images && currentPost.images.length
+              ? currentPost.images.length + tempUploadFiles.length
+              : tempUploadFiles.length}
+          </span>
+        </div>
+        {currentPost && currentPost.id && (
+          <div className="flex flex-row justify-between space-x-4 items-center">
+            <span className="text-sm font-bold text-nowrap">
+              Activer l'annonce :{" "}
+            </span>
+            <PublishSwitch
+              isActive={currentPost?.isActive}
+              idPost={currentPost?.id}
+            />
+          </div>
+        )}
       </div>
     </>
   );

@@ -29,9 +29,10 @@ import { CreatPostSchema } from "@/schemas";
 import FindAdminContext from "@/lib/admin-context-provider";
 import { Post } from "@/prisma/post/types";
 import CreateAttributsForm from "./create-attributs-form";
-import { CreatePost, UpdatePost } from "@/actions/admin/post";
+import { CreatePost, DeletePost, UpdatePost } from "@/actions/admin/post";
 import { UploadImage } from "@/actions/admin/upload-image";
 import AlertDialogPost from "./alert-dialog-post";
+import DeletePostButton from "./delete-post-button";
 
 export default function PostForm() {
   const {
@@ -86,7 +87,7 @@ export default function PostForm() {
 
     startTransition(() => {
       if (!currentPost.id) {
-        console.log("creation d'un post");
+        // Creation d'un post
         CreatePost(post as Post).then((data) => {
           if (data?.success) {
             if (tempUploadFiles.length > 0) {
@@ -145,7 +146,7 @@ export default function PostForm() {
           }
         });
       } else {
-        console.log("mise a jour d'un post");
+        // Mise a jour d'un post
         UpdatePost(post as Post).then((dataUpdate) => {
           if (dataUpdate?.success) {
             if (tempUploadFiles.length > 0) {
@@ -332,23 +333,30 @@ export default function PostForm() {
                 <CreateCategoryForm />
               </div>
             </div>
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={loading}>
-              <div className="w-full flex justify-center gap-x-2 items-center">
-                <span>
-                  {currentPost && currentPost.id ? "Modifier" : "Ajouter"}
-                </span>
-              </div>
-            </Button>
+            {currentPost && currentPost.id ? (
+              <Button
+                type="submit"
+                disabled={loading}>
+                <div>
+                  <span>Modifier l'annonce</span>
+                </div>
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                disabled={loading}>
+                <div className="w-full flex justify-start gap-x-2 items-center">
+                  <span>Créer une nouvelle annonce</span>
+                </div>
+              </Button>
+            )}
           </form>
         </Form>
       </div>
       <AlertDialogPost
+        icode={icode}
         value={openAlert}
         set={setOpenAlert}
-        icode={icode}
       />
     </>
   );

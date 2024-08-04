@@ -13,6 +13,7 @@ import {
   columnsUser,
 } from "@/components/table/columns";
 import EditPost from "@/components/admin/edit-post";
+import DeletePostButton from "@/components/admin/delete-post-button";
 
 const DashboardContent = () => {
   const {
@@ -75,9 +76,14 @@ const DashboardContent = () => {
         );
       case "edit-post":
         return (
-          <h2 className="text-2xl text-black drop-shadow-md">
-            Modifier L'annonce {currentPost?.title}
-          </h2>
+          <div className="flex w-full justify-between items-center space-x-2">
+            <h2 className="text-2xl text-black drop-shadow-md">
+              Modifier L'annonce {currentPost?.title}
+            </h2>
+            {currentPost && currentPost.id && (
+              <DeletePostButton postId={currentPost.id} />
+            )}
+          </div>
         );
 
       default:

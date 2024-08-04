@@ -160,6 +160,7 @@ model Post {
   favorites   Favorite[]    @relation("PostsFavorites")
   lots        Lot[]         @relation("PostsLots")
   images      Image[]       @relation("PostImages")
+  isActive    Boolean       @default(false)
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

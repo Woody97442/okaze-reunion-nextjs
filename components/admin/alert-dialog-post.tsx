@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -8,7 +8,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import FindAdminContext from "@/lib/admin-context-provider";
 
 export default function AlertDialogPost({
   icode,
@@ -19,8 +18,6 @@ export default function AlertDialogPost({
   value: boolean;
   set: Dispatch<SetStateAction<boolean>>;
 }) {
-  const { currentPost } = FindAdminContext();
-
   return (
     <AlertDialog
       open={value}
@@ -29,7 +26,7 @@ export default function AlertDialogPost({
         <AlertDialogHeader>
           <AlertDialogTitle>Voici le Code unique de l'annonce</AlertDialogTitle>
           <AlertDialogDescription>
-            <div className="flex flex-col space-y-6">
+            <span className="flex flex-col space-y-6">
               <span>
                 Ce code est le code unique de l'annonce. Il sera utilisé pour
                 supprimer l'annonce rapidement. Noté le sur le produit.
@@ -37,7 +34,7 @@ export default function AlertDialogPost({
               <strong className="text-secondary font-bold text-3xl text-center">
                 {icode}
               </strong>
-            </div>
+            </span>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

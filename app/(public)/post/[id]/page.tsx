@@ -14,6 +14,7 @@ import { SendMessageButton } from "@/components/post/send-message-button";
 import { BookButton } from "@/components/post/book-button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -39,7 +40,7 @@ export default async function PostId({ params: { id } }: Props) {
         <aside className="flex flex-row gap-x-4 bg-white w-full py-4 px-10 shadow-md rounded-sm justify-center">
           {post.images.length > 0 ? (
             post.images.map((picture, index) => (
-              <Dialog>
+              <Dialog key={index}>
                 <DialogTrigger>
                   <Image
                     key={picture.id}
@@ -50,13 +51,10 @@ export default async function PostId({ params: { id } }: Props) {
                     src={picture.src}
                   />
                 </DialogTrigger>
-                <DialogContent className="bg-transparent border-none p-0">
-                  <DialogHeader>
-                    <DialogTitle className="text-xl text-white">
-                      {post.title}
-                    </DialogTitle>
-                    <DialogDescription></DialogDescription>
-                  </DialogHeader>
+                <DialogContent className="bg-transparent border-none p-0 text-white">
+                  <DialogTitle className="text-xl text-white">
+                    {post.title}
+                  </DialogTitle>
                   <Image
                     key={index}
                     alt={post.title}
