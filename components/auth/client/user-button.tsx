@@ -37,16 +37,16 @@ export const UserButton = ({ user }: { user: User }) => {
       <DropdownMenuContent
         className="w-auto bg-white px-2"
         align="end">
+        <DropdownMenuItem>
+          <FaUserGear className="mr-2 h-4 w-4" />
+          <Link href="/profile">Profile</Link>
+        </DropdownMenuItem>
         <LogoutButton>
           <DropdownMenuItem>
             <ExitIcon className="mr-2 h-4 w-4" />
             Se deconnecter
           </DropdownMenuItem>
         </LogoutButton>
-        <DropdownMenuItem>
-          <FaUserGear className="mr-2 h-4 w-4" />
-          <Link href="/profile">Profile</Link>
-        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
