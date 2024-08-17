@@ -6,6 +6,7 @@ export type Post = {
     title: string
     price: number
     description: string | null
+    isActive: boolean
 
     state: $Enums.PostState
 

@@ -52,7 +52,14 @@ const ProfileContent = () => {
   const [isPending, startTransition] = useTransition();
   const [isGoogleAccount, setIsGoogleAccount] = useState(false);
 
-  if (currentUser?.Account?.provider === "google") setIsGoogleAccount(true);
+  // Définir l'état isGoogleAccount uniquement lorsque currentUser change
+  useEffect(() => {
+    if (currentUser?.Account?.provider === "google") {
+      setIsGoogleAccount(true);
+    } else {
+      setIsGoogleAccount(false);
+    }
+  }, [currentUser]);
 
   if (!currentUser) return <LoaderOkaze />;
 
@@ -254,13 +261,33 @@ const ProfileContent = () => {
                   <FaUser className="text-white w-6 h-6" />
                 </AvatarFallback>
               </Avatar>
-              <div className="w-full flex justify-center gap-x-4">
-                <UploadeFileForm
-                  setCurrentUser={setCurrentUser}
-                  setTempFile={setTempFile}
-                  user={currentUser}
-                />
-              </div>
+              {isGoogleAccount ? (
+                <div className="flex flex-col gap-y-2 justify-center text-center">
+                  <h2 className="text-lg">
+                    {" "}
+                    Image de profil Google vous ne pouvez pas la modifier !
+                  </h2>
+                  <span className="text-sm  flex justify-center gap-2 font-bold">
+                    {" "}
+                    Modifier la sur Google
+                    <a
+                      href="https://myaccount.google.com/personal-info?utm_source=chrome-settings"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#2D8653] font-bold underline">
+                      Mon compte Google
+                    </a>
+                  </span>
+                </div>
+              ) : (
+                <div className="w-full flex justify-center gap-x-4">
+                  <UploadeFileForm
+                    setCurrentUser={setCurrentUser}
+                    setTempFile={setTempFile}
+                    user={currentUser}
+                  />
+                </div>
+              )}
             </div>
             <Form {...form}>
               <form
@@ -373,6 +400,7 @@ const ProfileContent = () => {
                             disabled={isPending || isGoogleAccount}
                             placeholder="..."
                             type="password"
+                            autoComplete="*********"
                           />
                         </FormControl>
                         <FormMessage />

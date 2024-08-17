@@ -80,7 +80,7 @@ export const AddLotButton = ({ postId }: { postId: string }) => {
       toast({
         variant: "destructive",
         title: "Erreur",
-        description: "Veuillez vous connecter pour ajouter aux favoris",
+        description: "Veuillez vous connecter pour ajouter aux lots",
       });
       setOpen(false);
     }

@@ -80,3 +80,33 @@ export const generateVerificationToken = async (email: string) => {
     })
     return verificationToken
 }
+
+export const generateIcode = async () => {
+    // Fonction pour générer un code aléatoire entre 001 et 999
+    const generateRandomCode = () => {
+        return String(Math.floor(Math.random() * 999) + 1).padStart(3, '0');
+    };
+
+    let uniqueCode = generateRandomCode();
+
+    while (true) {
+        // Vérifier si le code existe déjà dans la base de données
+        const existingIcode = await prisma.post.findUnique({
+            where: {
+                icode: uniqueCode
+            }
+        });
+
+        if (!existingIcode) {
+            // Code unique trouvé, sortir de la boucle
+            break;
+        }
+
+        // Générer un nouveau code si celui-ci existe déjà
+        uniqueCode = generateRandomCode();
+    }
+
+    return uniqueCode;
+};
+
+export default generateIcode;

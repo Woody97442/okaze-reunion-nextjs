@@ -64,36 +64,38 @@ const NavCategories = ({
                 </Button>
               </div>
             ))}
-            <div className="flex gap-x-4 items-center">
-              <DropdownMenu>
-                <DropdownMenuTrigger className="focus-visible:outline-none flex flex-row items-center gap-x-2 font-bold">
-                  <Image
-                    src={"/images/categories/categories.png"}
-                    alt={"icon des catégories"}
-                    className="w-[42px] h-[42px]"
-                    width={42}
-                    height={42}
-                  />
-                  <span className="font-Lato">Catégories</span>
-                  <FaChevronDown className="w-4 h-4" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  className="w-auto bg-white px-2"
-                  align="end">
-                  {categories?.slice(7).map((category) => (
-                    <DropdownMenuItem
-                      key={category.id}
-                      className="gap-x-3">
-                      <Link
-                        href={"/category/" + category.id}
-                        className="font-Lato">
-                        {category.name}
-                      </Link>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+            {categories.length > 7 && (
+              <div className="flex gap-x-4 items-center">
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="focus-visible:outline-none flex flex-row items-center gap-x-2 font-bold">
+                    <Image
+                      src={"/images/categories.png"}
+                      alt={"icon des catégories"}
+                      className="w-[42px] h-[42px]"
+                      width={42}
+                      height={42}
+                    />
+                    <span className="font-Lato">Catégories</span>
+                    <FaChevronDown className="w-4 h-4" />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    className="w-auto bg-white px-2"
+                    align="end">
+                    {categories?.slice(7).map((category) => (
+                      <DropdownMenuItem
+                        key={category.id}
+                        className="gap-x-3">
+                        <Link
+                          href={"/category/" + category.id}
+                          className="font-Lato">
+                          {category.name}
+                        </Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            )}
           </div>
         </div>
       )}

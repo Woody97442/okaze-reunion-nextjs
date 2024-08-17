@@ -35,6 +35,7 @@ export const authRoutes = [
     "/auth/new-password",
 ]
 
+
 /**
  * Le préfixe des routes d'authentification API
  * Les routes commençant par ce préfixe sont utilisées à des fins d'authentification API

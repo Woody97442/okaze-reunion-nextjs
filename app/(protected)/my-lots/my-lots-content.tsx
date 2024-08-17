@@ -198,12 +198,7 @@ const MyLotsContent = () => {
                         <div className="cursor-pointer">
                           {lot.posts[0].images.length > 0 ? (
                             <Avatar className="h-[55px] w-[55px]">
-                              <AvatarImage
-                                src={
-                                  lot.posts[0].images[0].src +
-                                  lot.posts[0].images[0].extension
-                                }
-                              />
+                              <AvatarImage src={lot.posts[0].images[0].src} />
                             </Avatar>
                           ) : (
                             <Avatar className="h-[55px] w-[55px]">
@@ -250,9 +245,7 @@ const MyLotsContent = () => {
                                 className="rounded-md w-40 h-40 object-cover "
                                 width="160"
                                 height="160"
-                                src={
-                                  post.images[0].src + post.images[0].extension
-                                }
+                                src={post.images[0].src}
                               />
                             ) : (
                               <Image

@@ -28,9 +28,7 @@ export default function CardPost({ post }: { post: Post }) {
             className="aspect-video w-full rounded-md rounded-b-none object-cover transition-transform duration-300 ease-in-out transform hover:scale-110 "
             width="250"
             height="140"
-            src={
-              post.images[coverImage].src + post.images[coverImage].extension
-            }
+            src={post.images[coverImage].src}
           />
         ) : (
           <Image

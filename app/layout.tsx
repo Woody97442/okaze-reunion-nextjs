@@ -7,7 +7,7 @@ import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import { Toaster } from "@/components/ui/toaster";
 import { getUserById } from "@/data/user";
-import UserContextProvider from "@/components/layout/user-context";
+import UserContextProvider from "@/components/context/user-context";
 
 const inter = Montserrat({ subsets: ["latin"] });
 

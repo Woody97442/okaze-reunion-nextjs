@@ -39,7 +39,10 @@ const Navbar = ({
               </Link>
             </Button>
             <div className="flex gap-x-4 items-center">
-              <TabButton pathname={pathname} />
+              <TabButton
+                pathname={pathname}
+                userRole={user?.role}
+              />
               <Link
                 aria-label="logo de l'application Okaze Réunion"
                 href="/">
@@ -72,7 +75,10 @@ const Navbar = ({
             </div>
             <SearchBar />
             <div className="flex gap-x-4 items-center">
-              <TabButton pathname={pathname} />
+              <TabButton
+                pathname={pathname}
+                userRole={user?.role}
+              />
               {user ? (
                 <UserButton user={user} />
               ) : (
