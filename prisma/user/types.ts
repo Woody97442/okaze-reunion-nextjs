@@ -1,6 +1,7 @@
-import { $Enums, Account, Message } from "@prisma/client";
+import { $Enums, Account } from "@prisma/client";
 import { Favorite } from "@/prisma/favorite/types";
 import { Lot } from "@/prisma/lot/types";
+import { Message } from "../message/types";
 
 export type User = {
     id: string;

@@ -26,6 +26,10 @@ export const SendOfferSchema = z.object({
     message: z.string().min(3, { message: "Un message est requis" }),
 })
 
+export const SendMessageSchema = z.object({
+    message: z.string().min(3, { message: "Un message est requis" }),
+})
+
 export const CreatPostSchema = z.object({
     title: z.string().min(3, { message: "Un titre est requis" }),
     description: z.string().min(3, { message: "Une description est requise" }),

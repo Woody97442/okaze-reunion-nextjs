@@ -8,7 +8,7 @@ import { FiSearch, FiTrash2 } from "react-icons/fi";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Lot } from "@/prisma/lot/types";
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useState, useTransition } from "react";
 import { deleteLot, deletePostInLot } from "@/actions/lot";
 import { toast } from "@/components/ui/use-toast";
 
@@ -32,6 +32,8 @@ import { FormatPrice } from "@/lib/format-price";
 import { TotalPriceLot } from "@/lib/total-price-lot";
 import { FormatText } from "@/lib/format-text";
 import FindUserContext from "@/lib/user-context-provider";
+import { CreateMessage } from "@/actions/send-message";
+import { User } from "@/prisma/user/types";
 
 const MyLotsContent = () => {
   const { currentUser, setCurrentUser } = FindUserContext();
@@ -40,6 +42,7 @@ const MyLotsContent = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentSearch, setCurrentSearch] = useState<string>("");
   const [isPending, startTransition] = useTransition();
+  const [conterPost, setConterPost] = useState<number>(0);
 
   const handleChooseLot = (lot: Lot) => {
     setCurrentLot(lot);
@@ -147,8 +150,38 @@ const MyLotsContent = () => {
   });
 
   const onSubmit = (values: z.infer<typeof SendOfferSchema>) => {
-    console.log(values);
-    //TODO: Send offer to admin
+    const formDataMessage = new FormData();
+
+    formDataMessage.append("message", values.message);
+    formDataMessage.append("offer", values.offer.toString());
+    formDataMessage.append("lotId", currentLot?.id.toString() ?? "");
+
+    startTransition(() => {
+      // Creation d'un post
+      CreateMessage(formDataMessage).then((data) => {
+        if (data?.success) {
+          const currentUserMessages = currentUser?.messages;
+          const newMessage = data?.newMessage;
+          const updateUser = {
+            ...currentUser,
+            messages: [...(currentUserMessages ?? []), newMessage],
+          };
+          setCurrentUser(updateUser as User);
+          toast({
+            title: "Succès",
+            description: data?.success,
+          });
+          setConterPost(conterPost + 1);
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Erreur",
+            description: data?.error,
+          });
+          setConterPost(conterPost + 1);
+        }
+      });
+    });
   };
 
   return (
@@ -330,7 +363,7 @@ const MyLotsContent = () => {
                     <Button
                       type="submit"
                       className="w-full"
-                      disabled={isPending}>
+                      disabled={isPending || conterPost > 1}>
                       <div className="w-full flex justify-center gap-x-2 items-center">
                         Faire une offre
                         <BsSend className="w-4 h-4" />
