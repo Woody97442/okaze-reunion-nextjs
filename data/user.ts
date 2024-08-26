@@ -46,7 +46,24 @@ export const getUserById = async (id: string): Promise<User | null> => {
                         }
                     },
                 },
-                messages: true
+                messages: {
+                    include: {
+                        lot: {
+                            include: {
+                                posts: {
+                                    include: {
+                                        images: true
+                                    }
+                                }
+                            }
+                        },
+                        content: {
+                            include: {
+                                user: true
+                            }
+                        }
+                    }
+                }
             }
         })
         return user as User

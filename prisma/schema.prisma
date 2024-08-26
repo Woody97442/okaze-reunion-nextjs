@@ -20,22 +20,23 @@ enum PostState {
 }
 
 model User {
-  id            String          @id @default(cuid())
-  name          String?          
-  username      String?         @unique
-  email         String?         @unique
-  emailVerified DateTime?
-  password      String?
-  image         String?
-  gender        String?
-  postalCode    String?
-  phoneNumber   String?
-  role          UserRole        @default(USER)
-
-  Account       Account?
-  favorite      Favorite?       @relation("UserFavorites")
-  lot           Lot[]           @relation("UserLots")
-  messages      Message[]       @relation("UserMessages")
+  id                   String           @id @default(cuid())
+  name                 String?           
+  username             String?          @unique
+  email                String?          @unique
+  emailVerified        DateTime? 
+  password             String? 
+  image                String? 
+  gender               String? 
+  postalCode           String? 
+  phoneNumber          String? 
+  role                 UserRole         @default(USER)
+       
+  Account              Account? 
+  favorite             Favorite?        @relation("UserFavorites")
+  lot                  Lot[]            @relation("UserLots")
+  messages             Message[]        @relation("UserMessages")
+  contentMessage       ContentMessage[] @relation("UserMessageContent")
 
   
   isTwoFactorEnabled Boolean @default(false)
@@ -47,8 +48,48 @@ model User {
 
 model Message {
   id                       String  @id @default(cuid()) 
+  
   userId                   String
-  user                     User    @relation(fields: [userId], references: [id], name: "UserMessages", onDelete: Cascade)
+  user                     User    @relation(fields: [userId], references: [id], name: "UserMessages")
+  
+  content                  ContentMessage[] @relation("MessageContent")
+  
+  lotId                    String?          @unique
+  lot                      Lot?             @relation(fields: [lotId], references: [id], name: "LotMessages")
+
+  isArchived               Boolean @default(false)
+  isRead                   Boolean @default(false)
+
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+}
+
+model Lot {
+  id                       String   @id @default(cuid())
+  name                     String 
+  userId                   String 
+  user                     User     @relation(fields: [userId], references: [id], name: "UserLots", onDelete: Cascade)
+  
+  message                  Message?  @relation(name: "LotMessages")
+  messageId                String?   @unique
+
+  posts                    Post[]   @relation("PostsLots")
+}
+
+model ContentMessage {
+  id                       String  @id @default(cuid())
+  content                  String
+
+  userId                   String
+  user                     User    @relation(fields: [userId], references: [id], name: "UserMessageContent", onDelete: Cascade)
+  
+  offerPrice               String?
+  
+  messageId                String
+  message                  Message @relation(fields: [messageId], references: [id], name: "MessageContent" ,onDelete: Cascade)
+  
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
 }
 
 model Favorite {
@@ -58,14 +99,6 @@ model Favorite {
   posts                    Post[]  @relation("PostsFavorites")
 }
 
-model Lot {
-  id                       String  @id @default(cuid())
-  name                     String 
-  userId                   String 
-  user                     User   @relation(fields: [userId], references: [id], name: "UserLots", onDelete: Cascade)
-
-  posts                    Post[]  @relation("PostsLots")
-}
 
 model Account {
   id                       String  @id @default(cuid())
@@ -160,23 +193,24 @@ model Post {
   favorites   Favorite[]    @relation("PostsFavorites")
   lots        Lot[]         @relation("PostsLots")
   images      Image[]       @relation("PostImages")
+
+
   isActive    Boolean       @default(false)
-  
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 }
 
 model Image {
-  id         String @id @default(cuid())
-  src        String @unique
+  id         String         @id @default(cuid())
+  src        String         @unique
   alt        String
 
   extension  String
 
   postId     String
-  post       Post   @relation(fields: [postId], references: [id], name: "PostImages")
+  post       Post           @relation(fields: [postId], references: [id], name: "PostImages")
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
 
 }

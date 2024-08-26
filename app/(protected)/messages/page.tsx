@@ -1,22 +1,14 @@
-"use client";
+import { auth } from "@/auth";
+import LoaderOkaze from "@/components/utils/loader";
+import MessageContent from "@/app/(protected)/messages/message-content";
 
-import { cn } from "@/lib/utils";
-import { Poppins } from "next/font/google";
+const MessagesPage = async () => {
+  const session = await auth();
+  if (!session) return <LoaderOkaze />;
 
-const font = Poppins({ subsets: ["latin"], weight: ["600"] });
-
-const MessagesPage = () => {
   return (
-    <main className="flex h-full flex-col items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-800">
-      <div className="space-y-6 text-center">
-        <h1
-          className={cn(
-            "text-6xl font-semibold text-white drop-shadow-md",
-            font.className
-          )}>
-          Messages Page
-        </h1>
-      </div>
+    <main className="flex flex-col py-8 space-y-6 container">
+      <MessageContent />
     </main>
   );
 };

@@ -131,10 +131,27 @@ export const deleteLot = async (lotId: string) => {
         where: {
             id: lotId,
         },
+        include: {
+            message: true
+        }
     });
 
     if (!existingLot) {
         return { error: "lot introuvable !" };
+    }
+
+    if (existingLot.message) {
+        await prisma.message.update({
+            where: {
+                id: existingLot.message?.id
+            },
+            data: {
+                lot: {
+                    disconnect: true
+                },
+                isArchived: true
+            }
+        })
     }
 
     await prisma.lot.delete({
