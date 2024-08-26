@@ -32,7 +32,7 @@ import { FormatPrice } from "@/lib/format-price";
 import { TotalPriceLot } from "@/lib/total-price-lot";
 import { FormatText } from "@/lib/format-text";
 import FindUserContext from "@/lib/user-context-provider";
-import { CreateMessage } from "@/actions/send-message";
+import { CreateMessage } from "@/actions/message";
 import { User } from "@/prisma/user/types";
 
 const MyLotsContent = () => {

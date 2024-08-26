@@ -6,6 +6,7 @@ export type Message = {
     userId: string;
     lot: Lot | null;
     content: ContentMessage[];
+    isArchived: boolean;
     isRead: boolean;
     createdAt: Date;
     updatedAt: Date;

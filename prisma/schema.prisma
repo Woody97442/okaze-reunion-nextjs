@@ -50,14 +50,16 @@ model Message {
   id                       String  @id @default(cuid()) 
   
   userId                   String
-  user                     User    @relation(fields: [userId], references: [id], name: "UserMessages", onDelete: Cascade)
+  user                     User    @relation(fields: [userId], references: [id], name: "UserMessages")
   
   content                  ContentMessage[] @relation("MessageContent")
   
   lotId                    String?          @unique
-  lot                      Lot?             @relation(fields: [lotId], references: [id], name: "LotMessages", onDelete: Cascade)
+  lot                      Lot?             @relation(fields: [lotId], references: [id], name: "LotMessages")
 
+  isArchived               Boolean @default(false)
   isRead                   Boolean @default(false)
+
   createdAt                DateTime @default(now())
   updatedAt                DateTime @updatedAt
 }

@@ -79,7 +79,6 @@ export const CreateMessage = async (formData: FormData) => {
 
 }
 
-
 export const SendNewMessage = async (formData: FormData) => {
     const session = await auth();
 
@@ -142,6 +141,48 @@ export const SendNewMessage = async (formData: FormData) => {
             },
         });
         return { newContentMessage: updateMessage, success: "Message envoyé !" };
+    } catch (error) {
+        console.error("Error sending message:", error);
+        return { error: "Une erreur est survenue !" };
+    }
+
+}
+
+export const ArchivedMessage = async (idMessage: string) => {
+    const session = await auth();
+
+    if (!session) {
+        return { error: "Veuillez vous connecter !" };
+    }
+
+    const userId = session.user.id;
+
+    if (!userId) {
+        return { error: "utilisateur introuvable !" };
+    }
+
+
+    const existingMessage = await prisma.message.findUnique({
+        where: {
+            id: idMessage
+        }
+    })
+
+    if (!existingMessage) {
+        return { error: "Message introuvable !" }
+    }
+
+    try {
+        // Mise a jour de la conversation
+        const updateMessage = await prisma.message.update({
+            where: {
+                id: idMessage,
+            },
+            data: {
+                isArchived: true,
+            },
+        });
+        return { messageArchived: updateMessage, success: "Message archivé !" };
     } catch (error) {
         console.error("Error sending message:", error);
         return { error: "Une erreur est survenue !" };
