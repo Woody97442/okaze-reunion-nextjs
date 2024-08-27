@@ -1,11 +1,11 @@
-export default function HomePage() {
+import HomeContent from "./home-content";
+
+const HomePage = async () => {
   return (
-    <main className="flex h-full flex-col items-center justify-center ">
-      <div className="space-y-6 text-center">
-        <h1 className={"text-6xl font-semibold text-white drop-shadow-md"}>
-          Home Page
-        </h1>
-      </div>
+    <main className="flex flex-col py-8 space-y-6 container">
+      <HomeContent />
     </main>
   );
-}
+};
+
+export default HomePage;

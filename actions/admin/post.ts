@@ -246,6 +246,32 @@ export const DeletePost = async (postId: string) => {
             return { error: "Une erreur est survenue par la suppression des images !" };
         }
 
+        await prisma.lot.findMany({
+            include: {
+                posts: true
+            }
+        }).then(async (lots) => {
+            for (let i = 0; i < lots.length; i++) {
+                if (lots[i].posts.some((post) => post.id === postId)) {
+                    await prisma.lot.update({
+                        where: {
+                            id: lots[i].id
+                        },
+                        data: {
+                            hasPostsEcluded: true
+                        }
+                    });
+                }
+                if (lots[i].posts.length === 1) {
+                    await prisma.lot.delete({
+                        where: {
+                            id: lots[i].id
+                        }
+                    });
+                }
+            }
+        });
+
         // Supprimer l'entrée de la base de données
         await prisma.post.delete({
             where: {

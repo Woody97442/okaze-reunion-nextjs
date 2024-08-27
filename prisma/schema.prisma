@@ -58,7 +58,8 @@ model Message {
   lot                      Lot?             @relation(fields: [lotId], references: [id], name: "LotMessages")
 
   isArchived               Boolean @default(false)
-  isRead                   Boolean @default(false)
+  isReadByUser             Boolean @default(false)
+  isReadByAdmin            Boolean @default(false)
 
   createdAt                DateTime @default(now())
   updatedAt                DateTime @updatedAt
@@ -72,6 +73,8 @@ model Lot {
   
   message                  Message?  @relation(name: "LotMessages")
   messageId                String?   @unique
+
+  hasPostsEcluded         Boolean  @default(false)
 
   posts                    Post[]   @relation("PostsLots")
 }
