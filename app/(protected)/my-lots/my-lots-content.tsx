@@ -34,6 +34,7 @@ import { FormatText } from "@/lib/format-text";
 import FindUserContext from "@/lib/user-context-provider";
 import { CreateMessage } from "@/actions/message";
 import { User } from "@/prisma/user/types";
+import { Alert } from "@/components/ui/alert";
 
 const MyLotsContent = () => {
   const { currentUser, setCurrentUser } = FindUserContext();
@@ -259,6 +260,11 @@ const MyLotsContent = () => {
         <section className="flex flex-col gap-y-4 bg-white w-full py-4 px-8 shadow-md rounded-sm">
           {currentLot ? (
             <div className="space-y-4 my-2">
+              {currentLot.hasPostsEcluded && (
+                <Alert variant="destructive">
+                  <p>Un ou plusieurs produits ne sont plus disponibles.</p>
+                </Alert>
+              )}
               <h2 className="text-2xl text-black drop-shadow-md">
                 Lot {FormatText(currentLot.name)}
               </h2>
@@ -271,7 +277,7 @@ const MyLotsContent = () => {
                         <Card
                           key={post.id}
                           className="relative transition-transform duration-300 ease-in-out transform hover:scale-105">
-                          <Link href={`/posts/${post.id}`}>
+                          <Link href={`/post/${post.id}`}>
                             {post.images[0] ? (
                               <Image
                                 alt={post.images[0].alt}

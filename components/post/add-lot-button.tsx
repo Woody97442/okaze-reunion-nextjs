@@ -57,7 +57,7 @@ export const AddLotButton = ({ postId }: { postId: string }) => {
               setOpen(false);
               const listLots = currentUserLots.lot;
               if (listLots) {
-                listLots.push(data.lot as Lot);
+                listLots.push(data.lot as unknown as Lot);
                 setCurrentUserLots({
                   ...currentUserLots,
                   lot: listLots,
@@ -97,7 +97,7 @@ export const AddLotButton = ({ postId }: { postId: string }) => {
                 description: data?.success,
               });
               setOpen(false);
-              updateCurrentUserLot(data?.lot as Lot);
+              updateCurrentUserLot(data?.lot as unknown as Lot);
             }
 
             if (data?.error) {

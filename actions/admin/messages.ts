@@ -2,8 +2,10 @@
 
 import { prisma } from "@/prisma/prismaClient";
 import { auth } from "@/auth";
+import { Message } from "@/prisma/message/types";
 
-export const CreateMessage = async (formData: FormData) => {
+export const GetAllMessages = async () => {
+
     const session = await auth();
 
     if (!session) {
@@ -16,75 +18,37 @@ export const CreateMessage = async (formData: FormData) => {
         return { error: "utilisateur introuvable !" };
     }
 
-    const offerPrice: string = formData.get("offer") as string;
-    const message: string = formData.get("message") as string;
-    const lotId: string = formData.get("lotId") as string;
+    const userIsAdmin = session.user.role === "ADMIN";
 
-    const exitingLot = await prisma.lot.findUnique({
-        where: {
-            id: lotId
-        },
+    if (!userIsAdmin) {
+        return { error: "Vous n'avez pas les droits administrateurs !" };
+    }
+
+    const messages = await prisma.message.findMany({
         include: {
-            message: true
-        }
-    })
-
-
-    if (!exitingLot) {
-        return { error: "lot introuvable si le probleme persiste contactez l'administrateur !" }
-    }
-
-    if (exitingLot.message?.id) {
-        return { error: "Vous avez deja fait une offre pour ce lot !" }
-    }
-
-    if (!offerPrice || !message || !lotId) {
-        return { error: "Veuillez renseigner tous les champs !" };
-    }
-
-    try {
-        // Creation d'une conversation
-        const newMessage = await prisma.message.create({
-            data: {
-                content: {
-                    create: {
-                        content: message,
-                        offerPrice: offerPrice,
-                        user: {
-                            connect: {
-                                id: userId
-                            }
+            lot: {
+                include: {
+                    user: true,
+                    posts: {
+                        include: {
+                            images: true
                         }
                     }
-                },
-                isReadByAdmin: false,
-                isReadByUser: true,
-                user: {
-                    connect: {
-                        id: userId
-                    }
-                },
-                lot: {
-                    connect: {
-                        id: lotId
-                    }
                 }
-            }, include: {
-                lot: true,
-                content: true
-            }
-        })
-        return { newMessage: newMessage, success: "Offre envoyée !" };
-    } catch (error) {
-        console.error("Error sending message:", error);
-        return { error: "Une erreur est survenue !" };
-    }
+            },
+            user: true,
+            content: {
+                include: {
+                    user: true
+                }
+            },
+        }
+    });
 
-
-
+    return messages as unknown as Message[];
 }
 
-export const SendNewMessage = async (formData: FormData) => {
+export const SendNewMessageAdmin = async (formData: FormData) => {
     const session = await auth();
 
     if (!session) {
@@ -135,7 +99,7 @@ export const SendNewMessage = async (formData: FormData) => {
                         },
                     },
                 },
-                isReadByAdmin: false,
+                isReadByUser: false,
             },
             include: {
                 content: {
@@ -163,7 +127,7 @@ export const SendNewMessage = async (formData: FormData) => {
 
 }
 
-export const ArchivedMessage = async (idMessage: string) => {
+export const ArchivedMessageAdmin = async (idMessage: string) => {
     const session = await auth();
 
     if (!session) {
@@ -196,6 +160,23 @@ export const ArchivedMessage = async (idMessage: string) => {
             data: {
                 isArchived: true,
             },
+            include: {
+                content: {
+                    include: {
+                        user: true,
+                    },
+                },
+                lot: {
+                    include: {
+                        user: true,
+                        posts: {
+                            include: {
+                                images: true
+                            }
+                        }
+                    }
+                },
+            },
         });
         return { messageArchived: updateMessage, success: "Message archivé !" };
     } catch (error) {
@@ -205,7 +186,7 @@ export const ArchivedMessage = async (idMessage: string) => {
 
 }
 
-export const SwitchReadMessageByUser = async (idMessage: string) => {
+export const SwitchReadMessageByAdmin = async (idMessage: string) => {
     const session = await auth();
 
     if (!session) {
@@ -216,6 +197,12 @@ export const SwitchReadMessageByUser = async (idMessage: string) => {
 
     if (!userId) {
         return { error: "utilisateur introuvable !" };
+    }
+
+    const userIsAdmin = session.user.role === "ADMIN";
+
+    if (!userIsAdmin) {
+        return { error: "Vous n'avez pas les droits administrateurs !" };
     }
 
     const existingMessage = await prisma.message.findUnique({
@@ -238,7 +225,7 @@ export const SwitchReadMessageByUser = async (idMessage: string) => {
                 id: idMessage,
             },
             data: {
-                isReadByUser: true,
+                isReadByAdmin: true,
             },
             include: {
                 content: {

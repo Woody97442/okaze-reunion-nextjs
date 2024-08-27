@@ -76,17 +76,16 @@ export const addToLot = async (lotId: string, postId: string) => {
         return { error: "post introuvable !" };
     }
 
-    const postExistInLot = await prisma.lot.findMany({
+    const postExistInLot = await prisma.lot.findUnique({
         where: {
-            posts: {
-                some: {
-                    id: postId,
-                },
-            },
+            id: lotId,
+        },
+        include: {
+            posts: true,
         },
     });
 
-    if (postExistInLot.length > 0) {
+    if (postExistInLot?.posts.some((post) => post.id === postId)) {
         return { error: "post deja dans le lot !" };
     }
 

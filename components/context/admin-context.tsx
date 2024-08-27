@@ -2,6 +2,7 @@
 
 import { Attribut } from "@/prisma/attribut/types";
 import { Category } from "@/prisma/category/types";
+import { Message } from "@/prisma/message/types";
 import { Post } from "@/prisma/post/types";
 import { User } from "@/prisma/user/types";
 import { createContext, Dispatch, SetStateAction, useState } from "react";
@@ -12,6 +13,8 @@ interface AdminContextType {
   setAllUsers: Dispatch<SetStateAction<User[] | null>>;
   allPosts: Post[] | null;
   setAllPosts: Dispatch<SetStateAction<Post[] | null>>;
+  allMessages: Message[] | null;
+  setAllMessages: Dispatch<SetStateAction<Message[] | null>>;
   allCategories: Category[] | null;
   setAllCategories: Dispatch<SetStateAction<Category[] | null>>;
   allAttributes: Attribut[] | null;
@@ -35,19 +38,24 @@ export const AdminContext = createContext<AdminContextType | null>(null);
 
 export default function AdminContextProvider({
   children,
-  dataPosts,
   dataUsers,
+  dataPosts,
+  dataMessages,
   dataCategory,
   dataAttributes,
 }: {
   children: React.ReactNode;
-  dataPosts: Post[];
   dataUsers: User[];
+  dataPosts: Post[];
+  dataMessages: Message[];
   dataCategory: Category[];
   dataAttributes: Attribut[];
 }) {
   const [allUsers, setAllUsers] = useState<User[] | null>(dataUsers);
   const [allPosts, setAllPosts] = useState<Post[] | null>(dataPosts);
+  const [allMessages, setAllMessages] = useState<Message[] | null>(
+    dataMessages
+  );
   const [allCategories, setAllCategories] = useState<Category[] | null>(
     dataCategory
   );
@@ -68,6 +76,8 @@ export default function AdminContextProvider({
         setAllUsers,
         allPosts,
         setAllPosts,
+        allMessages,
+        setAllMessages,
         allCategories,
         setAllCategories,
         allAttributes,
