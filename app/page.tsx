@@ -8,7 +8,7 @@ const HomePage = async () => {
 
   return (
     <>
-      <main className="flex flex-col py-8 space-y-6 container">
+      <main className="flex flex-col py-8 space-y-12 container">
         <Heros />
         <HomeContent posts={allPosts || []} />
         <BannerH variant="2" />

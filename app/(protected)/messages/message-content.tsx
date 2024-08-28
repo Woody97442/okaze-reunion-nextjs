@@ -236,18 +236,34 @@ const MessageContent = () => {
             <div className="grid grid-rows-1 md:grid-rows-3 gap-4">
               {currentUser?.messages
                 .filter((message) => {
-                  const filter =
-                    message.lot &&
-                    message.lot.name &&
-                    !message.isArchived &&
-                    message.lot.name
-                      .toLowerCase()
-                      .includes(searchTerm.toLowerCase());
-                  if (filterIsRead && message.isReadByUser) {
-                    return filter;
-                  }
-                  if (filterIsNotRead && !message.isReadByUser) {
-                    return filter;
+                  if (message.lot) {
+                    const filter =
+                      message.lot &&
+                      message.lot.name &&
+                      !message.isArchived &&
+                      message.lot.name
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase());
+                    if (filterIsRead && message.isReadByUser) {
+                      return filter;
+                    }
+                    if (filterIsNotRead && !message.isReadByUser) {
+                      return filter;
+                    }
+                  } else {
+                    const filter =
+                      message.post &&
+                      message.post.title &&
+                      !message.isArchived &&
+                      message.post.title
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase());
+                    if (filterIsRead && message.isReadByUser) {
+                      return filter;
+                    }
+                    if (filterIsNotRead && !message.isReadByUser) {
+                      return filter;
+                    }
                   }
                   return;
                 })
@@ -287,25 +303,9 @@ const MessageContent = () => {
                             </Avatar>
                           )}
                           <div>
-                            {message.lot ? (
-                              <div className="flex flex-row space-x-2">
-                                <span className="text-sm font-bold">
-                                  {message.lot.name}
-                                </span>
-                              </div>
-                            ) : (
-                              <div className="flex flex-col">
-                                <span className="text-lg font-bold">
-                                  Titre de l'annonce :{" "}
-                                </span>
-                                <span>ici titre de l'annonce</span>
-                              </div>
-                            )}
-                            <div>
-                              <span>
-                                {message.user?.name ||
-                                  message.user?.username ||
-                                  message.user?.email}
+                            <div className="flex flex-row space-x-2">
+                              <span className="text-sm font-bold">
+                                {message.lot.name}
                               </span>
                             </div>
                             <div>
@@ -345,21 +345,87 @@ const MessageContent = () => {
                           </DialogHeader>
                         </DialogContent>
                       </Dialog>
-                      {message.lot ? (
-                        <Badge
-                          variant="secondary"
-                          className="absolute left-0 bottom-0 text-white">
-                          LOT
-                        </Badge>
-                      ) : (
-                        <Badge
-                          variant="default"
-                          className="absolute left-0 bottom-0 text-white">
-                          ANNONCE
-                        </Badge>
-                      )}
+                      <Badge
+                        variant="secondary"
+                        className="absolute left-0 bottom-0 text-white">
+                        LOT
+                      </Badge>
                     </div>
-                  ) : null;
+                  ) : (
+                    <div
+                      className="flex flex-row space-x-4 items-center relative"
+                      key={message.id}>
+                      <Button
+                        variant={"outline"}
+                        className={
+                          !message.isReadByUser
+                            ? " w-full h-auto justify-start space-x-9 bg-gray-200 shadow-md"
+                            : " w-full h-auto justify-start space-x-9 bg-white"
+                        }
+                        onClick={() => handleChooseMessage(message)}
+                        disabled={isPending}
+                        asChild>
+                        <div className="cursor-pointer">
+                          {message.post && message.post.images.length > 0 && (
+                            <Avatar className="h-[55px] w-[55px]">
+                              <AvatarImage
+                                src={
+                                  message.post.images[0]?.src ||
+                                  "/images/image_not_found_2.jpg"
+                                }
+                              />
+                            </Avatar>
+                          )}
+                          <div>
+                            <div className="flex flex-row space-x-2">
+                              <span className="text-md font-bold">
+                                {message.post ? message.post.title : "Annonce"}
+                              </span>
+                            </div>
+                            <div>
+                              <span className="text-sm font-bold">Date : </span>
+                              <span>
+                                {FormatDateForMessage(message.createdAt)}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </Button>
+                      <Dialog
+                        open={modalOpen}
+                        onOpenChange={setModalOpen}>
+                        <DialogTrigger className="flex justify-start">
+                          <FiTrash2 className="w-[24px] h-[24px] cursor-pointer" />
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[425px]">
+                          <DialogHeader className="space-y-4">
+                            <DialogTitle className="text-center text-xl font-bold">
+                              Supprimer le message
+                            </DialogTitle>
+                            <DialogDescription>
+                              <strong className="text-lg text-center">
+                                Le message sera archivé et vous ne pourrez plus
+                                le voir
+                              </strong>
+                            </DialogDescription>
+                            <Button
+                              type="submit"
+                              variant={"destructive"}
+                              className="flex justify-center"
+                              disabled={isPending}
+                              onClick={() => handleDeleteMessage(message)}>
+                              Confirmer
+                            </Button>
+                          </DialogHeader>
+                        </DialogContent>
+                      </Dialog>
+                      <Badge
+                        variant="default"
+                        className="absolute left-0 bottom-0 text-white">
+                        ANNONCE
+                      </Badge>
+                    </div>
+                  );
                 })}
             </div>
           </ScrollArea>
@@ -371,26 +437,38 @@ const MessageContent = () => {
             <div className="space-y-4">
               <div className="flex flex-row space-x-4 items-center">
                 <h2 className="text-2xl text-black drop-shadow-md font-semibold">
-                  Message :
+                  {currentMessage.lot ? "Message :" : "Message de l'annonce :"}
                 </h2>
-                <span className="text-lg">
-                  {currentMessage.lot?.name ?? ""}
+                <span className="text-xl">
+                  {currentMessage.lot
+                    ? currentMessage.lot.name
+                    : currentMessage.post?.title}
                 </span>
               </div>
               <div className="flex flex-row justify-between">
                 <div>
                   <span className="text-lg font-semibold">
-                    Prix du lots de base :{" "}
+                    {currentMessage.lot
+                      ? "Prix du lots de base : "
+                      : "Prix de l'annonce : "}
                   </span>
                   <span>
-                    {currentMessage.lot &&
-                      FormatPrice(TotalPriceLot(currentMessage.lot))}
-                    €
+                    {currentMessage.lot
+                      ? `${
+                          currentMessage.lot &&
+                          FormatPrice(TotalPriceLot(currentMessage.lot))
+                        }€`
+                      : `${
+                          currentMessage.post &&
+                          FormatPrice(currentMessage.post.price)
+                        }€`}
                   </span>
                 </div>
                 <div>
                   <span className="text-lg font-semibold">
-                    Offre pour le lots :{" "}
+                    {currentMessage.lot
+                      ? "Offre pour le lots : "
+                      : "Offre pour l'annonce : "}
                   </span>
                   <span className="inline-flex items-center justify-center whitespace-nowrap rounded-md font-medium bg-primary text-primary-foreground shadow h-8 px-4 py-2">
                     {currentMessage.content &&
@@ -400,46 +478,102 @@ const MessageContent = () => {
                 </div>
               </div>
               <Separator />
-              <ScrollArea className="w-[800px]  whitespace-nowrap">
+              <div className="flex flex-row justify-between items-center">
                 <span className="text-lg font-semibold">
-                  Annonces dans le lot
+                  {currentMessage.lot
+                    ? "Annonces dans le lot"
+                    : "Image de l'annonce"}
                 </span>
-                <div className="flex space-x-4 w-max p-4 pb-6">
-                  {currentMessage.lot &&
-                    currentMessage.lot.posts.map(
-                      (post) =>
-                        post && (
-                          <Card
-                            key={post.id}
-                            className="relative transition-transform duration-300 ease-in-out transform hover:scale-105">
-                            <Link href={`/posts/${post.id}`}>
-                              {post.images[0] ? (
+                {currentMessage.post && (
+                  <Link
+                    href={`/post/${currentMessage.post.id}`}
+                    className="bg-secondary text-white rounded-md px-4 py-2 font-semibold hover:bg-secondary/80">
+                    Voir l'annonce
+                  </Link>
+                )}
+              </div>
+              <ScrollArea className="w-[800px]  whitespace-nowrap">
+                {currentMessage.lot ? (
+                  <div className="flex space-x-4 w-max p-4 pb-6">
+                    {currentMessage.lot &&
+                      currentMessage.lot.posts.map(
+                        (post) =>
+                          post && (
+                            <Card
+                              key={post.id}
+                              className="relative transition-transform duration-300 ease-in-out transform hover:scale-105">
+                              <Link href={`/post/${post.id}`}>
+                                {post.images[0] ? (
+                                  <Image
+                                    alt={post.images[0].alt}
+                                    className="rounded-md w-40 h-40 object-cover "
+                                    width="160"
+                                    height="160"
+                                    src={post.images[0].src}
+                                  />
+                                ) : (
+                                  <Image
+                                    alt="image not found"
+                                    className="rounded-md w-40 h-40 object-cover"
+                                    width="160"
+                                    height="160"
+                                    src="/images/image_not_found.png"
+                                  />
+                                )}
+                              </Link>
+                              <span className="absolute bottom-0 right-0 w-full p-2 rounded-b-md bg-[#01010165] shadow-[0_0_10px_0_rgba(0,0,5,0.5)]">
+                                <div className="font-bold text-white text-center">
+                                  prix : {FormatPrice(post.price)} €
+                                </div>
+                              </span>
+                            </Card>
+                          )
+                      )}
+                  </div>
+                ) : (
+                  <div className="flex space-x-4 w-max p-4 pb-6">
+                    {currentMessage.post &&
+                      currentMessage.post.images.length > 0 &&
+                      currentMessage.post.images.map(
+                        (image, index) =>
+                          image && (
+                            <Dialog key={index}>
+                              <DialogTrigger>
                                 <Image
-                                  alt={post.images[0].alt}
-                                  className="rounded-md w-40 h-40 object-cover "
+                                  key={image.id}
+                                  alt={image.alt}
                                   width="160"
                                   height="160"
-                                  src={post.images[0].src}
-                                />
-                              ) : (
-                                <Image
-                                  alt="image not found"
                                   className="rounded-md w-40 h-40 object-cover"
-                                  width="160"
-                                  height="160"
-                                  src="/images/image_not_found.png"
+                                  src={image.src}
                                 />
-                              )}
-                            </Link>
-                            <span className="absolute bottom-0 right-0 w-full p-2 rounded-b-md bg-[#01010165] shadow-[0_0_10px_0_rgba(0,0,5,0.5)]">
-                              <div className="font-bold text-white text-center">
-                                prix : {FormatPrice(post.price)} €
-                              </div>
-                            </span>
-                          </Card>
-                        )
-                    )}
-                </div>
+                              </DialogTrigger>
+                              <DialogContent className="bg-transparent border-none p-0 text-white">
+                                <DialogTitle className="text-xl text-white">
+                                  {currentMessage.post
+                                    ? currentMessage.post.title
+                                    : ""}
+                                </DialogTitle>
+                                <Image
+                                  key={index}
+                                  alt={
+                                    currentMessage.post
+                                      ? currentMessage.post.title
+                                      : ""
+                                  }
+                                  width="800"
+                                  height="800"
+                                  className=" rounded-md object-cover"
+                                  src={
+                                    image.src || "/images/image_not_found_2.jpg"
+                                  }
+                                />
+                              </DialogContent>
+                            </Dialog>
+                          )
+                      )}
+                  </div>
+                )}
                 <ScrollBar orientation="horizontal" />
               </ScrollArea>
             </div>

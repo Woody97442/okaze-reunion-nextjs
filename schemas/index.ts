@@ -23,11 +23,11 @@ export const SendOfferSchema = z.object({
         (val) => parseFloat(val as string),
         z.number().positive({ message: "L'offre doit être supérieure à 0" })
     ),
-    message: z.string().min(3, { message: "Un message est requis" }),
+    message: z.string().min(2, { message: "Un message est requis" }),
 })
 
 export const SendMessageSchema = z.object({
-    message: z.string().min(3, { message: "Un message est requis" }),
+    message: z.string().min(2, { message: "Un message est requis" }),
 })
 
 export const CreatPostSchema = z.object({

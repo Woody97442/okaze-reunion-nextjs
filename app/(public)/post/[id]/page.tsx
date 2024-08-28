@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import LoaderOkaze from "@/components/utils/loader";
 
-import { getPostById } from "@/data/post";
+import { getPostById, getPosts } from "@/data/post";
 import { FormatDate } from "@/lib/format-date";
 import { FormatPrice } from "@/lib/format-price";
 import { TraductionState } from "@/lib/traduction-state";
@@ -11,7 +11,6 @@ import { Post } from "@/prisma/post/types";
 import Image from "next/image";
 import { AddLotButton } from "@/components/post/add-lot-button";
 import { SendMessageButton } from "@/components/post/send-message-button";
-import { BookButton } from "@/components/post/book-button";
 import {
   Dialog,
   DialogContent,
@@ -19,6 +18,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { AddFavoriteButton } from "@/components/post/add-favorite-button";
+import CustomCarousel from "@/components/home/custom-carousel";
+import { auth } from "@/auth";
+import { getUserById } from "@/data/user";
+import BannerH from "@/components/banner/banner-h";
 
 interface Props {
   params: {
@@ -28,8 +31,35 @@ interface Props {
 
 export default async function PostId({ params: { id } }: Props) {
   const post: Post | null = await getPostById(id);
+  const allPosts = await getPosts();
 
+  const session = await auth();
+  const user = await getUserById(session?.user.id as string);
+
+  if (!allPosts) return <LoaderOkaze />;
   if (!post) return <LoaderOkaze />;
+
+  const postInCategory = allPosts
+    .filter((p) => p.categories[0].id === post.categories[0].id)
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
+    .slice(0, 10);
+
+  // Filtrer les posts avec des titres similaires
+  const similarPosts = allPosts
+    .filter(
+      (p) =>
+        p.id !== post.id &&
+        p.isActive &&
+        p.title.toLowerCase().includes(post.title.toLowerCase())
+    )
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
+    .slice(0, 10);
 
   return (
     <main className="flex flex-col py-8 space-y-6 container">
@@ -42,8 +72,8 @@ export default async function PostId({ params: { id } }: Props) {
                   <Image
                     key={picture.id}
                     alt={picture.alt}
-                    width="300"
-                    height="300"
+                    width="250"
+                    height="250"
                     className="object-cover rounded-md aspect-square"
                     src={picture.src}
                   />
@@ -74,7 +104,7 @@ export default async function PostId({ params: { id } }: Props) {
           )}
         </aside>
         <section className="flex flex-col gap-y-4 w-1/2 bg-white py-4 px-10 shadow-md rounded-sm">
-          <h1>{post.title}</h1>
+          <h1 className="text-2xl font-bold">{post.title}</h1>
           <div className="flex justify-between pt-4">
             <p className="text-sm text-muted-foreground">
               {FormatDate(new Date(post.createdAt))}
@@ -95,13 +125,60 @@ export default async function PostId({ params: { id } }: Props) {
           </div>
           <Separator />
           <SendMessageButton id={post.id} />
-          <BookButton id={post.id} />
+          {user && user.role === "ADMIN" && (
+            <div className="flex gap-x-4 items-center flex-row">
+              <p className="text-md font-semibold">Code de Référence : </p>
+              <span className="font-semibold bg-primary py-1 px-2 rounded-md text-white">
+                {post.icode}
+              </span>
+            </div>
+          )}
+          {/* <BookButton id={post.id} /> */}
         </section>
       </div>
       <section className="flex flex-col gap-y-4 w-full bg-white py-4 px-10 shadow-md rounded-sm">
-        <h1>Description</h1>
+        <h2 className="text-2xl font-bold">{post.title}</h2>
+        <h3 className="text-1xl font-semibold">
+          Prix : {FormatPrice(post.price)} €
+        </h3>
         <p>{post.description}</p>
+        <Separator />
+        <h3 className="text-2xl font-semibold">Critères</h3>
+        <div className="flex flex-row items-baseline justify-between">
+          <div className="flex flex-row items-baseline gap-x-4">
+            <h4 className="text-xl font-semibold">État : </h4>
+            <p className="bg-primary py-1 px-4 rounded-md text-white font-semibold">
+              {TraductionState(post.state)}
+            </p>
+          </div>
+          <div className="flex flex-row items-baseline gap-x-4">
+            <h4 className="text-xl font-semibold">Catégories : </h4>
+            <p className="bg-primary py-1 px-4 rounded-md text-white font-semibold">
+              {post.categories.map((category) => category.name).join(", ")}
+            </p>
+          </div>
+          <div className="flex flex-row items-baseline gap-x-4">
+            <h4 className="text-xl font-semibold">attributs : </h4>
+            <p className="bg-primary py-1 px-4 rounded-md text-white font-semibold">
+              {post.attributs.map((attribut) => attribut.name).join(", ")}
+            </p>
+          </div>
+        </div>
       </section>
+      <section className="flex flex-col gap-y-4 w-full bg-white py-4 px-10 shadow-md rounded-sm">
+        {similarPosts.length > 0 ? (
+          <CustomCarousel
+            posts={similarPosts}
+            title="Vous aimeriez aussi"
+          />
+        ) : (
+          <CustomCarousel
+            posts={postInCategory}
+            title="Dans la même catégorie"
+          />
+        )}
+      </section>
+      <BannerH variant="2" />
     </main>
   );
 }

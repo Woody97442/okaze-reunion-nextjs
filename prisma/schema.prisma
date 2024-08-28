@@ -57,6 +57,9 @@ model Message {
   lotId                    String?          @unique
   lot                      Lot?             @relation(fields: [lotId], references: [id], name: "LotMessages")
 
+  postId                   String?         @unique
+  post                     Post?           @relation(fields: [postId], references: [id], name: "PostMessages")
+
   isArchived               Boolean @default(false)
   isReadByUser             Boolean @default(false)
   isReadByAdmin            Boolean @default(false)
@@ -201,6 +204,8 @@ model Post {
   isActive    Boolean       @default(false)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
+
+  messages    Message[]     @relation(name: "PostMessages")
 }
 
 model Image {
