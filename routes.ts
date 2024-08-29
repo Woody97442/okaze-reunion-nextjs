@@ -9,6 +9,10 @@ const publicPages = [
     "/auth/new-verification",
     "/category",
     "/post",
+    "/privacy-and-cookies",
+    "/general-conditions",
+    "/credits-ref",
+    "/contact",
 
 ]
 
