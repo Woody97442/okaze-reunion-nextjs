@@ -29,10 +29,9 @@ import { CreatPostSchema } from "@/schemas";
 import FindAdminContext from "@/lib/admin-context-provider";
 import { Post } from "@/prisma/post/types";
 import CreateAttributsForm from "./create-attributs-form";
-import { CreatePost, DeletePost, UpdatePost } from "@/actions/admin/post";
+import { CreatePost, UpdatePost } from "@/actions/admin/post";
 import { UploadImage } from "@/actions/admin/upload-image";
 import AlertDialogPost from "./alert-dialog-post";
-import DeletePostButton from "./delete-post-button";
 
 export default function PostForm() {
   const {

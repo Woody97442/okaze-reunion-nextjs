@@ -14,6 +14,8 @@ import {
 } from "@/components/table/columns";
 import EditPost from "@/components/admin/edit-post";
 import DeletePostButton from "@/components/admin/delete-post-button";
+import EditCategory from "@/components/admin/edit-category";
+import DeleteCategoryButton from "@/components/admin/delete-category-button";
 
 const DashboardContent = () => {
   const {
@@ -24,6 +26,8 @@ const DashboardContent = () => {
     allCategories,
     setCurrentPost,
     currentPost,
+    currentCategory,
+    setCurrentCategory,
   } = FindAdminContext();
 
   const renderButton = (
@@ -86,6 +90,18 @@ const DashboardContent = () => {
           </div>
         );
 
+      case "edit-category":
+        return (
+          <div className="flex w-full justify-between items-center space-x-2">
+            <h2 className="text-2xl text-black drop-shadow-md">
+              Modifier La Catégorie {currentCategory?.name}
+            </h2>
+            {currentCategory && currentCategory.id && (
+              <DeleteCategoryButton categoryId={currentCategory.id} />
+            )}
+          </div>
+        );
+
       default:
         return null;
     }
@@ -119,6 +135,9 @@ const DashboardContent = () => {
 
       case "edit-post":
         return <EditPost />;
+
+      case "edit-category":
+        return <EditCategory />;
 
       default:
         return null;

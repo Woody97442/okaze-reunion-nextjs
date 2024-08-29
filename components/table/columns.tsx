@@ -20,6 +20,7 @@ import {
 import FindAdminContext from "@/lib/admin-context-provider";
 import DeletePostButton from "../admin/delete-post-button";
 import PublishSwitch from "../admin/publish-switch";
+import DeleteCategoryButton from "../admin/delete-category-button";
 
 export const columnsPost: ColumnDef<Post>[] = [
   {
@@ -349,40 +350,6 @@ export const columnsUser: ColumnDef<User>[] = [
       );
     },
   },
-  {
-    header: () => <div className="w-auto">Actions</div>,
-    id: "actions",
-    cell: ({ row }) => {
-      const post = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="default"
-              className="h-8 w-full p-0 ">
-              <span className="sr-only">Open menu</span>
-              <FiMoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
-            {/* <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={() => navigator.clipboard.writeText(post.icode)}>
-              Copier l'ICode
-            </DropdownMenuItem> */}
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer">
-              <Button variant="ghost">Modifier</Button>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer">
-              <Button variant="destructive">Supprimer </Button>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
 ];
 
 export const columnsCategory: ColumnDef<Category>[] = [
@@ -490,36 +457,27 @@ export const columnsCategory: ColumnDef<Category>[] = [
     },
   },
   {
-    header: () => <div className="w-auto">Actions</div>,
+    header: () => <div className="w-auto text-center">Actions</div>,
     id: "actions",
     cell: ({ row }) => {
-      const post = row.original;
+      const category = row.original;
+      const { setCurrentContent, setCurrentCategory } = FindAdminContext();
+
+      // Edit Category
+      const handleEditCategory = (value: string, category: Category) => {
+        setCurrentContent(value);
+        setCurrentCategory(category);
+      };
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="default"
-              className="h-8 w-full p-0 ">
-              <span className="sr-only">Open menu</span>
-              <FiMoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
-            {/* <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={() => navigator.clipboard.writeText(post.icode)}>
-              Copier l'ICode
-            </DropdownMenuItem> */}
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer">
-              <Button variant="ghost">Modifier</Button>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer">
-              <Button variant="destructive">Supprimer </Button>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex justify-center space-x-2 items-center">
+          <Button
+            variant="default"
+            onClick={() => handleEditCategory("edit-category", category)}>
+            Modifier
+          </Button>
+          <DeleteCategoryButton categoryId={category.id} />
+        </div>
       );
     },
   },

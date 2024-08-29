@@ -83,3 +83,7 @@ export const ContactFormSchema = z.object({
     email: z.string().email("Adresse e-mail invalide"),
     message: z.string().min(6, " Le message doit contenir au moins 6 caractères"),
 });
+
+export const UpdateCategorySchema = z.object({
+    name: z.string().min(3, { message: "Un nom est requis" }),
+})

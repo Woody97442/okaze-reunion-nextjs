@@ -56,7 +56,7 @@ export const UploadImage = async (formData: FormData, post: Post) => {
             // Générer le chemin d'accès URL
             const url = `/upload/posts/${path.basename(filePath)}`;
 
-            // Enregistrez l'URL dans la base de données si nécessaire
+            // Enregistrez l'URL dans la base de données
             await prisma.image.create({
                 data: {
                     src: url,
@@ -89,7 +89,5 @@ export const UploadImage = async (formData: FormData, post: Post) => {
         console.error('Error uploading image:', error);
         return { error: "Une erreur est survenue !" };
     }
-
-
 
 }
