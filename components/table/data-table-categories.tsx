@@ -31,6 +31,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import CreateCategoryForm from "../admin/create-category-form";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -107,6 +108,7 @@ export function DataTableCategory<TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+        <CreateCategoryForm variant={true} />
       </div>
       <div className="rounded-md border">
         <Table>

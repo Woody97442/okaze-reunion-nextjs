@@ -25,6 +25,8 @@ interface AdminContextType {
   setCurrentContent: Dispatch<SetStateAction<string>>;
   currentPost: Post | null;
   setCurrentPost: Dispatch<SetStateAction<Post | null>>;
+  currentCategory: Category | null;
+  setCurrentCategory: Dispatch<SetStateAction<Category | null>>;
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
 }
@@ -66,6 +68,7 @@ export default function AdminContextProvider({
   const [tempUploadFiles, setTempUploadFiles] = useState<PropsImagesPost[]>([]);
   const [currentContent, setCurrentContent] = useState("posts");
   const [currentPost, setCurrentPost] = useState<Post | null>(null);
+  const [currentCategory, setCurrentCategory] = useState<Category | null>(null);
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -88,6 +91,8 @@ export default function AdminContextProvider({
         setTempUploadFiles,
         currentPost,
         setCurrentPost,
+        currentCategory,
+        setCurrentCategory,
         loading,
         setLoading,
       }}>

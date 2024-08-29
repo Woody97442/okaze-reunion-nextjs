@@ -12,41 +12,47 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
+import { DeleteCategory } from "@/actions/admin/categories";
+import { Category } from "@/prisma/category/types";
 
-export default function DeletePostButton({ postId }: { postId: string }) {
+export default function DeleteCategoryButton({
+  categoryId,
+}: {
+  categoryId: string;
+}) {
   const [isPending, startTransition] = useTransition();
   const [openModal, setOpenModal] = useState(false);
   const {
     setCurrentContent,
-    setCurrentPost,
+    setAllCategories,
+    allCategories,
     setLoading,
-    setTempUploadFiles,
-    setAllPosts,
-    allPosts,
-    currentPost,
+    currentCategory,
+    setCurrentCategory,
   } = FindAdminContext();
-  const handleDeletePost = () => {
+  const handleDeleteCategory = () => {
     setLoading(true);
-    setCurrentPost(null);
+    setCurrentCategory(null);
     startTransition(() => {
-      DeletePost(postId).then((data) => {
+      DeleteCategory(categoryId).then((data) => {
         if (data?.success) {
           toast({
             title: "Succès",
             description: data?.success,
           });
-          if (currentPost && currentPost.id === postId) {
-            setCurrentPost(null);
-            setCurrentContent("posts");
-            setTempUploadFiles([]);
+          if (currentCategory && currentCategory.id === categoryId) {
+            setCurrentCategory(null);
+            setCurrentContent("categories");
           }
           setLoading(false);
           setOpenModal(false);
-          if (allPosts) {
-            const newPosts = allPosts.filter((post) => post.id !== postId);
-            setAllPosts(newPosts as Post[]);
+          if (allCategories) {
+            const newCategories = allCategories.filter(
+              (category) => category.id !== categoryId
+            );
+            setAllCategories(newCategories as Category[]);
           } else {
-            setAllPosts([]);
+            setAllCategories([]);
           }
         } else {
           toast({
@@ -72,14 +78,17 @@ export default function DeletePostButton({ postId }: { postId: string }) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="space-y-4">
-          <DialogTitle className="text-center text-xl font-bold">
-            Voulez-vous vraiment supprimer cette annonce ?
+          <DialogTitle className="text-center flex flex-col gap-4">
+            <h3 className="text-xl font-bold">
+              Voulez-vous vraiment supprimer cette catégorie ?
+            </h3>
+            <span>Toute les annonces de cette catégorie seront supprimés.</span>
           </DialogTitle>
           <Button
             variant={"destructive"}
             className="flex justify-center w-auto"
             disabled={isPending}
-            onClick={handleDeletePost}>
+            onClick={handleDeleteCategory}>
             Confirmer la suppression
           </Button>
         </DialogHeader>
