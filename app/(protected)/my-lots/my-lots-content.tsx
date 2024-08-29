@@ -369,7 +369,7 @@ const MyLotsContent = () => {
                     <Button
                       type="submit"
                       className="w-full"
-                      disabled={isPending || conterPost > 1}>
+                      disabled={isPending || conterPost > 0}>
                       <div className="w-full flex justify-center gap-x-2 items-center">
                         Faire une offre
                         <BsSend className="w-4 h-4" />

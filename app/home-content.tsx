@@ -46,35 +46,39 @@ const HomeContent = ({ posts }: { posts: Post[] }) => {
             />
           </div>
         </section>
-        <section className="flex flex-row gap-y-4 bg-primary w-full py-4 px-8 shadow-md rounded-sm text-white">
-          <div className="flex flex-col justify-center items-center gap-4">
-            <h2 className="text-3xl font-bold">Ou Nous Trouvé</h2>
-            <p className="text-justify text-base">
-              La zone où nous trouvons sont visibles sur la carte ci-contre.
-            </p>
-            <p className="text-justify text-base">
-              Au Marché au puce Saint-Pierre 97410, La Réunion Zone industrielle
-              N3
-            </p>
-            <h3 className="text-md font-bold">
-              Lien vers la carte Google clic ci-dessous
-            </h3>
+        <div className="flex flex-col gap-y-4 w-full">
+          <section className="flex flex-row gap-y-4 bg-primary w-full py-4 px-8 shadow-md rounded-sm text-white">
+            <div className="flex flex-col justify-center items-center gap-4">
+              <h2 className="text-3xl font-bold">Ou Nous Trouvé</h2>
+              <p className="text-justify text-base">
+                La zone où nous trouvons sont visibles sur la carte ci-contre.
+              </p>
+              <p className="text-justify text-base">
+                Au Marché au puce Saint-Pierre 97410, La Réunion Zone
+                industrielle N3
+              </p>
+              <h3 className="text-md font-bold ">
+                Lien vers la carte Google clic sur la carte ci-dessous
+              </h3>
+            </div>
+          </section>
+          <section className="flex flex-row gap-y-4 w-full py-4 px-8 justify-center">
             <a
               href="https://maps.app.goo.gl/mdaeNArJ1UwXx9XM8"
               className="text-justify text-base">
               <div className="flex justify-center items-center">
                 <Image
                   src="/images/carte.png"
-                  width={200}
-                  height={200}
+                  width={250}
+                  height={250}
                   className=" object-cover"
                   priority
                   alt={"Logo de l'application Okaze"}
                 />
               </div>
             </a>
-          </div>
-        </section>
+          </section>
+        </div>
       </div>
 
       {/* Carousel de nouvelles annonces */}

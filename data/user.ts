@@ -61,6 +61,11 @@ export const getUserById = async (id: string): Promise<User | null> => {
                             include: {
                                 user: true
                             }
+                        },
+                        post: {
+                            include: {
+                                images: true
+                            }
                         }
                     }
                 }

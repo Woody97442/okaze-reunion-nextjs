@@ -3,14 +3,22 @@ import Link from "next/link";
 import { LiaUserShieldSolid } from "react-icons/lia";
 import { BsBoxSeam, BsHeart } from "react-icons/bs";
 import { FiMail } from "react-icons/fi";
+import { User } from "@/prisma/user/types";
 
 export const TabButton = ({
   pathname,
-  userRole,
+  user,
+  numberOfUnreadMessagesAdmin,
 }: {
   pathname: string;
-  userRole: string | undefined;
+  user: User;
+  numberOfUnreadMessagesAdmin: string;
 }) => {
+  const userRole = user?.role;
+  const unreadMessagesCount = user?.messages.filter(
+    (message) => message.isReadByUser === false
+  ).length;
+
   return (
     <>
       {userRole === "ADMIN" && (
@@ -61,7 +69,7 @@ export const TabButton = ({
         <Button
           variant={
             pathname === "/messages" || pathname === "/dashboard/admin-messages"
-              ? "secondary"
+              ? "ghost"
               : "ghost"
           }
           className="h-full">
@@ -72,10 +80,24 @@ export const TabButton = ({
             className={`flex flex-col items-center gap-y-1 ${
               pathname === "/messages" ||
               pathname === "/dashboard/admin-messages"
-                ? "text-white font-bold"
+                ? "font-bold"
                 : ""
             }`}>
-            <FiMail className="w-6 h-6" />
+            <div className="relative">
+              <FiMail className="w-6 h-6" />
+              {unreadMessagesCount && unreadMessagesCount > 0 ? (
+                <span className="absolute -top-4 -right-4 text-xs bg-secondary w-auto h-auto py-1 px-2 rounded-full flex items-center justify-center text-white">
+                  {unreadMessagesCount}
+                </span>
+              ) : null}
+              {numberOfUnreadMessagesAdmin &&
+              parseInt(numberOfUnreadMessagesAdmin) > 0 &&
+              userRole === "ADMIN" ? (
+                <span className="absolute -top-4 -right-4 text-xs bg-secondary w-auto h-auto py-1 px-2 rounded-full flex items-center justify-center text-white">
+                  {numberOfUnreadMessagesAdmin}
+                </span>
+              ) : null}
+            </div>
             <span className="font-Lato">Messages</span>
           </Link>
         </Button>

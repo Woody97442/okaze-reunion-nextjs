@@ -17,9 +17,11 @@ import { NavCategory } from "@/prisma/category/types";
 const Navbar = ({
   user,
   categories,
+  numberOfUnreadMessages,
 }: {
   user: User;
   categories: NavCategory[];
+  numberOfUnreadMessages: string;
 }) => {
   const pathname = usePathname();
 
@@ -41,7 +43,8 @@ const Navbar = ({
             <div className="flex gap-x-4 items-center">
               <TabButton
                 pathname={pathname}
-                userRole={user?.role}
+                user={user}
+                numberOfUnreadMessagesAdmin={numberOfUnreadMessages}
               />
               <Link
                 aria-label="logo de l'application Okaze Réunion"
@@ -77,7 +80,8 @@ const Navbar = ({
             <div className="flex gap-x-4 items-center">
               <TabButton
                 pathname={pathname}
-                userRole={user?.role}
+                user={user}
+                numberOfUnreadMessagesAdmin={numberOfUnreadMessages}
               />
               {user ? (
                 <UserButton user={user} />

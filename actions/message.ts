@@ -10,9 +10,9 @@ export const CreateMessage = async (formData: FormData) => {
         return { error: "Veuillez vous connecter !" };
     }
 
-    const userId = session.user.id;
+    const currentUserId = session.user.id;
 
-    if (!userId) {
+    if (!currentUserId) {
         return { error: "utilisateur introuvable !" };
     }
 
@@ -52,7 +52,7 @@ export const CreateMessage = async (formData: FormData) => {
                         offerPrice: offerPrice,
                         user: {
                             connect: {
-                                id: userId
+                                id: currentUserId
                             }
                         }
                     }
@@ -61,7 +61,7 @@ export const CreateMessage = async (formData: FormData) => {
                 isReadByUser: true,
                 user: {
                     connect: {
-                        id: userId
+                        id: currentUserId
                     }
                 },
                 lot: {
@@ -91,9 +91,9 @@ export const SendNewMessage = async (formData: FormData) => {
         return { error: "Veuillez vous connecter !" };
     }
 
-    const userId = session.user.id;
+    const currentUserId = session.user.id;
 
-    if (!userId) {
+    if (!currentUserId) {
         return { error: "utilisateur introuvable !" };
     }
 
@@ -130,7 +130,7 @@ export const SendNewMessage = async (formData: FormData) => {
                         content: newMessage,
                         user: {
                             connect: {
-                                id: userId,
+                                id: currentUserId,
                             },
                         },
                     },
@@ -153,6 +153,11 @@ export const SendNewMessage = async (formData: FormData) => {
                         }
                     }
                 },
+                post: {
+                    include: {
+                        images: true
+                    }
+                }
             },
         });
         return { newContentMessage: updateMessage, success: "Message envoyé !" };
@@ -170,9 +175,9 @@ export const ArchivedMessage = async (idMessage: string) => {
         return { error: "Veuillez vous connecter !" };
     }
 
-    const userId = session.user.id;
+    const currentUserId = session.user.id;
 
-    if (!userId) {
+    if (!currentUserId) {
         return { error: "utilisateur introuvable !" };
     }
 
@@ -212,9 +217,9 @@ export const SwitchReadMessageByUser = async (idMessage: string) => {
         return { error: "Veuillez vous connecter !" };
     }
 
-    const userId = session.user.id;
+    const currentUserId = session.user.id;
 
-    if (!userId) {
+    if (!currentUserId) {
         return { error: "utilisateur introuvable !" };
     }
 
@@ -256,6 +261,11 @@ export const SwitchReadMessageByUser = async (idMessage: string) => {
                         }
                     }
                 },
+                post: {
+                    include: {
+                        images: true
+                    }
+                }
             },
         });
         return { updateReadMessage: updateMessage, success: "Message lu !" };
@@ -263,4 +273,104 @@ export const SwitchReadMessageByUser = async (idMessage: string) => {
         console.error("Error read message:", error);
         return { error: "Une erreur est survenue !" };
     }
+}
+
+export const CreateMessagePost = async (formData: FormData) => {
+    const session = await auth();
+
+    if (!session) {
+        return { error: "Veuillez vous connecter !" };
+    }
+
+    const currentUserId = session.user.id;
+
+    if (!currentUserId) {
+        return { error: "utilisateur introuvable !" };
+    }
+
+    let offerPrice: string = formData.get("offer") as string;
+    const message: string = formData.get("message") as string;
+    const postId: string = formData.get("postId") as string;
+
+    const exitingPost = await prisma.post.findUnique({
+        where: {
+            id: postId
+        },
+        include: {
+            messages: true
+        }
+    })
+
+    if (offerPrice === "") {
+        offerPrice = exitingPost?.price.toString() as string
+    }
+
+    if (!exitingPost) {
+        return { error: "annonce introuvable si le probleme persiste contactez l'administrateur !" }
+    }
+
+    if (exitingPost.messages?.some((message) => message.userId === currentUserId)) {
+        return { error: "Vous avez deja fait une offre pour ce lot !" }
+    }
+
+    if (!message || !postId) {
+        return { error: "Le message et obligatoire !" };
+    }
+
+    try {
+        // Creation d'une conversation
+        const newMessage = await prisma.message.create({
+            data: {
+                content: {
+                    create: {
+                        content: message,
+                        offerPrice: offerPrice,
+                        user: {
+                            connect: {
+                                id: currentUserId
+                            }
+                        }
+                    }
+                },
+                isReadByAdmin: false,
+                isReadByUser: true,
+                user: {
+                    connect: {
+                        id: currentUserId
+                    }
+                },
+                post: {
+                    connect: {
+                        id: postId
+                    }
+                }
+            }, include: {
+                lot: {
+                    include: {
+                        user: true,
+                        posts: {
+                            include: {
+                                images: true
+                            }
+                        }
+                    }
+                },
+                post: {
+                    include: {
+                        images: true
+                    }
+                },
+                content: {
+                    include: {
+                        user: true,
+                    },
+                },
+            }
+        })
+        return { newMessage: newMessage, success: "Message envoyée !" };
+    } catch (error) {
+        console.error("Error sending message:", error);
+        return { error: "Une erreur est survenue !" };
+    }
+
 }

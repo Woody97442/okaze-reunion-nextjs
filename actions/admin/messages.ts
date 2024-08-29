@@ -42,6 +42,11 @@ export const GetAllMessages = async () => {
                     user: true
                 }
             },
+            post: {
+                include: {
+                    images: true
+                }
+            }
         }
     });
 
@@ -107,6 +112,7 @@ export const SendNewMessageAdmin = async (formData: FormData) => {
                         user: true,
                     },
                 },
+                user: true,
                 lot: {
                     include: {
                         user: true,
@@ -117,6 +123,11 @@ export const SendNewMessageAdmin = async (formData: FormData) => {
                         }
                     }
                 },
+                post: {
+                    include: {
+                        images: true
+                    }
+                }
             },
         });
         return { newContentMessage: updateMessage, success: "Message envoyé !" };
@@ -176,6 +187,12 @@ export const ArchivedMessageAdmin = async (idMessage: string) => {
                         }
                     }
                 },
+                user: true,
+                post: {
+                    include: {
+                        images: true
+                    }
+                }
             },
         });
         return { messageArchived: updateMessage, success: "Message archivé !" };
@@ -243,6 +260,12 @@ export const SwitchReadMessageByAdmin = async (idMessage: string) => {
                         }
                     }
                 },
+                user: true,
+                post: {
+                    include: {
+                        images: true
+                    }
+                }
             },
         });
         return { updateReadMessage: updateMessage, success: "Message lu !" };
