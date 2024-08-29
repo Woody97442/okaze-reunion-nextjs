@@ -6,7 +6,7 @@ export default async function Footer() {
   const session = await auth();
   return (
     <footer className="footer p-8 text-white bg-secondary">
-      <div className=" w-full container flex flex-row items-baseline">
+      <div className=" w-full container flex flex-col items-baseline space-y-8">
         <aside className="w-full">
           <Link
             aria-label="logo de l'application Okaze Réunion"
@@ -20,20 +20,25 @@ export default async function Footer() {
             />
           </Link>
         </aside>
-        <nav className="gap-6 w-full flex flex-col md:flex-row justify-between">
+        <nav className="gap-6 w-full flex flex-row justify-between">
           <Link
             className="link link-hover text-lg font-Lato"
-            href="/">
-            Politique de Confidentialité
+            href="/general-conditions">
+            Conditions générales
           </Link>
           <Link
             className="link link-hover text-lg font-Lato"
-            href="/">
-            Termes et Conditions
+            href="/privacy-and-cookies">
+            Vie privée / cookies
           </Link>
           <Link
             className="link link-hover text-lg font-Lato"
-            href="/">
+            href="/credits-ref">
+            Attributions et crédits
+          </Link>
+          <Link
+            className="link link-hover text-lg font-Lato"
+            href="/contact">
             Contact
           </Link>
         </nav>

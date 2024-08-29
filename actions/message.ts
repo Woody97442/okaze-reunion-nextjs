@@ -2,6 +2,7 @@
 
 import { prisma } from "@/prisma/prismaClient";
 import { auth } from "@/auth";
+import nodemailer from 'nodemailer';
 
 export const CreateMessage = async (formData: FormData) => {
     const session = await auth();
@@ -373,4 +374,38 @@ export const CreateMessagePost = async (formData: FormData) => {
         return { error: "Une erreur est survenue !" };
     }
 
+}
+
+export const sendContactMessage = async (formData: FormData) => {
+
+    // Récupérer les données du formulaire
+    const name = formData.get("name");
+    const email = formData.get("email");
+    const message = formData.get("message");
+
+    // Configurer le transporteur SMTP
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS,
+        },
+    });
+
+    // Configurer l'e-mail
+    const mailOptions = {
+        from: `${name} <${email}>`,
+        to: 'okaze.reunion@gmail.com',
+        subject: "Nouveau message d'un utilisateur",
+        text: `Vous avez reçu un nouveau message de l'utilisateur ${name} (${email}):\n\n${message}`,
+    };
+
+    try {
+        // Envoyer l'e-mail
+        await transporter.sendMail(mailOptions);
+        return { success: 'Message envoyé !' };
+    } catch (error) {
+        console.error('Erreur lors de l\'envoi du message:', error);
+        return { error: 'Une erreur est survenue lors de l\'envoi du message !' };
+    }
 }

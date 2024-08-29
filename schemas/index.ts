@@ -77,3 +77,9 @@ export const RegisterSchema = z.object({
     message: "Les mots de passe ne sont pas identiques",
     path: ["confirm_password"],
 })
+
+export const ContactFormSchema = z.object({
+    name: z.string().min(1, "Le nom est requis"),
+    email: z.string().email("Adresse e-mail invalide"),
+    message: z.string().min(6, " Le message doit contenir au moins 6 caractères"),
+});
