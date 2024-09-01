@@ -57,7 +57,12 @@ export default function CardPost({ post }: { post: Post }) {
       </CardHeader>
       <CardContent>
         <div className="flex justify-between items-center">
-          <p className="text-sm">Prix : {FormatPrice(post.price)} €</p>
+          <p className="text-sm ">
+            Prix :{" "}
+            <span className="font-bold text-md">
+              {FormatPrice(post.price)} €
+            </span>
+          </p>
           <div className="flex gap-x-4">
             <AddFavoriteButton post={post} />
             <AddLotButton postId={post.id} />
