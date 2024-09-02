@@ -15,7 +15,7 @@ const CreditsRefContent = () => {
             <li className="flex flex-row gap-x-4 items-center">
               <Image
                 alt={
-                  "Image de freepik Assortiment d'objets du marché d'antiquité"
+                  "Image de freepik Assortiment d&#39;objets du marché d&#39;antiquité"
                 }
                 className="rounded-md shadow-md"
                 width="150"
@@ -27,7 +27,8 @@ const CreditsRefContent = () => {
                 rel="noopener noreferrer"
                 target="_blank"
                 href="https://fr.freepik.com/photos-gratuite/assortiment-objets-du-marche-antiquites_13844220.htm#fromView=search&page=1&position=3&uuid=29847d9c-11d5-48df-b38b-97beb2549d9c">
-                Image de freepik Assortiment d'objets du marché d'antiquités
+                Image de freepik Assortiment d&#39;objets du marché
+                d&#39;antiquités
               </Link>
             </li>
             <li className="flex flex-row gap-x-4 items-center">

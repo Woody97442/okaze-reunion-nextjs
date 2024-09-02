@@ -23,7 +23,7 @@ const Heros = () => {
           />
         </div>
         <h1 className="text-3xl font-bold text-white font-Lato px-4 py-4 shadow-md w-auto text-center my-4 bg-primary rounded-md">
-          L'ultime destination pour les chineurs !
+          L&#39;ultime destination pour les chineurs !
         </h1>
       </div>
     </div>

@@ -42,7 +42,7 @@ const HomeContent = ({ posts }: { posts: Post[] }) => {
               height={420}
               className=" shadow-md rounded-sm w-full h-full object-cover"
               priority
-              alt={"Logo de l'application Okaze"}
+              alt={"Logo de l&#39;application Okaze"}
             />
           </div>
         </section>
@@ -73,7 +73,7 @@ const HomeContent = ({ posts }: { posts: Post[] }) => {
                   height={250}
                   className=" object-cover"
                   priority
-                  alt={"Logo de l'application Okaze"}
+                  alt={"Logo de l&#39;application Okaze"}
                 />
               </div>
             </a>
@@ -97,23 +97,23 @@ const HomeContent = ({ posts }: { posts: Post[] }) => {
           <div className="flex flex-col justify-center items-center gap-4">
             <h2 className="text-3xl font-bold">Bienvenue sur OKAZE Réunion</h2>
             <p className="text-justify text-base">
-              Votre destination en ligne pour dénicher des trésors d'occasion et
-              redonner vie aux objets du passé.
+              Votre destination en ligne pour dénicher des trésors
+              d&#39;occasion et redonner vie aux objets du passé.
             </p>
             <p className="text-justify text-base">
               Plongez dans un univers où chaque objet raconte une histoire, où
               chaque trouvaille est une découverte passionnante.
             </p>
             <p className="text-justify text-base">
-              Que vous soyez à la recherche d'un meuble pour votre salon, d'un
-              objet de décoration pour embellir votre intérieur, d'un vêtement
-              vintage pour compléter votre garde-robe ou simplement d'un article
-              pratique pour une utilisation quotidienne, OKAZE Réunion est votre
-              destination incontournable.
+              Que vous soyez à la recherche d&#39;un meuble pour votre salon,
+              d&#39;un objet de décoration pour embellir votre intérieur,
+              d&#39;un vêtement vintage pour compléter votre garde-robe ou
+              simplement d&#39;un article pratique pour une utilisation
+              quotidienne, OKAZE Réunion est votre destination incontournable.
             </p>
             <p className="text-justify text-base">
               Parcourez nos différentes catégories, explorez nos trésors cachés
-              et laissez-vous inspirer par l'histoire et le charme de chaque
+              et laissez-vous inspirer par l&#39;histoire et le charme de chaque
               objet.
             </p>
           </div>
@@ -126,7 +126,7 @@ const HomeContent = ({ posts }: { posts: Post[] }) => {
               height={420}
               className=" shadow-md rounded-sm w-full h-full object-cover"
               priority
-              alt={"Logo de l'application Okaze"}
+              alt={"Logo de l&#39;application Okaze"}
             />
           </div>
         </section>

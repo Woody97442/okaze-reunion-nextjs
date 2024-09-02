@@ -24,12 +24,14 @@ export default function AlertDialogPost({
       onOpenChange={set}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Voici le Code unique de l'annonce</AlertDialogTitle>
+          <AlertDialogTitle>
+            Voici le Code unique de l&#39;annonce
+          </AlertDialogTitle>
           <AlertDialogDescription>
             <span className="flex flex-col space-y-6">
               <span>
-                Ce code est le code unique de l'annonce. Il sera utilisé pour
-                supprimer l'annonce rapidement. Noté le sur le produit.
+                Ce code est le code unique de l&#39;annonce. Il sera utilisé
+                pour supprimer l&#39;annonce rapidement. Noté le sur le produit.
               </span>
               <strong className="text-secondary font-bold text-3xl text-center">
                 {icode}

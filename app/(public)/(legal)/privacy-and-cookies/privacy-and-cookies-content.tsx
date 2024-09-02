@@ -20,7 +20,7 @@ const PrivacyAndCookiesContent = () => {
             <strong>
               <u>Le but de cette politique de confidentialité</u>
             </strong>{" "}
-            Le but de cette politique de confidentialité est d'informer les
+            Le but de cette politique de confidentialité est d&#39;informer les
             utilisateurs de notre site des données personnelles que nous
             recueillerons ainsi que les informations suivantes, le cas échéant :
           </p>
@@ -67,13 +67,13 @@ const PrivacyAndCookiesContent = () => {
             <li>
               <span>
                 collectées pour des finalités déterminées, explicites et
-                légitimes, et ne pas être traitées ultérieurement d'une manière
-                incompatible avec ces finalités. le traitement ultérieur à des
-                fins archivistiques dans l'intérêt public, à des fins de
-                recherche scientifique ou historique ou à des fins statistiques
-                n'est pas considéré, conformément à l'article 89, paragraphe 1,
-                comme incompatible avec les finalités initiales (limitation des
-                finalités).
+                légitimes, et ne pas être traitées ultérieurement d&#39;une
+                manière incompatible avec ces finalités. le traitement ultérieur
+                à des fins archivistiques dans l&#39;intérêt public, à des fins
+                de recherche scientifique ou historique ou à des fins
+                statistiques n&#39;est pas considéré, conformément à
+                l&#39;article 89, paragraphe 1, comme incompatible avec les
+                finalités initiales (limitation des finalités).
               </span>
             </li>
             <li>
@@ -94,18 +94,19 @@ const PrivacyAndCookiesContent = () => {
             </li>
             <li>
               <span>
-                conservées sous une forme permettant l'identification des
-                personnes concernées pendant une durée n'excédant pas celle
+                conservées sous une forme permettant l&#39;identification des
+                personnes concernées pendant une durée n&#39;excédant pas celle
                 nécessaire au regard des finalités pour lesquelles elles sont
                 traitées. les données à caractère personnel peuvent être
                 conservées pour des durées plus longues dans la mesure où elles
                 seront traitées exclusivement à des fins archivistiques dans
-                l'intérêt public, à des fins de recherche scientifique ou
-                historique ou à des fins statistiques conformément à l'article
-                89, paragraphe 1, pour autant que soient mises en œuvre les
-                mesures techniques et organisationnelles appropriées requises
-                par le règlement afin de garantir les droits et libertés de la
-                personne concernée (limitation de la conservation).
+                l&#39;intérêt public, à des fins de recherche scientifique ou
+                historique ou à des fins statistiques conformément à
+                l&#39;article 89, paragraphe 1, pour autant que soient mises en
+                œuvre les mesures techniques et organisationnelles appropriées
+                requises par le règlement afin de garantir les droits et
+                libertés de la personne concernée (limitation de la
+                conservation).
               </span>
             </li>
             <li>
@@ -113,15 +114,15 @@ const PrivacyAndCookiesContent = () => {
                 traitées de façon à garantir une sécurité appropriée des données
                 à caractère personnel, y compris la protection contre le
                 traitement non autorisé ou illicite et contre la perte, la
-                destruction ou les dégâts d'origine accidentelle, à l'aide de
-                mesures techniques ou organisationnelles appropriées (intégrité
-                et confidentialité).{" "}
+                destruction ou les dégâts d&#39;origine accidentelle, à
+                l&#39;aide de mesures techniques ou organisationnelles
+                appropriées (intégrité et confidentialité).{" "}
               </span>
             </li>
           </ol>
           <p>
-            Le traitement n'est licite que si, et dans la mesure où, au moins
-            une des conditions suivantes est remplie :
+            Le traitement n&#39;est licite que si, et dans la mesure où, au
+            moins une des conditions suivantes est remplie :
           </p>
           <ol>
             <li>
@@ -133,28 +134,29 @@ const PrivacyAndCookiesContent = () => {
             </li>
             <li>
               <span>
-                le traitement est nécessaire à l'exécution d'un contrat auquel
-                la personne concernée est partie ou à l'exécution de mesures
-                précontractuelles prises à la demande de celle-ci.
+                le traitement est nécessaire à l&#39;exécution d&#39;un contrat
+                auquel la personne concernée est partie ou à l&#39;exécution de
+                mesures précontractuelles prises à la demande de celle-ci.
               </span>
             </li>
             <li>
               <span>
-                le traitement est nécessaire au respect d'une obligation légale
-                à laquelle le responsable du traitement est soumis.
+                le traitement est nécessaire au respect d&#39;une obligation
+                légale à laquelle le responsable du traitement est soumis.
               </span>
             </li>
             <li>
               <span>
                 le traitement est nécessaire à la sauvegarde des intérêts vitaux
-                de la personne concernée ou d'une autre personne physique.
+                de la personne concernée ou d&#39;une autre personne physique.
               </span>
             </li>
             <li>
               <span>
-                le traitement est nécessaire à l'exécution d'une mission
-                d'intérêt public ou relevant de l'exercice de l'autorité
-                publique dont est investi le responsable du traitement.
+                le traitement est nécessaire à l&#39;exécution d&#39;une mission
+                d&#39;intérêt public ou relevant de l&#39;exercice de
+                l&#39;autorité publique dont est investi le responsable du
+                traitement.
               </span>
             </li>
             <li>

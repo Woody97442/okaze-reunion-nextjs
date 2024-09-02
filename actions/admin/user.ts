@@ -37,5 +37,5 @@ export const GetAllUsers = async () => {
     });
 
 
-    return users as User[];
+    return users as unknown as User[];
 }

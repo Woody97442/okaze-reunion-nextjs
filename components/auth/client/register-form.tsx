@@ -74,7 +74,7 @@ export const RedisterForm = () => {
                 name={"name"}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nom d'utilisateur</FormLabel>
+                    <FormLabel>Nom d&#39;utilisateur</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -202,7 +202,7 @@ export const RedisterForm = () => {
             className="w-full"
             disabled={isPending}>
             <div className="w-full flex justify-center gap-x-2 items-center ">
-              S'inscrire
+              S&#39;inscrire
               <FaArrowRight className="w-4 h-4" />
             </div>
           </Button>

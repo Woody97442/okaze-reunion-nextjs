@@ -190,7 +190,7 @@ model Post {
   icode       String @unique
   title       String
   price       Float
-  description String?
+  description String? @db.VarChar(1000)
 
   state       PostState
 

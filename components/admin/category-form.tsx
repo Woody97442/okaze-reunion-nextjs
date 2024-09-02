@@ -149,7 +149,7 @@ export default function CategoryForm() {
             }}
           />
           <span className="text-sm text-muted-foreground">
-            L'icône sera redimensionnée à 42x42.
+            L&#39;icône sera redimensionnée à 42x42.
           </span>
         </div>
         <Separator />

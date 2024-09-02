@@ -86,7 +86,7 @@ export const ResetForm = () => {
             type="submit"
             className="w-full"
             disabled={isPending}>
-            Envoyer l'email de réinitialisation
+            Envoyer l&#39;email de réinitialisation
           </Button>
         </form>
       </Form>

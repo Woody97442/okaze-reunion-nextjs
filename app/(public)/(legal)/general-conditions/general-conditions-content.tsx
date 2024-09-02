@@ -139,10 +139,10 @@ const GeneralConditionsContent = () => {
             <ol>
               <li>
                 <span>
-                  Tous les produits sont d'occasion, restaurés et testés avant
-                  la vente. Ils sont vendus dans l'état dans lequel ils se
-                  trouvent au moment de l'achat. Aucune garantie à long terme
-                  n'est applicable à ces
+                  Tous les produits sont d&#39;occasion, restaurés et testés
+                  avant la vente. Ils sont vendus dans l&#39;état dans lequel
+                  ils se trouvent au moment de l&#39;achat. Aucune garantie à
+                  long terme n&#39;est applicable à ces
                 </span>
                 <br />
               </li>
@@ -211,11 +211,11 @@ const GeneralConditionsContent = () => {
             <ol>
               <li>
                 <span>
-                  La remise des produits s'effectue en main propre et le
+                  La remise des produits s&#39;effectue en main propre et le
                   paiement est principalement accepté en espèces. En cas de
                   refus du produit après confirmation via la messagerie du site
                   Okaze Réunion, et sans motif valable, le compte de
-                  l'utilisateur peut être suspendu.
+                  l&#39;utilisateur peut être suspendu.
                 </span>
                 <br />
               </li>
@@ -253,7 +253,7 @@ const GeneralConditionsContent = () => {
           </div>
           <div>
             <p>
-              <em>Date d'entrée en vigueur : </em>le 29 août 2024.
+              <em>Date d&#39;entrée en vigueur : </em>le 29 août 2024.
             </p>
           </div>
         </section>

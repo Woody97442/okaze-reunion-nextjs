@@ -82,7 +82,7 @@ const DashboardContent = () => {
         return (
           <div className="flex w-full justify-between items-center space-x-2">
             <h2 className="text-2xl text-black drop-shadow-md">
-              Modifier L'annonce {currentPost?.title}
+              Modifier L&#39;annonce {currentPost?.title}
             </h2>
             {currentPost && currentPost.id && (
               <DeletePostButton postId={currentPost.id} />

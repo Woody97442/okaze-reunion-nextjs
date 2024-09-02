@@ -284,7 +284,7 @@ export const columnsUser: ColumnDef<User>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="w-auto">
-          Nom d'utilisateur
+          Nom d&#39;utilisateur
           <FaArrowsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );

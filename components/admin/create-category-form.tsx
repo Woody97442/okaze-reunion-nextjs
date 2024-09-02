@@ -90,7 +90,7 @@ export default function CreateCategoryForm({ variant }: { variant?: boolean }) {
                         variant: "destructive",
                         title: "Erreur",
                         description:
-                          "Une erreur est survenue pendant l'upload de l'icône !",
+                          "Une erreur est survenue pendant l&#39;upload de l&#39;icône !",
                       });
                       setOpen(false);
                     }
@@ -215,7 +215,7 @@ export default function CreateCategoryForm({ variant }: { variant?: boolean }) {
                     }}
                   />
                   <span className="text-sm text-muted-foreground">
-                    L'icône sera redimensionnée à 42x42.
+                    L&#39;icône sera redimensionnée à 42x42.
                   </span>
                 </div>
                 <div className="flex flex-col gap-4">
@@ -344,7 +344,7 @@ export default function CreateCategoryForm({ variant }: { variant?: boolean }) {
                       }}
                     />
                     <span className="text-sm text-muted-foreground">
-                      L'icône sera redimensionnée à 42x42.
+                      L&#39;icône sera redimensionnée à 42x42.
                     </span>
                   </div>
                   <div className="flex flex-col gap-4">

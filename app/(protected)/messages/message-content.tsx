@@ -71,7 +71,7 @@ const MessageContent = () => {
               const listMessages = currentUser?.messages;
               const updateMessage = data.updateReadMessage;
               if (listMessages) {
-                // Mise à jour de l'état du message
+                // Mise à jour de l&#39;état du message
                 const updatedMessages = listMessages.map((message) =>
                   message.id === updateMessage.id ? updateMessage : message
                 );
@@ -437,7 +437,9 @@ const MessageContent = () => {
             <div className="space-y-4">
               <div className="flex flex-row space-x-4 items-center">
                 <h2 className="text-2xl text-black drop-shadow-md font-semibold">
-                  {currentMessage.lot ? "Message :" : "Message de l'annonce :"}
+                  {currentMessage.lot
+                    ? "Message :"
+                    : "Message de l&#39;annonce :"}
                 </h2>
                 <span className="text-xl">
                   {currentMessage.lot
@@ -450,7 +452,7 @@ const MessageContent = () => {
                   <span className="text-lg font-semibold">
                     {currentMessage.lot
                       ? "Prix du lots de base : "
-                      : "Prix de l'annonce : "}
+                      : "Prix de l&#39;annonce : "}
                   </span>
                   <span>
                     {currentMessage.lot
@@ -468,7 +470,7 @@ const MessageContent = () => {
                   <span className="text-lg font-semibold">
                     {currentMessage.lot
                       ? "Offre pour le lots : "
-                      : "Offre pour l'annonce : "}
+                      : "Offre pour l&#39;annonce : "}
                   </span>
                   <span className="inline-flex items-center justify-center whitespace-nowrap rounded-md font-medium bg-primary text-primary-foreground shadow h-8 px-4 py-2">
                     {currentMessage.content &&
@@ -482,13 +484,13 @@ const MessageContent = () => {
                 <span className="text-lg font-semibold">
                   {currentMessage.lot
                     ? "Annonces dans le lot"
-                    : "Image de l'annonce"}
+                    : "Image de l&#39;annonce"}
                 </span>
                 {currentMessage.post && (
                   <Link
                     href={`/post/${currentMessage.post.id}`}
                     className="bg-secondary text-white rounded-md px-4 py-2 font-semibold hover:bg-secondary/80">
-                    Voir l'annonce
+                    Voir l&#39;annonce
                   </Link>
                 )}
               </div>
@@ -588,7 +590,7 @@ const MessageContent = () => {
               ))}
             </div>
 
-            {/* Le formulair d'envoi de message */}
+            {/* Le formulair d&#39;envoi de message */}
             <div>
               <Separator className="my-4" />
               <Form {...form}>
