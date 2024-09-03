@@ -25,6 +25,7 @@ jobs:
         key: ${{ secrets.VPS_SSH_KEY }}
         port: 22
         script: |
+          export PATH=$PATH:/usr/local/bin
           cd ..
           cd /home/okaze-reunion/htdocs/okaze-reunion-nextjs/
           git pull origin master
