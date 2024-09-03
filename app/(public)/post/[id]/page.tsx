@@ -150,7 +150,7 @@ export default async function PostId({ params: { id } }: Props) {
         <p>{post.description}</p>
         <Separator />
         <h3 className="text-2xl font-semibold">Critères</h3>
-        <div className="flex flex-col md:flex-row items-start space-y-4 md:space-y-0 md:items-baseline">
+        <div className="flex flex-col md:flex-row items-start space-y-4 md:space-y-0 md:space-x-6 md:items-baseline">
           <div className="flex flex-col md:flex-row items-baseline gap-y-4 md:gap-x-4">
             <h4 className="text-xl font-semibold">État : </h4>
             <p className="bg-primary py-1 px-4 rounded-md text-white font-semibold">
