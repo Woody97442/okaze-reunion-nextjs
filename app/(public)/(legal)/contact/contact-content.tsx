@@ -64,7 +64,7 @@ const ContactContent = () => {
           <h2 className="text-2xl text-black drop-shadow-md font-bold">
             Formulaire de contact
           </h2>
-          <div className="w-1/2">
+          <div className="w-full md:w-1/2">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}

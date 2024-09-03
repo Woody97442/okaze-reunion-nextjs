@@ -25,7 +25,7 @@ export default function CardPost({ post }: { post: Post }) {
         {post.images[coverImage] ? (
           <Image
             alt={post.images[coverImage].alt}
-            className="aspect-video w-full rounded-md rounded-b-none object-cover transition-transform duration-300 ease-in-out transform hover:scale-110 "
+            className=" w-full rounded-md rounded-b-none object-cover transition-transform duration-300 ease-in-out transform hover:scale-110 "
             width="250"
             height="140"
             src={post.images[coverImage].src}
@@ -33,7 +33,7 @@ export default function CardPost({ post }: { post: Post }) {
         ) : (
           <Image
             alt="image not found"
-            className="aspect-video w-full rounded-md rounded-b-none object-cover transition-transform duration-300 ease-in-out transform hover:scale-110 "
+            className=" w-full rounded-md rounded-b-none object-cover transition-transform duration-300 ease-in-out transform hover:scale-110 "
             width="250"
             height="140"
             src="/images/image_not_found.png"

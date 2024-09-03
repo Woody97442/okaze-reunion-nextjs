@@ -35,6 +35,14 @@ import FindUserContext from "@/lib/user-context-provider";
 import { CreateMessage } from "@/actions/message";
 import { User } from "@/prisma/user/types";
 import { Alert } from "@/components/ui/alert";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { HiMenuAlt2 } from "react-icons/hi";
 
 const MyLotsContent = () => {
   const { currentUser, setCurrentUser } = FindUserContext();
@@ -187,10 +195,12 @@ const MyLotsContent = () => {
 
   return (
     <>
-      <div className="flex flex-row space-x-6 h-full w-full">
-        <aside className="flex flex-col gap-y-4 bg-white w-1/2 py-4 px-8 shadow-md rounded-sm">
+      <div className="flex flex-col md:flex-row md:space-x-6 h-full w-full">
+        <aside className="hidden md:flex flex-col gap-y-4 bg-white w-1/2 py-4 px-8 shadow-md rounded-sm">
           <div className="space-y-4 my-2">
-            <h2 className="text-2xl text-black drop-shadow-md">Mes Lots</h2>
+            <h2 className="text-2xl text-black font-bold font-Lato">
+              Mes Lots
+            </h2>
           </div>
           <div className="space-y-4 my-2">
             <div className="flex w-full items-center space-x-2">
@@ -257,6 +267,97 @@ const MyLotsContent = () => {
             </ScrollArea>
           </div>
         </aside>
+        {/* Menu sheet */}
+        <div className="grid gap-2 md:hidden">
+          <Sheet key="left">
+            <SheetTrigger
+              asChild
+              className="mb-6">
+              <div className="bg-secondary rounded-md p-2 w-full flex flex-row items-center justify-center text-white gap-4">
+                <HiMenuAlt2 className="w-6 h-6 " />
+                Sélectionnez un lot
+              </div>
+            </SheetTrigger>
+            <SheetContent
+              side="left"
+              className="w-auto">
+              <SheetHeader>
+                <SheetTitle className="font-Lato mb-4">
+                  <div>
+                    <span>Mes Lots</span>
+                    <Separator />
+                  </div>
+                </SheetTitle>
+              </SheetHeader>
+              <div className="p-4">
+                <div className="flex flex-col gap-y-6 items-center py-4 ">
+                  <div className="space-y-4 my-2">
+                    <div className="flex w-full items-center space-x-2">
+                      <Input
+                        type="text"
+                        placeholder="Rechercher..."
+                        value={currentSearch}
+                        onChange={(e) => {
+                          setCurrentSearch(e.target.value);
+                        }}
+                        onKeyDown={handleKeyDown}
+                      />
+                      <Button
+                        type="submit"
+                        variant={"default"}
+                        onClick={() => setSearchTerm(currentSearch)}>
+                        <FiSearch className="w-6 h-6 text-white" />
+                      </Button>
+                    </div>
+                  </div>
+                  <Separator />
+                </div>
+              </div>
+              <ScrollArea className="h-screen w-full rounded-md ">
+                <div className="grid grid-rows-1 md:grid-rows-3 gap-4">
+                  {currentUser?.lot
+                    .filter((lot) =>
+                      lot.name.toLowerCase().includes(searchTerm.toLowerCase())
+                    )
+                    .map((lot) => (
+                      <div
+                        className="flex flex-row space-x-4 items-center"
+                        key={lot.id}>
+                        <Button
+                          variant={"outline"}
+                          className="w-full h-auto justify-start space-x-4 "
+                          onClick={() => handleChooseLot(lot)}
+                          disabled={isPending}
+                          asChild>
+                          <div className="cursor-pointer">
+                            {lot.posts[0].images.length > 0 ? (
+                              <Avatar className="h-[55px] w-[55px]">
+                                <AvatarImage src={lot.posts[0].images[0].src} />
+                              </Avatar>
+                            ) : (
+                              <Avatar className="h-[55px] w-[55px]">
+                                <AvatarImage
+                                  src={"/images/image_not_found_2.jpg"}
+                                />
+                              </Avatar>
+                            )}
+                            <span>{lot.name}</span>
+                          </div>
+                        </Button>
+                        <Button
+                          variant={"ghost"}
+                          disabled={isPending}
+                          className="hover:bg-white p-0 hover:scale-110 transition-all"
+                          onClick={() => handleDeleteLot(lot)}>
+                          <FiTrash2 className="w-[24px] h-[24px] cursor-pointer" />
+                        </Button>
+                      </div>
+                    ))}
+                </div>
+              </ScrollArea>
+            </SheetContent>
+          </Sheet>
+        </div>
         <section className="flex flex-col gap-y-4 bg-white w-full py-4 px-8 shadow-md rounded-sm">
           {currentLot ? (
             <div className="space-y-4 my-2">
@@ -265,11 +366,11 @@ const MyLotsContent = () => {
                   <p>Un ou plusieurs produits ne sont plus disponibles.</p>
                 </Alert>
               )}
-              <h2 className="text-2xl text-black drop-shadow-md">
+              <h2 className="text-2xl text-black font-bold font-Lato">
                 Lot {FormatText(currentLot.name)}
               </h2>
               <Separator />
-              <ScrollArea className="w-[800px]  whitespace-nowrap">
+              <ScrollArea className="md:w-[800px] md:whitespace-nowrap">
                 <div className="flex space-x-4 w-max p-4 pb-6">
                   {currentLot.posts.map(
                     (post) =>
@@ -318,7 +419,7 @@ const MyLotsContent = () => {
               </ScrollArea>
               <Separator />
               <div>
-                <h2 className="text-2xl text-black drop-shadow-md">
+                <h2 className="text-2xl text-black font-bold font-Lato">
                   Prix du lots : {FormatPrice(TotalPriceLot(currentLot))} €
                 </h2>
               </div>
@@ -380,7 +481,9 @@ const MyLotsContent = () => {
               </div>
             </div>
           ) : (
-            <h2 className="text-2xl text-black drop-shadow-md">Aucun lot</h2>
+            <h2 className="text-2xl text-black font-bold font-Lato">
+              Aucun lot
+            </h2>
           )}
         </section>
       </div>

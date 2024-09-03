@@ -22,7 +22,7 @@ export default function MessageBlock({
             <p>{FormatDateForMessage(messageUser.createdAt)}</p>
           </div>
           <div className="flex justify-start gap-4 flex-row">
-            <Avatar className="h-[45px] w-[45px] -translate-y-4">
+            <Avatar className="h-[30px] w-[30px] md:h-[45px] md:w-[45px] -translate-y-4">
               <AvatarImage src={user?.image || ""} />
               <AvatarFallback className="bg-[#2D8653]">
                 <FaUser className="text-white w-6 h-6" />
@@ -59,7 +59,7 @@ export default function MessageBlock({
                 </span>
               </div>
             </div>
-            <Avatar className="h-[45px] w-[45px] -translate-y-4">
+            <Avatar className="h-[30px] w-[30px] md:h-[45px] md:w-[45px] -translate-y-4">
               <AvatarImage src={user?.image || ""} />
               <AvatarFallback className="bg-[#2D8653]">
                 <FaUser className="text-white w-6 h-6" />

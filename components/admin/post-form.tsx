@@ -86,7 +86,7 @@ export default function PostForm() {
 
     startTransition(() => {
       if (!currentPost.id) {
-        // Creation d&#39;un post
+        // Creation d'un post
         CreatePost(post as Post).then((data) => {
           if (data?.success) {
             if (tempUploadFiles.length > 0) {
@@ -145,7 +145,7 @@ export default function PostForm() {
           }
         });
       } else {
-        // Mise a jour d&#39;un post
+        // Mise a jour d'un post
         UpdatePost(post as Post).then((dataUpdate) => {
           if (dataUpdate?.success) {
             if (tempUploadFiles.length > 0) {
@@ -248,7 +248,7 @@ export default function PostForm() {
                   </FormItem>
                 )}
               />
-              {/* Valeur de la description de l&#39;annonce */}
+              {/* Valeur de la description de l'annonce */}
               <FormField
                 control={form.control}
                 name={"description"}
@@ -271,7 +271,7 @@ export default function PostForm() {
             </div>
             <div className="flex flex-row space-x-12">
               <div className="space-y-4 w-full">
-                {/* Valeur du prix de l&#39;annonce */}
+                {/* Valeur du prix de l'annonce */}
                 <FormField
                   control={form.control}
                   name={"price"}
@@ -294,7 +294,7 @@ export default function PostForm() {
                 <CreateAttributsForm />
               </div>
               <div className="space-y-4 w-full">
-                {/* Valeur de l&#39;état de l&#39;annonce */}
+                {/* Valeur de l'état de l'annonce */}
                 <FormField
                   control={form.control}
                   name={"state"}

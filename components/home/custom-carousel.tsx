@@ -19,12 +19,14 @@ interface Props {
 
 const CustomCarousel: React.FC<Props> = ({ posts, title }) => {
   if (!posts || posts.length === 0) {
-    return <h1 className="text-2xl font-bold drop-shadow-md">{title}</h1>;
+    return <h1 className="text-xl md:text-2xl font-bold">{title}</h1>;
   }
 
   return (
     <>
-      <h1 className="text-2xl font-bold drop-shadow-md">{title}</h1>
+      <h1 className="text-xl md:text-2xl font-bold text-center md:text-left">
+        {title}
+      </h1>
       <Separator />
       <Carousel
         plugins={[
@@ -36,7 +38,7 @@ const CustomCarousel: React.FC<Props> = ({ posts, title }) => {
           align: "start",
           loop: true,
         }}
-        className="w-full max-w-[1200px] mx-auto px-4">
+        className="w-full md:max-w-[1200px] md:mx-auto md:px-4">
         <CarouselContent>
           {posts
             .sort((a, b) => b!.createdAt.getTime() - a!.createdAt.getTime())

@@ -12,10 +12,10 @@ const CreditsRefContent = () => {
             Attributions et credits
           </h2>
           <ul className="text-black mt-4 flex flex-col gap-y-3">
-            <li className="flex flex-row gap-x-4 items-center">
+            <li className="flex flex-col md:flex-row gap-y-4 md:gap-x-4 items-center">
               <Image
                 alt={
-                  "Image de freepik Assortiment d&#39;objets du marché d&#39;antiquité"
+                  "Image de freepik Assortiment d'objets du marché d'antiquité"
                 }
                 className="rounded-md shadow-md"
                 width="150"
@@ -31,7 +31,7 @@ const CreditsRefContent = () => {
                 d&#39;antiquités
               </Link>
             </li>
-            <li className="flex flex-row gap-x-4 items-center">
+            <li className="flex flex-col md:flex-row gap-y-4 md:gap-x-4 items-center">
               <Image
                 alt={
                   "Image de freepik Scène avec des articles divers vendus à une vente de cour pour des bonnes affaires."

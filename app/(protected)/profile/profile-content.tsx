@@ -154,7 +154,7 @@ const ProfileContent = () => {
   return (
     <>
       {currentUser && (
-        <div className="flex flex-row space-x-6 h-full w-full">
+        <div className="flex flex-col md:flex-row space-y-6 md:space-x-6 h-full w-full">
           <section className="flex flex-col gap-y-10 bg-white w-full py-4 px-8 shadow-md rounded-sm">
             <h1 className="text-2xl font-bold text-center ">
               Informations du compte
@@ -192,24 +192,26 @@ const ProfileContent = () => {
                 </Label>
                 {currentUser.messages.length}
               </p>
-              <p className="flex justify-between items-center">
+              <p className="flex flex-col md:flex-row justify-between items-start md:items-center gap-y-4 md:gap-y-0">
                 <Label className="font-bold text-md">
                   Double Authentification :{" "}
                 </Label>
-                {currentUser.isTwoFactorEnabled ? (
-                  <span className="text-sm font-bold text-white bg-[#2d8653] px-2 py-1 rounded">
-                    Activé
-                  </span>
-                ) : (
-                  <span className="text-sm font-bold text-white bg-red-500 px-2 py-1 rounded">
-                    Désactivé
-                  </span>
-                )}
-                <Switch
-                  id="airplane-mode"
-                  checked={currentUser.isTwoFactorEnabled}
-                  onCheckedChange={(e) => handleEnabledTowFactor(e.valueOf())}
-                />
+                <div className="flex flex-row space-x-6 items-center">
+                  {currentUser.isTwoFactorEnabled ? (
+                    <span className="text-sm font-bold text-white bg-[#2d8653] px-2 py-1 rounded">
+                      Activé
+                    </span>
+                  ) : (
+                    <span className="text-sm font-bold text-white bg-red-500 px-2 py-1 rounded">
+                      Désactivé
+                    </span>
+                  )}
+                  <Switch
+                    id="airplane-mode"
+                    checked={currentUser.isTwoFactorEnabled}
+                    onCheckedChange={(e) => handleEnabledTowFactor(e.valueOf())}
+                  />
+                </div>
               </p>
               <Dialog>
                 <DialogTrigger className="flex justify-start">
@@ -291,7 +293,7 @@ const ProfileContent = () => {
                 <form
                   onSubmit={form.handleSubmit(onSubmit)}
                   className="space-y-4">
-                  <div className="flex flex-row gap-x-6 justify-center">
+                  <div className="flex flex-col md:flex-row gap-y-6 md:gap-x-6 justify-center">
                     <div className="space-y-4">
                       <FormField
                         control={form.control}
@@ -389,7 +391,7 @@ const ProfileContent = () => {
                       />
                     </div>
                   </div>
-                  <div className="flex flex-row gap-x-6 justify-center">
+                  <div className="flex flex-col md:flex-row gap-y-6 md:gap-x-6 justify-center">
                     <FormField
                       control={form.control}
                       name={"password"}

@@ -33,8 +33,8 @@ const FavoritesContent = () => {
 
   return (
     <>
-      <div className="flex flex-row space-x-6 h-full w-full">
-        <aside className="flex flex-col gap-y-4 bg-white w-1/3 py-4 px-8 shadow-md rounded-sm">
+      <div className="flex flex-col md:flex-row md:space-x-6 h-full w-full">
+        <aside className="flex flex-col gap-y-4 bg-white md:w-1/3 py-4 px-8 shadow-md rounded-sm">
           <div className="space-y-4 my-2">
             <div className="flex w-full items-center space-x-2">
               <Input
@@ -59,7 +59,7 @@ const FavoritesContent = () => {
             alt={"Bannier publicitaire vertical 1"}
             width="300"
             height="800"
-            className="object-fit rounded-md my-auto"
+            className="object-fit rounded-md my-auto hidden md:block"
             src={"/images/banner/banner_v_1.jpg"}
           />
         </aside>
@@ -76,8 +76,8 @@ const FavoritesContent = () => {
                   </h2>
                 </div>
                 <Separator />
-                <ScrollArea className="h-[650px] w-full">
-                  <div className="grid grid-cols-1 md:grid-cols-3 grid-rows-3 gap-4 mx-6">
+                <ScrollArea className="h-fit w-full">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mx-6">
                     {filteredPosts?.map((post, index) => (
                       <div
                         key={post.id}

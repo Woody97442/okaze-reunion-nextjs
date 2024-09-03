@@ -48,6 +48,14 @@ import { Card } from "@/components/ui/card";
 import Image from "next/image";
 import { Checkbox } from "@/components/ui/checkbox";
 import { FormatDateForMessage } from "@/lib/format-date";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { HiMenuAlt2 } from "react-icons/hi";
 
 const MessageContent = () => {
   const { currentUser, setCurrentUser } = FindUserContext();
@@ -71,7 +79,7 @@ const MessageContent = () => {
               const listMessages = currentUser?.messages;
               const updateMessage = data.updateReadMessage;
               if (listMessages) {
-                // Mise à jour de l&#39;état du message
+                // Mise à jour de l'état du message
                 const updatedMessages = listMessages.map((message) =>
                   message.id === updateMessage.id ? updateMessage : message
                 );
@@ -172,10 +180,12 @@ const MessageContent = () => {
   };
 
   return (
-    <div className="flex flex-row space-x-6 h-full w-full">
-      <aside className="flex flex-col gap-y-4 bg-white w-1/2 py-4 px-8 shadow-md rounded-sm">
+    <div className="flex flex-col md:flex-row md:space-x-6 h-full w-full">
+      <aside className="hidden md:flex flex-col gap-y-4 bg-white w-1/2 py-4 px-8 shadow-md rounded-sm">
         <div className="space-y-4 my-2">
-          <h2 className="text-2xl text-black drop-shadow-md">Mes Messages</h2>
+          <h2 className="text-xl md:text-2xl text-black font-bold font-lato">
+            Mes Messages
+          </h2>
         </div>
         <div className="space-y-4 my-2">
           <div className="flex w-full items-center space-x-2">
@@ -196,7 +206,7 @@ const MessageContent = () => {
             </Button>
           </div>
           <Separator />
-          <h3 className="text-lg font-bold">Filtre :</h3>
+          <h3 className="text-lg font-bold font-lato">Filtre :</h3>
           <div className="flex flex-col space-y-4">
             <div className="items-top flex space-x-2 justify-between items-center">
               <div className="grid gap-1.5 leading-none">
@@ -304,12 +314,14 @@ const MessageContent = () => {
                           )}
                           <div>
                             <div className="flex flex-row space-x-2">
-                              <span className="text-sm font-bold">
+                              <span className="text-sm font-bold font-lato">
                                 {message.lot.name}
                               </span>
                             </div>
                             <div>
-                              <span className="text-sm font-bold">Date : </span>
+                              <span className="text-sm font-bold font-lato">
+                                Date :{" "}
+                              </span>
                               <span>
                                 {FormatDateForMessage(message.createdAt)}
                               </span>
@@ -325,7 +337,7 @@ const MessageContent = () => {
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[425px]">
                           <DialogHeader className="space-y-4">
-                            <DialogTitle className="text-center text-xl font-bold">
+                            <DialogTitle className="text-center text-xl font-bold font-lato">
                               Supprimer le message
                             </DialogTitle>
                             <DialogDescription>
@@ -378,12 +390,14 @@ const MessageContent = () => {
                           )}
                           <div>
                             <div className="flex flex-row space-x-2">
-                              <span className="text-md font-bold">
+                              <span className="text-md font-bold font-lato">
                                 {message.post ? message.post.title : "Annonce"}
                               </span>
                             </div>
                             <div>
-                              <span className="text-sm font-bold">Date : </span>
+                              <span className="text-sm font-bold font-lato">
+                                Date :{" "}
+                              </span>
                               <span>
                                 {FormatDateForMessage(message.createdAt)}
                               </span>
@@ -399,7 +413,7 @@ const MessageContent = () => {
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[425px]">
                           <DialogHeader className="space-y-4">
-                            <DialogTitle className="text-center text-xl font-bold">
+                            <DialogTitle className="text-center text-xl font-bold font-lato">
                               Supprimer le message
                             </DialogTitle>
                             <DialogDescription>
@@ -431,30 +445,337 @@ const MessageContent = () => {
           </ScrollArea>
         </div>
       </aside>
+
+      {/* Menu sheet */}
+      <div className="grid gap-2 md:hidden">
+        <Sheet key="left">
+          <SheetTrigger
+            asChild
+            className="mb-6 ">
+            <div className="bg-secondary rounded-md p-2 w-full flex flex-row items-center justify-center text-white gap-4">
+              <HiMenuAlt2 className="w-6 h-6 " />
+              Sélectionnez un messages
+            </div>
+          </SheetTrigger>
+          <SheetContent
+            side="left"
+            className="w-full">
+            <SheetHeader>
+              <SheetTitle className="font-Lato mb-4">
+                <div>
+                  <span>Mes Messages</span>
+                  <Separator />
+                </div>
+              </SheetTitle>
+            </SheetHeader>
+            <div className="p-4">
+              <div className="flex flex-col gap-y-6 items-center py-4 ">
+                <div className="space-y-4 my-2">
+                  <div className="flex w-full items-center space-x-2">
+                    <Input
+                      type="text"
+                      placeholder="Rechercher..."
+                      value={currentSearch}
+                      onChange={(e) => {
+                        setCurrentSearch(e.target.value);
+                      }}
+                      onKeyDown={handleKeyDown}
+                    />
+                    <Button
+                      type="submit"
+                      variant={"default"}
+                      onClick={() => setSearchTerm(currentSearch)}>
+                      <FiSearch className="w-6 h-6 text-white" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <Separator />
+            <div className="p-4">
+              <div className="flex flex-col gap-y-6 items-center py-4 ">
+                <h3 className="text-lg font-bold font-lato">Filtre :</h3>
+                <div className="flex flex-row space-x-4 justify-between items-center">
+                  <div className="items-top flex space-x-2 justify-between items-center">
+                    <div className="grid gap-1.5 leading-none">
+                      <label
+                        htmlFor="new"
+                        className="text-md font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                        Lus
+                      </label>
+                    </div>
+                    <Checkbox
+                      id="read"
+                      className="h-6 w-6 "
+                      checked={filterIsRead}
+                      onClick={() => setFilterIsRead(!filterIsRead)}
+                    />
+                  </div>
+                  <div className="items-top flex space-x-4 justify-between items-center">
+                    <div className="grid gap-1.5 leading-none">
+                      <label
+                        htmlFor="new"
+                        className="text-md font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                        Non Lus
+                      </label>
+                    </div>
+                    <Checkbox
+                      id="notRead"
+                      className="h-6 w-6 "
+                      checked={filterIsNotRead}
+                      onClick={() => setFilterIsNotRead(!filterIsNotRead)}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <Separator />
+            <ScrollArea className="h-screen w-full rounded-md ">
+              <div className="grid grid-rows-1 md:grid-rows-3 gap-4">
+                {currentUser?.messages &&
+                  currentUser?.messages
+                    .filter((message) => {
+                      if (message.lot) {
+                        const filter =
+                          message.lot &&
+                          message.lot.name &&
+                          !message.isArchived &&
+                          message.lot.name
+                            .toLowerCase()
+                            .includes(searchTerm.toLowerCase());
+                        if (filterIsRead && message.isReadByAdmin) {
+                          return filter;
+                        }
+                        if (filterIsNotRead && !message.isReadByAdmin) {
+                          return filter;
+                        }
+                      } else {
+                        const filter =
+                          message.post &&
+                          message.post.title &&
+                          !message.isArchived &&
+                          message.post.title
+                            .toLowerCase()
+                            .includes(searchTerm.toLowerCase());
+                        if (filterIsRead && message.isReadByAdmin) {
+                          return filter;
+                        }
+                        if (filterIsNotRead && !message.isReadByAdmin) {
+                          return filter;
+                        }
+                      }
+                      return;
+                    })
+                    .map((message) => {
+                      // Vérifiez si message.lot et message.lot.posts sont définis et non vides
+                      const lotHasPosts =
+                        message.lot?.posts && message.lot.posts.length > 0;
+                      return message.lot ? (
+                        <div
+                          className="flex flex-row space-x-4 items-center relative "
+                          key={message.id}>
+                          <Button
+                            variant={"outline"}
+                            className={
+                              !message.isReadByAdmin
+                                ? " w-full h-auto justify-start space-x-9 bg-gray-200 shadow-md"
+                                : " w-full h-auto justify-start space-x-9 bg-white"
+                            }
+                            onClick={() => handleChooseMessage(message)}
+                            disabled={isPending}
+                            asChild>
+                            <div className="cursor-pointer">
+                              {lotHasPosts && (
+                                <Avatar className="h-[55px] w-[55px]">
+                                  <AvatarImage
+                                    src={
+                                      message.lot.posts[0].images[0]?.src ||
+                                      "/images/image_not_found_2.jpg"
+                                    }
+                                  />
+                                </Avatar>
+                              )}
+                              <div>
+                                <div className="flex flex-row space-x-2">
+                                  <span className="text-sm font-bold font-lato">
+                                    {message.lot.name}
+                                  </span>
+                                </div>
+
+                                <div>
+                                  <span className="text-sm font-bold font-lato">
+                                    Auteur :{" "}
+                                  </span>
+                                  <span>
+                                    {message.user?.name ||
+                                      message.user?.username ||
+                                      message.user?.email}
+                                  </span>
+                                </div>
+                                <div>
+                                  <span className="text-sm font-bold font-lato">
+                                    Date :{" "}
+                                  </span>
+                                  <span>
+                                    {FormatDateForMessage(message.createdAt)}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </Button>
+                          <Dialog
+                            open={modalOpen}
+                            onOpenChange={setModalOpen}>
+                            <DialogTrigger className="flex justify-start">
+                              <FiTrash2 className="w-[24px] h-[24px] cursor-pointer" />
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-[425px]">
+                              <DialogHeader className="space-y-4">
+                                <DialogTitle className="text-center text-xl font-bold">
+                                  Supprimer le message
+                                </DialogTitle>
+                                <DialogDescription>
+                                  <strong className="text-lg text-center">
+                                    Le message sera archivé
+                                  </strong>
+                                </DialogDescription>
+                                <Button
+                                  type="submit"
+                                  variant={"destructive"}
+                                  className="flex justify-center"
+                                  disabled={isPending}
+                                  onClick={() => handleDeleteMessage(message)}>
+                                  Confirmer
+                                </Button>
+                              </DialogHeader>
+                            </DialogContent>
+                          </Dialog>
+                          <Badge
+                            variant="secondary"
+                            className="absolute left-0 bottom-0 text-white">
+                            LOT
+                          </Badge>
+                        </div>
+                      ) : (
+                        <div
+                          className="flex flex-row space-x-4 items-center relative"
+                          key={message.id}>
+                          <Button
+                            variant={"outline"}
+                            className={
+                              !message.isReadByAdmin
+                                ? " w-full h-auto justify-start space-x-9 bg-gray-200 shadow-md"
+                                : " w-full h-auto justify-start space-x-9 bg-white"
+                            }
+                            onClick={() => handleChooseMessage(message)}
+                            disabled={isPending}
+                            asChild>
+                            <div className="cursor-pointer">
+                              {message.post &&
+                                message.post.images.length > 0 && (
+                                  <Avatar className="h-[55px] w-[55px]">
+                                    <AvatarImage
+                                      src={
+                                        message.post.images[0]?.src ||
+                                        "/images/image_not_found_2.jpg"
+                                      }
+                                    />
+                                  </Avatar>
+                                )}
+                              <div>
+                                <div className="flex flex-row space-x-2">
+                                  <span className="text-sm font-bold">
+                                    {message.post
+                                      ? message.post.title
+                                      : "Annonce"}
+                                  </span>
+                                </div>
+
+                                <div>
+                                  <span className="text-sm font-bold">
+                                    Auteur :{" "}
+                                  </span>
+                                  <span>
+                                    {message.user?.name ||
+                                      message.user?.username ||
+                                      message.user?.email}
+                                  </span>
+                                </div>
+                                <div>
+                                  <span className="text-sm font-bold">
+                                    Date :{" "}
+                                  </span>
+                                  <span>
+                                    {FormatDateForMessage(message.createdAt)}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </Button>
+                          <Dialog
+                            open={modalOpen}
+                            onOpenChange={setModalOpen}>
+                            <DialogTrigger className="flex justify-start">
+                              <FiTrash2 className="w-[24px] h-[24px] cursor-pointer" />
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-[425px]">
+                              <DialogHeader className="space-y-4">
+                                <DialogTitle className="text-center text-xl font-bold">
+                                  Supprimer le message
+                                </DialogTitle>
+                                <DialogDescription>
+                                  <strong className="text-lg text-center">
+                                    Le message sera archivé et vous ne pourrez
+                                    plus le voir
+                                  </strong>
+                                </DialogDescription>
+                                <Button
+                                  type="submit"
+                                  variant={"destructive"}
+                                  className="flex justify-center"
+                                  disabled={isPending}
+                                  onClick={() => handleDeleteMessage(message)}>
+                                  Confirmer
+                                </Button>
+                              </DialogHeader>
+                            </DialogContent>
+                          </Dialog>
+                          <Badge
+                            variant="default"
+                            className="absolute left-0 bottom-0 text-white">
+                            ANNONCE
+                          </Badge>
+                        </div>
+                      );
+                    })}
+              </div>
+            </ScrollArea>
+          </SheetContent>
+        </Sheet>
+      </div>
+
       <section className="flex flex-col justify-between bg-white w-full py-4 px-8 shadow-md rounded-sm">
         {currentMessage ? (
           <div className="flex flex-col justify-between h-full">
             <div className="space-y-4">
-              <div className="flex flex-row space-x-4 items-center">
-                <h2 className="text-2xl text-black drop-shadow-md font-semibold">
-                  {currentMessage.lot
-                    ? "Message :"
-                    : "Message de l&#39;annonce :"}
+              <div className="flex flex-col md:flex-row space-y-4 md:space-x-4 items-start md:items-center">
+                <h2 className="text-xl md:text-2xl text-black font-bold font-lato ">
+                  {currentMessage.lot ? "Message :" : "Message de l'annonce :"}
                 </h2>
-                <span className="text-xl">
+                <span className="text-lg md:text-xl">
                   {currentMessage.lot
                     ? currentMessage.lot.name
                     : currentMessage.post?.title}
                 </span>
               </div>
-              <div className="flex flex-row justify-between">
-                <div>
+              <div className="flex flex-col md:flex-row justify-between space-y-4 md:space-y-0">
+                <div className="flex flex-col space-y-4 md:space-y-0">
                   <span className="text-lg font-semibold">
                     {currentMessage.lot
                       ? "Prix du lots de base : "
-                      : "Prix de l&#39;annonce : "}
+                      : "Prix de l'annonce : "}
                   </span>
-                  <span>
+                  <span className="inline-flex items-center justify-center whitespace-nowrap rounded-md font-medium bg-secondary text-primary-foreground shadow h-8 px-4 py-2">
                     {currentMessage.lot
                       ? `${
                           currentMessage.lot &&
@@ -466,11 +787,11 @@ const MessageContent = () => {
                         }€`}
                   </span>
                 </div>
-                <div>
+                <div className="flex flex-col space-y-4 md:space-y-0">
                   <span className="text-lg font-semibold">
                     {currentMessage.lot
                       ? "Offre pour le lots : "
-                      : "Offre pour l&#39;annonce : "}
+                      : "Offre pour l'annonce : "}
                   </span>
                   <span className="inline-flex items-center justify-center whitespace-nowrap rounded-md font-medium bg-primary text-primary-foreground shadow h-8 px-4 py-2">
                     {currentMessage.content &&
@@ -480,11 +801,11 @@ const MessageContent = () => {
                 </div>
               </div>
               <Separator />
-              <div className="flex flex-row justify-between items-center">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
                 <span className="text-lg font-semibold">
                   {currentMessage.lot
                     ? "Annonces dans le lot"
-                    : "Image de l&#39;annonce"}
+                    : "Image de l'annonce"}
                 </span>
                 {currentMessage.post && (
                   <Link
@@ -494,7 +815,7 @@ const MessageContent = () => {
                   </Link>
                 )}
               </div>
-              <ScrollArea className="w-[800px]  whitespace-nowrap">
+              <ScrollArea className="w-full md:w-[800px] whitespace-nowrap">
                 {currentMessage.lot ? (
                   <div className="flex space-x-4 w-max p-4 pb-6">
                     {currentMessage.lot &&
@@ -524,7 +845,7 @@ const MessageContent = () => {
                                 )}
                               </Link>
                               <span className="absolute bottom-0 right-0 w-full p-2 rounded-b-md bg-[#01010165] shadow-[0_0_10px_0_rgba(0,0,5,0.5)]">
-                                <div className="font-bold text-white text-center">
+                                <div className="font-bold font-lato text-white text-center">
                                   prix : {FormatPrice(post.price)} €
                                 </div>
                               </span>
@@ -551,7 +872,7 @@ const MessageContent = () => {
                                 />
                               </DialogTrigger>
                               <DialogContent className="bg-transparent border-none p-0 text-white">
-                                <DialogTitle className="text-xl text-white">
+                                <DialogTitle className="text-lg md:text-xl text-white">
                                   {currentMessage.post
                                     ? currentMessage.post.title
                                     : ""}
@@ -580,7 +901,7 @@ const MessageContent = () => {
               </ScrollArea>
             </div>
             {/* Le contenue de la conversation */}
-            <div className="h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-300">
+            <div className="h-[400px] md:h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-300">
               {currentMessage.content.map((contentMessage) => (
                 <div
                   key={contentMessage.id}
@@ -590,7 +911,7 @@ const MessageContent = () => {
               ))}
             </div>
 
-            {/* Le formulair d&#39;envoi de message */}
+            {/* Le formulair d'envoi de message */}
             <div>
               <Separator className="my-4" />
               <Form {...form}>
@@ -630,7 +951,9 @@ const MessageContent = () => {
             </div>
           </div>
         ) : (
-          <h2 className="text-2xl text-black drop-shadow-md">Aucun Message</h2>
+          <h2 className="text-lg md:text-2xl text-black font-bold font-lato">
+            Aucun Message
+          </h2>
         )}
       </section>
     </div>

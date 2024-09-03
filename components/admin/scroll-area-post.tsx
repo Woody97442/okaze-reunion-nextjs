@@ -85,13 +85,13 @@ export default function ScrollAreaPost() {
                 className="relative transition-transform duration-300 ease-in-out transform hover:scale-105"
                 key={index}>
                 <Image
-                  alt="preview de l&#39;image de l&#39;annonce"
+                  alt="preview de l'image de l'annonce"
                   className="rounded-md w-40 h-40 object-cover"
                   width="160"
                   height="160"
                   src={file.src}
                 />
-                {/* Supprime une image de l&#39;annonce quand on édite l&#39;annonce */}
+                {/* Supprime une image de l'annonce quand on édite l'annonce */}
                 <Button
                   variant={"ghost"}
                   disabled={isPending}
@@ -109,13 +109,13 @@ export default function ScrollAreaPost() {
                 className="relative transition-transform duration-300 ease-in-out transform hover:scale-105"
                 key={index}>
                 <Image
-                  alt="preview de l&#39;image de l&#39;annonce"
+                  alt="preview de l'image de l'annonce"
                   className="rounded-md w-40 h-40 object-cover"
                   width="160"
                   height="160"
                   src={file.fileUrl}
                 />
-                {/* Supprime une image qui n&#39;est pas encore sauvegardé de l&#39;annonce */}
+                {/* Supprime une image qui n'est pas encore sauvegardé de l'annonce */}
                 <Button
                   variant={"ghost"}
                   disabled={isPending}

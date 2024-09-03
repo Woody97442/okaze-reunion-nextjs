@@ -90,7 +90,7 @@ export default function CreateCategoryForm({ variant }: { variant?: boolean }) {
                         variant: "destructive",
                         title: "Erreur",
                         description:
-                          "Une erreur est survenue pendant l&#39;upload de l&#39;icône !",
+                          "Une erreur est survenue pendant l'upload de l'icône !",
                       });
                       setOpen(false);
                     }

@@ -47,6 +47,7 @@ const generateAdmin = async () => {
     })
 };
 
+
 const clearDatabase = async () => {
     await prisma.account.deleteMany({});
     await prisma.attribut.deleteMany({});
@@ -320,21 +321,21 @@ async function main() {
 
     await generateAdmin();
 
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 25; i++) {
         await generateFakerUser();
     }
 
     await generateCategories();
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 50; i++) {
         await generatePost();
     }
 
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 10; i++) {
         await generateLot();
     }
 
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 10; i++) {
         if (i % 2 === 0) {
             await generateMessageForLot();
         } else {

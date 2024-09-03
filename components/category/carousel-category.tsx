@@ -19,7 +19,7 @@ interface Props {
 const CarouselCategories: React.FC<Props> = ({ posts, categoryName }) => {
   if (!posts || posts.length === 0) {
     return (
-      <h1 className="text-2xl text-black drop-shadow-md">
+      <h1 className="text-xl md:text-2xl font-bold">
         Nouvelles Offres / {categoryName}
       </h1>
     );
@@ -27,7 +27,7 @@ const CarouselCategories: React.FC<Props> = ({ posts, categoryName }) => {
 
   return (
     <>
-      <h1 className="text-2xl text-black drop-shadow-md">
+      <h1 className="text-xl md:text-2xl font-bold">
         Nouvelles Offres / {categoryName}
       </h1>
       <Carousel
@@ -40,7 +40,7 @@ const CarouselCategories: React.FC<Props> = ({ posts, categoryName }) => {
           align: "start",
           loop: true,
         }}
-        className="w-full max-w-[1400px] mx-auto px-4">
+        className="w-full md:max-w-[1200px] md:mx-auto md:px-4">
         <CarouselContent>
           {posts
             .sort((a, b) => b!.createdAt.getTime() - a!.createdAt.getTime())

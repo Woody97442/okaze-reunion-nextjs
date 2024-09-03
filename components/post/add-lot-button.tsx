@@ -164,7 +164,7 @@ export const AddLotButton = ({ postId }: { postId: string }) => {
         <Separator />
         <DialogHeader>
           <DialogTitle>Ajouter à un lot</DialogTitle>
-          <DialogDescription>Ajouter un lot à ce produit ?</DialogDescription>
+          <DialogDescription>Ajouter un produit à ce lot ?</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <Select

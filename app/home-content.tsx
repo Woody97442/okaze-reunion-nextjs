@@ -2,7 +2,6 @@
 
 import BannerH from "@/components/banner/banner-h";
 import CustomCarousel from "@/components/home/custom-carousel";
-import { Separator } from "@/components/ui/separator";
 import { Post } from "@/prisma/post/types";
 import Image from "next/image";
 
@@ -33,7 +32,7 @@ const HomeContent = ({ posts }: { posts: Post[] }) => {
       <BannerH variant="1" />
 
       {/* La Zone */}
-      <div className="flex flex-row space-x-6 h-full w-full">
+      <div className="flex flex-col md:flex-row space-y-6 md:space-x-6 h-full w-full">
         <section className="flex flex-row gap-y-4 w-full">
           <div className="flex justify-center items-center">
             <Image
@@ -42,7 +41,7 @@ const HomeContent = ({ posts }: { posts: Post[] }) => {
               height={420}
               className=" shadow-md rounded-sm w-full h-full object-cover"
               priority
-              alt={"Logo de l&#39;application Okaze"}
+              alt={"Logo de l'application Okaze"}
             />
           </div>
         </section>
@@ -73,7 +72,7 @@ const HomeContent = ({ posts }: { posts: Post[] }) => {
                   height={250}
                   className=" object-cover"
                   priority
-                  alt={"Logo de l&#39;application Okaze"}
+                  alt={"Logo de l'application Okaze"}
                 />
               </div>
             </a>
@@ -92,7 +91,7 @@ const HomeContent = ({ posts }: { posts: Post[] }) => {
       </div>
 
       {/* Section de presentation */}
-      <div className="flex flex-row space-x-6 h-full w-full">
+      <div className="flex flex-col md:flex-row space-y-6 md:space-x-6 h-full w-full">
         <section className="flex flex-row gap-y-4 bg-primary w-full py-4 px-8 shadow-md rounded-sm text-white">
           <div className="flex flex-col justify-center items-center gap-4">
             <h2 className="text-3xl font-bold">Bienvenue sur OKAZE Réunion</h2>
@@ -126,7 +125,7 @@ const HomeContent = ({ posts }: { posts: Post[] }) => {
               height={420}
               className=" shadow-md rounded-sm w-full h-full object-cover"
               priority
-              alt={"Logo de l&#39;application Okaze"}
+              alt={"Logo de l'application Okaze"}
             />
           </div>
         </section>

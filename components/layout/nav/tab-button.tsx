@@ -31,8 +31,8 @@ export const TabButton = ({
               className={`flex flex-col items-center gap-y-1 ${
                 pathname === "/dashboard" ? "text-white font-bold" : ""
               }`}>
-              <LiaUserShieldSolid className="w-7 h-7" />
-              <span className="font-Lato">Administration</span>
+              <LiaUserShieldSolid className="w-10 h-10 md:w-7 md:h-7" />
+              <span className="font-Lato hidden md:block">Administration</span>
             </Link>
           </Button>
         </div>
@@ -46,8 +46,8 @@ export const TabButton = ({
             className={`flex flex-col items-center gap-y-1 ${
               pathname === "/favorites" ? "text-white font-bold" : ""
             }`}>
-            <BsHeart className="w-6 h-6" />
-            <span className="font-Lato">Favoris</span>
+            <BsHeart className="w-9 h-9 md:w-6 md:h-6" />
+            <span className="font-Lato hidden md:block">Favoris</span>
           </Link>
         </Button>
       </div>
@@ -60,8 +60,8 @@ export const TabButton = ({
             className={`flex flex-col items-center gap-y-1 ${
               pathname === "/my-lots" ? "text-white font-bold" : ""
             }`}>
-            <BsBoxSeam className="w-6 h-6" />
-            <span className="font-Lato">Mes Lots</span>
+            <BsBoxSeam className="w-9 h-9 md:w-6 md:h-6" />
+            <span className="font-Lato hidden md:block">Mes Lots</span>
           </Link>
         </Button>
       </div>
@@ -84,7 +84,7 @@ export const TabButton = ({
                 : ""
             }`}>
             <div className="relative">
-              <FiMail className="w-6 h-6" />
+              <FiMail className="w-9 h-9 md:w-6 md:h-6" />
               {unreadMessagesCount && unreadMessagesCount > 0 ? (
                 <span className="absolute -top-4 -right-4 text-xs bg-secondary w-auto h-auto py-1 px-2 rounded-full flex items-center justify-center text-white">
                   {unreadMessagesCount}
@@ -98,7 +98,7 @@ export const TabButton = ({
                 </span>
               ) : null}
             </div>
-            <span className="font-Lato">Messages</span>
+            <span className="font-Lato hidden md:block">Messages</span>
           </Link>
         </Button>
       </div>
