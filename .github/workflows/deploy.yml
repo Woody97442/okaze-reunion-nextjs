@@ -75,10 +75,6 @@ jobs:
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
           cd /home/okaze-reunion/htdocs/okaze-reunion-nextjs/
           nvm use 20.11.1
-          echo "Checking Node.js version..."
-          node -v
-          echo "Checking npm version..."
-          npm -v
           npm run build
 
     # Étape 7 : Redémarrer PM2
