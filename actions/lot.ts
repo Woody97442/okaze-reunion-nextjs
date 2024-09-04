@@ -73,7 +73,7 @@ export const addToLot = async (lotId: string, postId: string) => {
     });
 
     if (!existingPost) {
-        return { error: "post introuvable !" };
+        return { error: "Annonce introuvable !" };
     }
 
     const postExistInLot = await prisma.lot.findUnique({
@@ -86,7 +86,7 @@ export const addToLot = async (lotId: string, postId: string) => {
     });
 
     if (postExistInLot?.posts.some((post) => post.id === postId)) {
-        return { error: "post deja dans le lot !" };
+        return { error: "Annonce deja dans le lot !" };
     }
 
     const updatedLot = await prisma.lot.update({
@@ -193,7 +193,7 @@ export const deletePostInLot = async (postId: string, lotId: string) => {
     });
 
     if (!existingPost) {
-        return { error: "post introuvable !" };
+        return { error: "Annonce introuvable !" };
     }
 
     const updatedLot = await prisma.lot.update({
@@ -230,6 +230,6 @@ export const deletePostInLot = async (postId: string, lotId: string) => {
         return { delete: true, lot: null, success: "lot vide supprimé !" };
     }
 
-    return { delete: false, lot: updatedLot, success: "post supprimé !" };
+    return { delete: false, lot: updatedLot, success: "Annonce supprimé !" };
 
 }

@@ -182,7 +182,7 @@ const ProfileContent = () => {
               </p>
               <p className="flex justify-between">
                 <Label className="font-bold text-md">
-                  Nombre de post dans les favoris :
+                  Nombre de Annonce dans les favoris :
                 </Label>
                 {currentUser.favorite ? currentUser.favorite.posts.length : 0}
               </p>

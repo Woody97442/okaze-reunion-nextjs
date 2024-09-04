@@ -307,7 +307,7 @@ export const CreateMessagePost = async (formData: FormData) => {
     }
 
     if (!exitingPost) {
-        return { error: "annonce introuvable si le probleme persiste contactez l'administrateur !" }
+        return { error: "Annonce introuvable si le probleme persiste contactez l'administrateur !" }
     }
 
     if (exitingPost.messages?.some((message) => message.userId === currentUserId)) {

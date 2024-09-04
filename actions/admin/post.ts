@@ -88,7 +88,7 @@ export const CreatePost = async (post: Post) => {
             }
         });
 
-        return { post: newPost, success: "Post créé avec succes" };
+        return { post: newPost, success: "Annonce créé avec succes" };
     } catch (error) {
         console.log(error);
         return { error: "Une erreur est survenue !" };
@@ -129,7 +129,7 @@ export const UpdatePost = async (updateCurrentPost: Post) => {
     });
 
     if (!existingPost) {
-        return { error: "Post introuvable !" };
+        return { error: "Annonce introuvable !" };
     }
 
     // Extraire les IDs des catégories et attributs existants
@@ -189,7 +189,7 @@ export const UpdatePost = async (updateCurrentPost: Post) => {
             }
         });
 
-        return { post: updatedPost, success: "Post mise a jour avec succes" };
+        return { post: updatedPost, success: "Annonce mise a jour avec succes" };
     } catch (error) {
         console.log(error);
         return { error: "Une erreur est survenue !" };
@@ -229,7 +229,7 @@ export const DeletePost = async (postId: string) => {
     });
 
     if (!existingPost) {
-        return { error: "Post introuvable !" };
+        return { error: "Annonce introuvable !" };
     }
 
     try {
@@ -281,7 +281,7 @@ export const DeletePost = async (postId: string) => {
             }
         });
 
-        return { post: [], success: "Post supprimé avec succes" };
+        return { post: [], success: "Annonce supprimé avec succes" };
     } catch (error) {
         console.log(error);
         return { error: "Une erreur est survenue !" };
@@ -315,7 +315,7 @@ export const ActivePost = async (postId: string) => {
     });
 
     if (!existingPost) {
-        return { error: "Post introuvable !" };
+        return { error: "Annonce introuvable !" };
     }
 
     try {
@@ -379,7 +379,7 @@ export const GetPostsForSearchBar = async (termes: string) => {
         return posts as Post[];
 
     } catch (error) {
-        console.error('Erreur lors de la recherche des posts:', error);
+        console.error('Erreur lors de la recherche des Annonces:', error);
         throw new Error('Une erreur est survenue lors de la recherche.');
     }
 }

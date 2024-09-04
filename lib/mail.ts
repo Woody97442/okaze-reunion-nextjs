@@ -1,3 +1,6 @@
+import PasswordResetTemplate from "@/emails/password-reset-template";
+import TwoFactorTokenTemplate from "@/emails/two-factor-token-template";
+import VerificationEmailTemplate from "@/emails/verification-email-template";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -9,8 +12,8 @@ export const sendTwoFactorTokenEmail = async (email: string, token: string) => {
     await resend.emails.send({
         from: resendEmail!,
         to: email,
-        subject: "2FA Code",
-        html: `<p>Your 2FA code is: ${token}</p>`,
+        subject: "Validation en Deux Étapes",
+        react: TwoFactorTokenTemplate({ email, token }),
     });
 }
 
@@ -21,8 +24,8 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
     await resend.emails.send({
         from: resendEmail!,
         to: email,
-        subject: "Reset your password",
-        html: `<p>Click <a href="${resetLink}">here</a> to reset your password.</p>`,
+        subject: "Réinitialiser votre mot de passe",
+        react: PasswordResetTemplate({ email, resetLink }),
     });
 }
 
@@ -32,7 +35,7 @@ export const sendVerificationEmail = async (email: string, token: string) => {
     await resend.emails.send({
         from: resendEmail!,
         to: email,
-        subject: "Confirm your email",
-        html: `<p>Click <a href="${confirmLink}">here</a> to confirm email.</p>`,
+        subject: "Confirmer votre email",
+        react: VerificationEmailTemplate({ email, confirmLink }),
     });
 }

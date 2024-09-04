@@ -84,7 +84,7 @@ export const UploadImage = async (formData: FormData, post: Post) => {
         })
 
 
-        return { newPost: findPostUpdate, success: "Post créer !" };
+        return { newPost: findPostUpdate, success: "Annonce créer !" };
     } catch (error) {
         console.error('Error uploading image:', error);
         return { error: "Une erreur est survenue !" };

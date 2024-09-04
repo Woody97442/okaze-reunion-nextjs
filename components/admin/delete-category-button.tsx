@@ -1,9 +1,7 @@
 "use client";
-import { DeletePost } from "@/actions/admin/post";
 import FindAdminContext from "@/lib/admin-context-provider";
 import React, { useState, useTransition } from "react";
 import { toast } from "../ui/use-toast";
-import { Post } from "@/prisma/post/types";
 import { Button } from "../ui/button";
 import {
   Dialog,

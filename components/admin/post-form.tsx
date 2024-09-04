@@ -162,7 +162,7 @@ export default function PostForm() {
                     if (data?.success) {
                       toast({
                         title: "Succès",
-                        description: "Post mise a jour avec succes",
+                        description: "Annonce mise a jour avec succes",
                       });
                       setIcode(data?.newPost?.icode as string);
                       setCurrentPost(data?.newPost as Post);
@@ -191,7 +191,7 @@ export default function PostForm() {
             } else {
               toast({
                 title: "Succès",
-                description: "Post mise a jour avec succes",
+                description: "Annonce mise a jour avec succes",
               });
               setIcode(dataUpdate?.post?.icode as string);
               setCurrentPost(dataUpdate?.post as Post);

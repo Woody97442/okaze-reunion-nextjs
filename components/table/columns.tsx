@@ -6,17 +6,9 @@ import { Image } from "@prisma/client";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { FaArrowsUpDown } from "react-icons/fa6";
-import { FiMoreHorizontal } from "react-icons/fi";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
 import FindAdminContext from "@/lib/admin-context-provider";
 import DeletePostButton from "../admin/delete-post-button";
 import PublishSwitch from "../admin/publish-switch";
