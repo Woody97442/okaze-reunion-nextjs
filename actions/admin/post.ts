@@ -7,6 +7,8 @@ import { $Enums } from "@prisma/client";
 import generateIcode from "@/lib/token";
 import { DeleteImage } from "./delete-image";
 
+const MAX_SEARCH_LENGTH = 100;
+
 export const GetAllPosts = async () => {
 
     const session = await auth();
@@ -346,4 +348,47 @@ export const ActivePost = async (postId: string) => {
         console.log(error);
         return { error: "Une erreur est survenue !" };
     }
+}
+
+export const GetPostsForSearchBar = async (termes: string) => {
+    try {
+
+        // Valider et assainir les termes de recherche
+        const searchQuery = validator(termes.trim());
+
+        if (searchQuery.length > MAX_SEARCH_LENGTH) {
+            throw new Error('La requête de recherche est trop longue.');
+        }
+
+        // Retourne 10 post qui correspondent à la recherche
+        const posts = await prisma.post.findMany({
+            where: {
+                title: {
+                    contains: searchQuery
+                },
+                isActive: true
+            },
+            take: 10,
+            include: {
+                categories: true,
+                attributs: true,
+                images: true
+            }
+        });
+
+        return posts as Post[];
+
+    } catch (error) {
+        console.error('Erreur lors de la recherche des posts:', error);
+        throw new Error('Une erreur est survenue lors de la recherche.');
+    }
+}
+
+const validator = (value: string) => {
+    const sanitizedValue = value
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    return sanitizedValue.trim();
 }
