@@ -64,6 +64,12 @@ jobs:
         port: 22
         script: |
           cd /home/okaze-reunion/htdocs/okaze-reunion-nextjs/
+          echo "Adding PM2 to PATH..."
+          export PATH=$PATH:/root/.nvm/versions/node/v20.11.1/bin
+          echo "Checking Node.js version..."
+          node -v
+          echo "Checking npm version..."
+          npm -v
           npm run build
 
     # Étape 7 : Redémarrer PM2
