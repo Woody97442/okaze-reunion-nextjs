@@ -13,6 +13,10 @@ jobs:
     # Étape 1 : Ajouter le répertoire Node.js au PATH
     - name: Add Node.js to PATH
       run: echo "/root/.nvm/versions/node/v20.11.1/bin" >> $GITHUB_PATH
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20.11.1'
 
     # Étape 2 : Vérification du code source
     - name: Checkout code
