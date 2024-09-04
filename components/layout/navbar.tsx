@@ -39,7 +39,7 @@ const Navbar = ({
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <>
+    <div className="fixed shadow-lg z-50 bg-white w-full">
       {pathname === "/auth/login" || pathname === "/auth/register" ? (
         <nav className="bg-white w-full shadow-lg">
           <div className=" justify-between items-center py-4 container hidden md:flex">
@@ -107,7 +107,7 @@ const Navbar = ({
         </nav>
       ) : (
         <>
-          <nav className="bg-white w-full fixed shadow-lg z-50">
+          <nav className="bg-white w-full">
             <div className="justify-between items-center py-4 container flex gap-6 flex-col md:flex-row">
               <div className="w-full flex justify-between items-center">
                 <div className="grid grid-cols-2 gap-2 md:hidden">
@@ -261,7 +261,7 @@ const Navbar = ({
           pathname={pathname}
         />
       </div>
-    </>
+    </div>
   );
 };
 

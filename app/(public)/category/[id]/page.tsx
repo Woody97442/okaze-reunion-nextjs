@@ -42,7 +42,7 @@ export default async function CategoryId({ params: { id } }: Props) {
   });
 
   return (
-    <main className="flex flex-col py-8 space-y-6 container mt-[17rem] md:mt-10">
+    <main className="flex flex-col py-8 space-y-6 container mt-[17rem] md:mt-[13rem]">
       <div className="space-y-6 text-start shadow-md bg-secondary py-4 px-12 rounded-sm">
         <h2 className="text-2xl text-white font-bold font-Lato text-center">
           Annonces {category?.name} occasion

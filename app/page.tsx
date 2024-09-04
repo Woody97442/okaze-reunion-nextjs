@@ -8,11 +8,8 @@ const HomePage = async () => {
 
   return (
     <>
-      <div className=" md:hidden px-6">
-        <Heros />
-      </div>
-      <main className="flex flex-col py-8 space-y-12 container">
-        <div className="hidden md:block">
+      <main className="flex flex-col py-8 space-y-12 container mt-[17rem] md:mt-[13rem]">
+        <div>
           <Heros />
         </div>
         <HomeContent posts={allPosts || []} />
