@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Add directory to PATH
+      run: echo "/root/.nvm/versions/node/v20.11.1/bin" >> $GITHUB_PATH
+      
     # Étape 1 : Configuration de Node.js
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -87,6 +90,8 @@ jobs:
         key: ${{ secrets.VPS_SSH_KEY }}
         port: 22
         script: |
+          export PATH=$PATH:/root/.nvm/versions/node/v20.11.1/bin
+          cd ..
           cd /home/okaze-reunion/htdocs/okaze-reunion-nextjs/
           pm2 delete okaze
           pm2 start npm --name okaze -- run start
