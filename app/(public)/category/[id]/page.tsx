@@ -42,7 +42,12 @@ export default async function CategoryId({ params: { id } }: Props) {
   });
 
   return (
-    <main className="flex flex-col py-8 space-y-6 container">
+    <main className="flex flex-col py-8 space-y-6 container mt-[17rem] md:mt-10">
+      <div className="space-y-6 text-start shadow-md bg-secondary py-4 px-12 rounded-sm">
+        <h2 className="text-2xl text-white font-bold font-Lato text-center">
+          Annonces {category?.name} occasion
+        </h2>
+      </div>
       <BannerH variant="1" />
       <div className="space-y-6 text-start shadow-md bg-white py-4 px-12 rounded-sm">
         <CarouselCategories

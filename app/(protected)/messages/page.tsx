@@ -7,7 +7,7 @@ const MessagesPage = async () => {
   if (!session) return <LoaderOkaze />;
 
   return (
-    <main className="flex flex-col py-8 space-y-6 container">
+    <main className="flex flex-col py-8 space-y-6 container mt-[17rem] md:mt-10">
       <MessageContent />
     </main>
   );

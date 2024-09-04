@@ -52,9 +52,11 @@ const MyLotsContent = () => {
   const [currentSearch, setCurrentSearch] = useState<string>("");
   const [isPending, startTransition] = useTransition();
   const [conterPost, setConterPost] = useState<number>(0);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleChooseLot = (lot: Lot) => {
     setCurrentLot(lot);
+    setMenuOpen(false);
   };
 
   const handleDeleteLot = (lot: Lot) => {
@@ -269,7 +271,10 @@ const MyLotsContent = () => {
         </aside>
         {/* Menu sheet */}
         <div className="grid gap-2 md:hidden">
-          <Sheet key="left">
+          <Sheet
+            key="left"
+            onOpenChange={setMenuOpen}
+            open={menuOpen}>
             <SheetTrigger
               asChild
               className="mb-6">
@@ -280,7 +285,7 @@ const MyLotsContent = () => {
             </SheetTrigger>
             <SheetContent
               side="left"
-              className="w-auto">
+              className="w-auto overflow-y-scroll">
               <SheetHeader>
                 <SheetTitle className="font-Lato mb-4">
                   <div>

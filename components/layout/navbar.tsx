@@ -25,6 +25,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Separator } from "../ui/separator";
 import { LogoutButton } from "../auth/client/logout-button";
 import { ExitIcon } from "@radix-ui/react-icons";
+import { useState } from "react";
 const Navbar = ({
   user,
   categories,
@@ -35,6 +36,7 @@ const Navbar = ({
   numberOfUnreadMessages: string;
 }) => {
   const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <>
@@ -105,11 +107,14 @@ const Navbar = ({
         </nav>
       ) : (
         <>
-          <nav className="bg-white w-full">
+          <nav className="bg-white w-full fixed shadow-lg z-50">
             <div className="justify-between items-center py-4 container flex gap-6 flex-col md:flex-row">
               <div className="w-full flex justify-between items-center">
                 <div className="grid grid-cols-2 gap-2 md:hidden">
-                  <Sheet key="left">
+                  <Sheet
+                    key="left"
+                    onOpenChange={setMenuOpen}
+                    open={menuOpen}>
                     <SheetTrigger asChild>
                       <div className="bg-secondary rounded-full p-2 w-fit h-fit">
                         <HiMenuAlt2 className="w-6 h-6 text-white" />
@@ -117,7 +122,7 @@ const Navbar = ({
                     </SheetTrigger>
                     <SheetContent
                       side="left"
-                      className="w-auto">
+                      className="w-auto overflow-y-scroll">
                       <SheetHeader>
                         <SheetTitle className="font-Lato mb-4">
                           <div>
@@ -168,7 +173,10 @@ const Navbar = ({
                                 key={category.id}>
                                 <Button
                                   variant={"ghost"}
-                                  className="h-full">
+                                  className="h-full"
+                                  onClick={() => {
+                                    setMenuOpen(false);
+                                  }}>
                                   <Link
                                     href={"/category/" + category.id}
                                     className={`flex flex-row items-center gap-x-2 font-bold `}>
@@ -213,7 +221,7 @@ const Navbar = ({
                   <Image
                     src="/images/logo/okaze-logo.png"
                     alt="logo de l'application Okaze Réunion"
-                    className="w-full h-[90px]"
+                    className="w-full h-[100px] md:h-[90px]"
                     width={200}
                     height={90}
                   />
@@ -236,7 +244,7 @@ const Navbar = ({
                       href="/auth/login"
                       className="flex flex-col text-white items-center gap-y-1 bg-secondary px-4 py-4 rounded-full md:p-0 md:rounded-none md:bg-transparent md:text-black">
                       <FaUser className="w-6 h-6 " />
-                      <span className="font-Lato hidden md:block">
+                      <span className="font-Lato text-nowrap hidden md:block">
                         Se connecter
                       </span>
                     </Link>

@@ -66,9 +66,11 @@ const AdminMessageContent = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [filterIsRead, setFilterIsRead] = useState<boolean>(true);
   const [filterIsNotRead, setFilterIsNotRead] = useState<boolean>(true);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleChooseMessage = (message: Message) => {
     setCurrentMessage(message);
+    setMenuOpen(false);
     if (!message.isReadByAdmin) {
       const currentMessageId = message.id;
       startTransition(() => {
@@ -618,7 +620,10 @@ const AdminMessageContent = () => {
 
       {/* Menu sheet */}
       <div className="grid gap-2 md:hidden">
-        <Sheet key="left">
+        <Sheet
+          key="left"
+          onOpenChange={setMenuOpen}
+          open={menuOpen}>
           <SheetTrigger
             asChild
             className="mb-6 ">
@@ -629,7 +634,7 @@ const AdminMessageContent = () => {
           </SheetTrigger>
           <SheetContent
             side="left"
-            className="w-full">
+            className="w-full overflow-y-scroll">
             <SheetHeader>
               <SheetTitle className="font-Lato mb-4">
                 <div>

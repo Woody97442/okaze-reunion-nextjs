@@ -29,7 +29,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
-import { HiMenuAlt1, HiMenuAlt2 } from "react-icons/hi";
+import { HiMenuAlt1 } from "react-icons/hi";
 
 interface Props {
   category: Category;
@@ -268,7 +268,7 @@ export default function ContentCategory({
           </SheetTrigger>
           <SheetContent
             side="left"
-            className="w-auto">
+            className="w-auto overflow-y-scroll">
             <SheetHeader>
               <SheetTitle className="font-Lato mb-4">
                 <div>
