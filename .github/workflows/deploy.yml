@@ -11,14 +11,10 @@ jobs:
 
     steps:
     # Étape 1 : Configuration de Node.js
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
       with:
-        node-version: '20.x'
-
-    # Étape 2 : Vérification du code source
-    - name: Checkout code
-      uses: actions/checkout@v4
+        node-version: 20.x
 
     # Étape 3 : Supprimer l'ancien build
     - name: Remove old build
