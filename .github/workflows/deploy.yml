@@ -11,16 +11,11 @@ jobs:
 
     steps:
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '20.x'
+    - name: Add directory to PATH
+      run: echo "/root/.nvm/versions/node/v20.11.1/bin" >> $GITHUB_PATH
 
     - name: Checkout code
       uses: actions/checkout@v3
-
-    - name: Add directory to PATH
-      run: echo "/root/.nvm/versions/node/v20.11.1/bin" >> $GITHUB_PATH
 
     - name: Execute deployment script via SSH
       uses: appleboy/ssh-action@v0.1.10
@@ -31,7 +26,6 @@ jobs:
         port: 22
         script: |
           export PATH=$PATH:/root/.nvm/versions/node/v20.11.1/bin
-          cd ..
           cd /home/okaze-reunion/htdocs/okaze-reunion-nextjs/
           git pull origin master
           npm install
