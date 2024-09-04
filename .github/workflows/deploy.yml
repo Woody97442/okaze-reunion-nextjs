@@ -10,13 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Étape 1 : Ajouter le répertoire Node.js au PATH
-    - name: Add Node.js to PATH
-      run: echo "/root/.nvm/versions/node/v20.11.1/bin" >> $GITHUB_PATH
+    # Étape 1 : Configuration de Node.js
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '20.11.1'
+        node-version: '20.11.1'  # Utilisez la version exacte requise
 
     # Étape 2 : Vérification du code source
     - name: Checkout code
@@ -68,8 +66,6 @@ jobs:
         port: 22
         script: |
           cd /home/okaze-reunion/htdocs/okaze-reunion-nextjs/
-          echo "Adding PM2 to PATH..."
-          export PATH=$PATH:/root/.nvm/versions/node/v20.11.1/bin
           echo "Checking Node.js version..."
           node -v
           echo "Checking npm version..."
