@@ -10,14 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-    - name: Add directory to PATH
+    # Étape 1 : Ajouter le répertoire Node.js au PATH
+    - name: Add Node.js to PATH
       run: echo "/root/.nvm/versions/node/v20.11.1/bin" >> $GITHUB_PATH
 
+    # Étape 2 : Vérification du code source
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Execute deployment script via SSH
+    # Étape 3 : Supprimer l'ancien build
+    - name: Remove old build
       uses: appleboy/ssh-action@v0.1.10
       with:
         host: ${{ secrets.VPS_HOST }}
@@ -25,9 +27,54 @@ jobs:
         key: ${{ secrets.VPS_SSH_KEY }}
         port: 22
         script: |
-          export PATH=$PATH:/root/.nvm/versions/node/v20.11.1/bin
+          cd /home/okaze-reunion/htdocs/okaze-reunion-nextjs/
+          rm -rf .next
+
+    # Étape 4 : Mise à jour du code sur le serveur
+    - name: Update code on server
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        port: 22
+        script: |
           cd /home/okaze-reunion/htdocs/okaze-reunion-nextjs/
           git pull origin master
+
+    # Étape 5 : Installer les dépendances
+    - name: Install dependencies
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        port: 22
+        script: |
+          cd /home/okaze-reunion/htdocs/okaze-reunion-nextjs/
           npm install
+
+    # Étape 6 : Construire le projet
+    - name: Build the project
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        port: 22
+        script: |
+          cd /home/okaze-reunion/htdocs/okaze-reunion-nextjs/
           npm run build
-          pm2 restart Okaze-Reunion
+
+    # Étape 7 : Redémarrer PM2
+    - name: Restart PM2 process
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        port: 22
+        script: |
+          cd /home/okaze-reunion/htdocs/okaze-reunion-nextjs/
+          pm2 delete okaze
+          pm2 start npm --name okaze -- run start
