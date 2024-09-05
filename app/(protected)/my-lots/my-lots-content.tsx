@@ -425,7 +425,7 @@ const MyLotsContent = () => {
               <Separator />
               <div>
                 <h2 className="text-2xl text-black font-bold font-Lato">
-                  Prix du lots : {FormatPrice(TotalPriceLot(currentLot))} €
+                  Prix du lot : {FormatPrice(TotalPriceLot(currentLot))} €
                 </h2>
               </div>
               <div>
