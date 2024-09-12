@@ -48,16 +48,17 @@ const HomeContent = ({ posts }: { posts: Post[] }) => {
         <div className="flex flex-col gap-y-4 w-full">
           <section className="flex flex-row gap-y-4 bg-primary w-full py-4 px-8 shadow-md rounded-sm text-white">
             <div className="flex flex-col justify-center items-center gap-4">
-              <h2 className="text-3xl font-bold">Ou Nous Trouvé</h2>
+              <h2 className="text-3xl font-bold">Où Nous Trouver</h2>
               <p className="text-justify text-base">
-                La zone où nous trouvons sont visibles sur la carte ci-contre.
+                La zone où nous nous trouvons sont visibles sur la carte
+                ci-contre.
               </p>
               <p className="text-justify text-base">
-                Au Marché au puce Saint-Pierre 97410, La Réunion Zone
+                Au Marché aux puces Saint-Pierre 97410, La Réunion Zone
                 industrielle N3
               </p>
               <h3 className="text-md font-bold ">
-                Lien vers la carte Google clic sur la carte ci-dessous
+                Lien vers la carte Google cliquez sur la carte ci-dessous
               </h3>
             </div>
           </section>
