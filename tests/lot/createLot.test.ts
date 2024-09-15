@@ -26,7 +26,7 @@ describe("createLot", () => {
         jest.clearAllMocks(); // Clear mocks before each test
     });
 
-    it("should return error if user is not authenticated", async () => {
+    it("devrait renvoyer une erreur si l'utilisateur n'est pas authentifié", async () => {
         (auth as jest.Mock).mockResolvedValueOnce(null);
 
         const result = await createLot("LotName", "post123");
@@ -34,7 +34,7 @@ describe("createLot", () => {
         expect(result).toEqual({ error: "Veuillez vous connecter !" });
     });
 
-    it("should return error if userId is not available", async () => {
+    it("devrait renvoyer une erreur si l'identifiant utilisateur n'est pas disponible", async () => {
         (auth as jest.Mock).mockResolvedValueOnce({ user: {} });
 
         const result = await createLot("LotName", "post123");
@@ -42,7 +42,7 @@ describe("createLot", () => {
         expect(result).toEqual({ error: "utilisateur introuvable !" });
     });
 
-    it("should create a new lot if user is authenticated", async () => {
+    it("devrait créer un nouveau lot si l'utilisateur est authentifié", async () => {
         (auth as jest.Mock).mockResolvedValueOnce(mockSession);
 
         const mockLot = {

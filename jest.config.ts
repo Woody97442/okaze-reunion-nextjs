@@ -2,7 +2,7 @@ import type { Config } from 'jest';
 
 const config: Config = {
     testEnvironment: 'jsdom', // Pour les tests frontend
-    moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
+    moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'd.ts'],
     transform: {
         '^.+\\.(ts|tsx)$': 'ts-jest',
     },
