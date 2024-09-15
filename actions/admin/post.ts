@@ -4,7 +4,7 @@ import { prisma } from "@/prisma/prismaClient";
 import { auth } from "@/auth";
 import { Post } from "@/prisma/post/types";
 import { $Enums } from "@prisma/client";
-import generateIcode from "@/lib/token";
+import { generateIcode } from "@/lib/token";
 import { DeleteImage } from "./delete-image";
 
 const MAX_SEARCH_LENGTH = 100;
@@ -189,7 +189,7 @@ export const UpdatePost = async (updateCurrentPost: Post) => {
             }
         });
 
-        return { post: updatedPost, success: "Annonce mise a jour avec succes" };
+        return { post: updatedPost, success: "Annonce mise à jour avec succès" };
     } catch (error) {
         console.log(error);
         return { error: "Une erreur est survenue !" };
@@ -281,7 +281,7 @@ export const DeletePost = async (postId: string) => {
             }
         });
 
-        return { post: [], success: "Annonce supprimé avec succes" };
+        return { post: [], success: "Annonce supprimé avec succès" };
     } catch (error) {
         console.log(error);
         return { error: "Une erreur est survenue !" };

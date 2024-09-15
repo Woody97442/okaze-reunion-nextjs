@@ -9,9 +9,9 @@ jest.mock("@/prisma/prismaClient", () => ({
         post: {
             findUnique: jest.fn(),
             update: jest.fn(),
-            image: {
-                updateMany: jest.fn(),
-            },
+        },
+        image: {
+            updateMany: jest.fn(),
         },
     },
 }));

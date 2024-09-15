@@ -85,6 +85,6 @@ describe("DeletePost", () => {
         expect(prisma.lot.delete).toHaveBeenCalledWith({ where: { id: "lot1" } });
         expect(prisma.post.delete).toHaveBeenCalledWith({ where: { id: "post123" } });
 
-        expect(result).toEqual({ post: [], success: "Annonce supprimé avec succes" });
+        expect(result).toEqual({ post: [], success: "Annonce supprimé avec succès" });
     });
 });

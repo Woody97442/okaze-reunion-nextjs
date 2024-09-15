@@ -17,7 +17,7 @@ jest.mock("@/auth", () => ({
 }));
 
 jest.mock("@/lib/token", () => ({
-    generateIcode: jest.fn(),
+    generateIcode: jest.fn(() => "icode123"),  // Mock correct de la génération de l'icode
 }));
 
 describe("CreatePost", () => {
@@ -64,7 +64,7 @@ describe("CreatePost", () => {
 
         const result = await CreatePost({
             id: "post123",
-            icode: "111",
+            icode: "",
             title: "Sample Post",
             price: 100,
             description: "Post description",
@@ -86,7 +86,7 @@ describe("CreatePost", () => {
 
         const mockPost = {
             id: "post123",
-            icode: "111",
+            icode: "icode123",  // Valeur correcte pour l'icode
             title: "Sample Post",
             price: 100,
             description: "Post description",
@@ -120,11 +120,11 @@ describe("CreatePost", () => {
 
         expect(prisma.post.create).toHaveBeenCalledWith({
             data: {
-                icode: "icode123",
-                title: "Post Title",
+                icode: "icode123",  // Le code généré par generateIcode est maintenant correct
+                title: "Sample Post",  // Utiliser les valeurs correctes
                 price: 100,
-                description: "Description",
-                state: "ACTIVE",
+                description: "Post description",
+                state: $Enums.PostState.new,  // État correct
                 categories: {
                     connect: [],
                 },
