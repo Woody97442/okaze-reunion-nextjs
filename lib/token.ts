@@ -91,7 +91,7 @@ export const generateIcode = async () => {
 
     while (true) {
         // Vérifier si le code existe déjà dans la base de données
-        const existingIcode = await prisma.post.findUnique({
+        const existingIcode = await prisma.post.findFirst({
             where: {
                 icode: uniqueCode
             }

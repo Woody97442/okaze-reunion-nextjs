@@ -85,7 +85,7 @@ export const addToLot = async (lotId: string, postId: string) => {
         },
     });
 
-    if (postExistInLot?.posts.some((post) => post.id === postId)) {
+    if (postExistInLot && postExistInLot?.posts?.some((post) => post.id === postId)) {
         return { error: "Annonce deja dans le lot !" };
     }
 
