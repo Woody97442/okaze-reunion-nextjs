@@ -360,7 +360,7 @@ export const GetPostsForSearchBar = async (termes: string) => {
             throw new Error('La requête de recherche est trop longue.');
         }
 
-        // Retourne 10 post qui correspondent à la recherche
+        // Retourne 5 post qui correspondent à la recherche
         const posts = await prisma.post.findMany({
             where: {
                 title: {
@@ -368,7 +368,7 @@ export const GetPostsForSearchBar = async (termes: string) => {
                 },
                 isActive: true
             },
-            take: 10,
+            take: 5,
             include: {
                 categories: true,
                 attributs: true,
@@ -391,4 +391,57 @@ const validator = (value: string) => {
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
     return sanitizedValue.trim();
+}
+
+export const UpdateCoverImagePost = async (idPost: string, coverIndex: number) => {
+
+    const session = await auth();
+
+    if (!session) {
+        return { error: "Veuillez vous connecter !" };
+    }
+
+    const userId = session.user.id;
+
+    if (!userId) {
+        return { error: "utilisateur introuvable !" };
+    }
+
+    const userIsAdmin = session.user.role === "ADMIN";
+
+    if (!userIsAdmin) {
+        return { error: "Vous n'avez pas les droits administrateurs !" };
+    }
+
+    const existingPost = await prisma.post.findUnique({
+        where: {
+            id: idPost
+        },
+        include: {
+            categories: true,
+            attributs: true,
+            images: true
+        }
+    });
+
+    if (!existingPost) {
+        return { error: "Annonce introuvable !" };
+    }
+
+    try {
+        await prisma.post.update({
+            where: {
+                id: existingPost.id
+            },
+            data: {
+                coverImageIndex: coverIndex
+            }
+        });
+
+        return { success: "Image de couverture mise à jour avec succès" };
+    } catch (error) {
+        console.log(error);
+        return { error: "Une erreur est survenue !" };
+    }
+
 }

@@ -281,6 +281,12 @@ const AdminMessageContent = () => {
                     }
                     return;
                   })
+                  .sort((a, b) => {
+                    return (
+                      new Date(b.createdAt).getTime() -
+                      new Date(a.createdAt).getTime()
+                    );
+                  })
                   .map((message) => {
                     // Vérifiez si message.lot et message.lot.posts sont définis et non vides
                     const lotHasPosts =
@@ -472,11 +478,17 @@ const AdminMessageContent = () => {
           </h2>
         </div>
         <div className="h-full justify-between flex flex-col">
-          <ScrollArea className=" w-full">
+          <ScrollArea className="h-[400px] w-full">
             <div className="grid grid-rows-1 md:grid-rows-3 gap-4">
               {allMessages &&
                 allMessages
                   .filter((message) => message.isArchived)
+                  .sort((a, b) => {
+                    return (
+                      new Date(b.createdAt).getTime() -
+                      new Date(a.createdAt).getTime()
+                    );
+                  })
                   .map((message) => {
                     // Vérifiez si message.lot et message.lot.posts sont définis et non vides
                     const lotHasPosts =
@@ -705,7 +717,7 @@ const AdminMessageContent = () => {
               </div>
             </div>
             <Separator />
-            <ScrollArea className="h-[400px] w-auto rounded-md ">
+            <ScrollArea className="h-[400px] w-auto ">
               <div className="grid grid-rows-1 md:grid-rows-3 gap-4">
                 {allMessages &&
                   allMessages
@@ -740,6 +752,12 @@ const AdminMessageContent = () => {
                         }
                       }
                       return;
+                    })
+                    .sort((a, b) => {
+                      return (
+                        new Date(b.createdAt).getTime() -
+                        new Date(a.createdAt).getTime()
+                      );
                     })
                     .map((message) => {
                       // Vérifiez si message.lot et message.lot.posts sont définis et non vides
@@ -935,6 +953,12 @@ const AdminMessageContent = () => {
                   {allMessages &&
                     allMessages
                       .filter((message) => message.isArchived)
+                      .sort((a, b) => {
+                        return (
+                          new Date(b.createdAt).getTime() -
+                          new Date(a.createdAt).getTime()
+                        );
+                      })
                       .map((message) => {
                         // Vérifiez si message.lot et message.lot.posts sont définis et non vides
                         const lotHasPosts =
@@ -1084,11 +1108,11 @@ const AdminMessageContent = () => {
         {currentMessage ? (
           <div className="flex flex-col justify-between h-full">
             <div className="space-y-4">
-              <div className="flex flex-col md:flex-row space-y-4 md:space-x-4 items-start md:items-center">
+              <div className="flex flex-col md:flex-row space-y-4 md:space-x-4 items-start md:items-center gap-4">
                 <h2 className="text-xl md:text-2xl text-black font-lato font-bold ">
                   {currentMessage.lot ? "Message :" : "Message de l'annonce :"}
                 </h2>
-                <span className="text-lg md:text-xl">
+                <span className="text-lg md:text-xl !m-0">
                   {currentMessage.lot
                     ? currentMessage.lot.name
                     : currentMessage.post?.title}

@@ -12,6 +12,7 @@ import {
 } from "../ui/dialog";
 import { DeleteCategory } from "@/actions/admin/categories";
 import { Category } from "@/prisma/category/types";
+import { FaTrashAlt } from "react-icons/fa";
 
 export default function DeleteCategoryButton({
   categoryId,
@@ -71,7 +72,7 @@ export default function DeleteCategoryButton({
       onOpenChange={setOpenModal}>
       <DialogTrigger className="flex justify-start">
         <div className="flex justify-center w-auto btn items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 h-9 px-4 py-2">
-          Supprimer
+          <FaTrashAlt />
         </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

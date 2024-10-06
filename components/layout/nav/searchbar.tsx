@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { FormatPrice } from "@/lib/format-price";
 import { Post } from "@/prisma/post/types";
 import Link from "next/link";
-import { useState, useTransition } from "react";
+import { useState, useTransition, useRef } from "react";
 import { FiSearch } from "react-icons/fi";
 
 export const SearchBar = () => {
@@ -14,6 +14,9 @@ export const SearchBar = () => {
   const [results, setResults] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const [showResults, setShowResults] = useState(false);
+
+  const searchBarRef = useRef<HTMLDivElement>(null);
 
   const handleSearch = () => {
     if (query && query.length > 3) {
@@ -22,14 +25,30 @@ export const SearchBar = () => {
         GetPostsForSearchBar(query).then((data) => {
           setResults(data);
           setLoading(false);
-          console.log(data);
+          setShowResults(true);
         });
       });
+    } else {
+      setShowResults(false);
+    }
+  };
+
+  const handleBlur = (e: React.FocusEvent) => {
+    // Vérifie si le focus est en dehors de la barre de recherche et des résultats
+    if (
+      searchBarRef.current &&
+      !searchBarRef.current.contains(e.relatedTarget as Node)
+    ) {
+      setShowResults(false);
     }
   };
 
   return (
-    <div className="flex flex-col w-full max-w-sm items-center space-x-2 relative">
+    <div
+      className="flex flex-col w-full max-w-sm items-center space-x-2 relative"
+      ref={searchBarRef}
+      onBlur={handleBlur}
+      tabIndex={-1}>
       <div className="flex items-center space-x-2 w-full">
         <Input
           type="text"
@@ -54,9 +73,10 @@ export const SearchBar = () => {
           />
         </Button>
       </div>
+
       <div className="w-full absolute top-11 shadow-md z-50">
         {/* Box des résultats */}
-        {!loading && results.length > 0 && (
+        {!loading && results.length > 0 && showResults && (
           <div className="mt-2 p-4 bg-white rounded-md shadow-md">
             <ul className="flex flex-col space-y-4">
               {results.map((result: Post) => (
@@ -64,11 +84,12 @@ export const SearchBar = () => {
                   key={result.id}
                   className="py-1 border-b last:border-b-0">
                   <Link
-                    className=" w-full h-auto justify-start space-x-9 bg-white"
+                    className="w-full h-auto justify-start space-x-9 bg-white"
                     href={`/post/${result.id}`}
                     onClick={() => {
                       setResults([]);
                       setQuery("");
+                      setShowResults(false); // Cache les résultats quand un lien est cliqué
                     }}>
                     <div className="cursor-pointer flex flex-row space-x-6 items-center hover:bg-gray-200 rounded-md">
                       <Avatar className="h-[60px] w-[60px]">
@@ -85,12 +106,10 @@ export const SearchBar = () => {
                             {result.title}
                           </span>
                         </div>
-
                         <div>
                           <span className="text-sm font-bold">Prix : </span>
                           <span>{FormatPrice(result.price)}€</span>
                         </div>
-
                         <div>
                           <span className="text-sm font-bold">
                             Catégorie :{" "}

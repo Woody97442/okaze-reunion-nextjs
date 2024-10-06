@@ -63,7 +63,7 @@ export default async function PostId({ params: { id } }: Props) {
     .slice(0, 10);
 
   return (
-    <main className="flex flex-col py-8 space-y-6 container mt-[17rem] md:mt-[13rem]">
+    <main className="flex flex-col py-8 space-y-6 container">
       <div className="flex flex-col md:flex-row space-y-6 md:space-x-6 h-full w-full">
         <aside className="flex flex-row gap-x-4 bg-white w-full py-4 md:px-10 shadow-md rounded-sm justify-center">
           <ScrollArea className="w-full md:w-[800px] whitespace-nowrap">

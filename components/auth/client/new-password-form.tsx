@@ -67,9 +67,10 @@ export const NewPasswordForm = () => {
               name={"password"}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Mot de passe</FormLabel>
+                  <FormLabel htmlFor="password">Mot de passe</FormLabel>
                   <FormControl>
                     <Input
+                      id="password"
                       {...field}
                       disabled={isPending}
                       placeholder="******"

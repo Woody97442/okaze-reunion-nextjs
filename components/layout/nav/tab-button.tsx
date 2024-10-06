@@ -37,34 +37,38 @@ export const TabButton = ({
           </Button>
         </div>
       )}
-      <div className="flex">
-        <Button
-          variant={pathname === "/favorites" ? "secondary" : "ghost"}
-          className="h-full">
-          <Link
-            href="/favorites"
-            className={`flex flex-col items-center gap-y-1 ${
-              pathname === "/favorites" ? "text-white font-bold" : ""
-            }`}>
-            <BsHeart className="w-9 h-9 md:w-6 md:h-6" />
-            <span className="font-Lato hidden md:block">Favoris</span>
-          </Link>
-        </Button>
-      </div>
-      <div className="flex">
-        <Button
-          variant={pathname === "/my-lots" ? "secondary" : "ghost"}
-          className="h-full">
-          <Link
-            href="/my-lots"
-            className={`flex flex-col items-center gap-y-1 ${
-              pathname === "/my-lots" ? "text-white font-bold" : ""
-            }`}>
-            <BsBoxSeam className="w-9 h-9 md:w-6 md:h-6" />
-            <span className="font-Lato hidden md:block">Mes Lots</span>
-          </Link>
-        </Button>
-      </div>
+      {userRole != "ADMIN" && (
+        <>
+          <div className="flex">
+            <Button
+              variant={pathname === "/favorites" ? "secondary" : "ghost"}
+              className="h-full">
+              <Link
+                href="/favorites"
+                className={`flex flex-col items-center gap-y-1 ${
+                  pathname === "/favorites" ? "text-white font-bold" : ""
+                }`}>
+                <BsHeart className="w-9 h-9 md:w-6 md:h-6" />
+                <span className="font-Lato hidden md:block">Favoris</span>
+              </Link>
+            </Button>
+          </div>
+          <div className="flex">
+            <Button
+              variant={pathname === "/my-lots" ? "secondary" : "ghost"}
+              className="h-full">
+              <Link
+                href="/my-lots"
+                className={`flex flex-col items-center gap-y-1 ${
+                  pathname === "/my-lots" ? "text-white font-bold" : ""
+                }`}>
+                <BsBoxSeam className="w-9 h-9 md:w-6 md:h-6" />
+                <span className="font-Lato hidden md:block">Mes Lots</span>
+              </Link>
+            </Button>
+          </div>
+        </>
+      )}
       <div className="flex">
         <Button
           variant={

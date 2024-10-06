@@ -27,6 +27,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Post } from "@/prisma/post/types";
+import { MdOutlineAddCircleOutline } from "react-icons/md";
 
 export default function CreateCategoryForm({ variant }: { variant?: boolean }) {
   const { allCategories, setAllCategories, currentPost, setCurrentPost } =
@@ -166,9 +167,10 @@ export default function CreateCategoryForm({ variant }: { variant?: boolean }) {
           <Dialog
             open={open}
             onOpenChange={setOpen}>
-            <DialogTrigger>
-              <div className="text-white bg-secondary rounded-md px-3 py-2">
-                Nouvelle catégorie
+            <DialogTrigger className="w-full md:w-auto">
+              <div className="text-white bg-secondary rounded-md px-3 py-2 flex gap-2">
+                <MdOutlineAddCircleOutline className="w-6 h-6" />
+                <span className="hidden md:block">Nouvelle catégorie</span>
               </div>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
@@ -296,8 +298,9 @@ export default function CreateCategoryForm({ variant }: { variant?: boolean }) {
               open={open}
               onOpenChange={setOpen}>
               <DialogTrigger>
-                <div className="text-white bg-secondary rounded-md px-3 py-2">
-                  Nouvelle catégorie
+                <div className="text-white bg-secondary rounded-md px-3 py-2 flex gap-2">
+                  <MdOutlineAddCircleOutline className="w-6 h-6" />
+                  <span className="hidden md:block">Nouvelle catégorie</span>
                 </div>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px]">

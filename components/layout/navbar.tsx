@@ -39,7 +39,7 @@ const Navbar = ({
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="fixed shadow-lg z-50 bg-white w-full">
+    <div className="shadow-lg z-50 bg-white w-full">
       {pathname === "/auth/login" || pathname === "/auth/register" ? (
         <nav className="bg-white w-full shadow-lg">
           <div className=" justify-between items-center py-4 container hidden md:flex">
@@ -135,11 +135,21 @@ const Navbar = ({
                       {user ? (
                         <div className="flex flex-col gap-y-6">
                           <div className="flex py-2 justify-center w-full bg-secondary rounded-md text-white">
-                            <Link href="/profile">Profile</Link>
+                            <Link
+                              href="/profile"
+                              onClick={() => {
+                                setMenuOpen(false);
+                              }}>
+                              Profile
+                            </Link>
                           </div>
                           <div className="flex py-2 justify-center w-full bg-primary rounded-md text-white">
                             <LogoutButton>
-                              <div className="flex items-center">
+                              <div
+                                className="flex items-center"
+                                onClick={() => {
+                                  setMenuOpen(false);
+                                }}>
                                 <ExitIcon className="mr-2 h-6 w-6" />
                                 Se deconnecter
                               </div>
@@ -149,6 +159,9 @@ const Navbar = ({
                       ) : (
                         <LoginButton>
                           <Link
+                            onClick={() => {
+                              setMenuOpen(false);
+                            }}
                             href="/auth/login"
                             className="flex flex-col text-white items-center gap-y-1 bg-secondary px-4 py-4 rounded-full md:p-0 md:rounded-none md:bg-transparent md:text-black">
                             <FaUser className="w-6 h-6 " />

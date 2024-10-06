@@ -201,6 +201,7 @@ model Post {
   images      Image[]       @relation("PostImages")
 
 
+  coverImageIndex Int      @default(0)
   isActive    Boolean       @default(false)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt

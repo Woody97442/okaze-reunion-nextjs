@@ -439,9 +439,10 @@ const MyLotsContent = () => {
                         name={"offer"}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Mon offre</FormLabel>
+                            <FormLabel htmlFor="offer">Mon offre</FormLabel>
                             <FormControl>
                               <Input
+                                id="offer"
                                 {...field}
                                 disabled={isPending}
                                 placeholder="10 €"
@@ -458,9 +459,10 @@ const MyLotsContent = () => {
                         name={"message"}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Message</FormLabel>
+                            <FormLabel htmlFor="message">Message</FormLabel>
                             <FormControl>
                               <Input
+                                id="message"
                                 {...field}
                                 disabled={isPending}
                                 placeholder="Je voudrait faire une offre..."

@@ -14,9 +14,7 @@ import { TraductionState } from "@/lib/traduction-state";
 import { AddFavoriteButton } from "./add-favorite-button";
 
 export default function CardPost({ post }: { post: Post }) {
-  //TODO: Ajouter le choix de l'image de cover
-  const coverImage = 0;
-
+  const coverImage = post.coverImageIndex;
   return (
     <Card className="h-[350px] justify-between flex flex-col">
       <Link
@@ -44,13 +42,13 @@ export default function CardPost({ post }: { post: Post }) {
         <CardTitle className="inline-block w-[180px] ">
           <span className="line-clamp-1">{post.title}</span>
         </CardTitle>
-        <div className="flex justify-between pt-4">
+        <div className="flex flex-col-reverse gap-2 justify-between pt-4">
           <p className="text-sm text-muted-foreground">
             {FormatDate(new Date(post.createdAt))}
           </p>
           <Badge
             variant="secondary"
-            className="text-xs text-white">
+            className="text-xs text-white w-fit">
             {TraductionState(post.state)}
           </Badge>
         </div>

@@ -23,6 +23,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Post } from "@/prisma/post/types";
+import { MdOutlineAddCircleOutline } from "react-icons/md";
 
 export default function CreateAttributsForm() {
   const { allAttributes, setAllAttributes, currentPost, setCurrentPost } =
@@ -122,8 +123,9 @@ export default function CreateAttributsForm() {
           open={open}
           onOpenChange={setOpen}>
           <DialogTrigger>
-            <div className="text-white bg-secondary rounded-md px-3 py-2">
-              Nouvelle attribut
+            <div className="text-white bg-secondary rounded-md px-3 py-2 flex gap-2">
+              <MdOutlineAddCircleOutline className="w-6 h-6 " />
+              <span className="hidden md:block">Nouvelle attribut</span>
             </div>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
