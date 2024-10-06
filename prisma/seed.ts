@@ -336,31 +336,31 @@ const generateMessageForPost = async () => {
 async function main() {
     await clearDatabase();
 
-    await generateAdmin();
+    // await generateAdmin();
 
-    await generateUserTest();
+    // await generateUserTest();
 
-    for (let i = 0; i < 10; i++) {
-        await generateFakerUser();
-    }
+    // for (let i = 0; i < 10; i++) {
+    //     await generateFakerUser();
+    // }
 
-    await generateCategories();
+    // await generateCategories();
 
-    for (let i = 0; i < 20; i++) {
-        await generatePost();
-    }
+    // for (let i = 0; i < 20; i++) {
+    //     await generatePost();
+    // }
 
-    for (let i = 0; i < 10; i++) {
-        await generateLot();
-    }
+    // for (let i = 0; i < 10; i++) {
+    //     await generateLot();
+    // }
 
-    for (let i = 0; i < 10; i++) {
-        if (i % 2 === 0) {
-            await generateMessageForLot();
-        } else {
-            await generateMessageForPost();
-        }
-    }
+    // for (let i = 0; i < 10; i++) {
+    //     if (i % 2 === 0) {
+    //         await generateMessageForLot();
+    //     } else {
+    //         await generateMessageForPost();
+    //     }
+    // }
 
     console.log("seeding ok !");
 }
