@@ -100,9 +100,12 @@ export const LoginForm = () => {
                 name={"code"}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Double authentification</FormLabel>
+                    <FormLabel htmlFor="code">
+                      Double authentification
+                    </FormLabel>
                     <FormControl>
                       <Input
+                        id="code"
                         {...field}
                         disabled={isPending}
                         placeholder="123456"
@@ -120,9 +123,10 @@ export const LoginForm = () => {
                   name={"email"}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel htmlFor="email">Email</FormLabel>
                       <FormControl>
                         <Input
+                          id="email"
                           {...field}
                           disabled={isPending}
                           placeholder="john.doe@me.com"
@@ -139,9 +143,10 @@ export const LoginForm = () => {
                   name={"password"}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Mot de passe</FormLabel>
+                      <FormLabel htmlFor="password">Mot de passe</FormLabel>
                       <FormControl>
                         <Input
+                          id="password"
                           {...field}
                           disabled={isPending}
                           placeholder="******"

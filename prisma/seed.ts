@@ -47,6 +47,23 @@ const generateAdmin = async () => {
     })
 };
 
+const generateUserTest = async () => {
+    const hashedPassword = await bcrypt.hash("test@test.com", 10);
+    await prisma.user.create({
+        data: {
+            name: "Jhone Doe",
+            username: "JOJO",
+            email: "test@test.com",
+            password: hashedPassword,
+            image: "",
+            role: "USER",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            emailVerified: new Date(),
+        }
+    })
+};
+
 
 const clearDatabase = async () => {
     await prisma.account.deleteMany({});
@@ -321,13 +338,15 @@ async function main() {
 
     await generateAdmin();
 
-    for (let i = 0; i < 25; i++) {
+    await generateUserTest();
+
+    for (let i = 0; i < 10; i++) {
         await generateFakerUser();
     }
 
     await generateCategories();
 
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 20; i++) {
         await generatePost();
     }
 

@@ -29,11 +29,11 @@ export default async function RootLayout({
     <SessionProvider session={session}>
       <html
         lang="fr"
-        className="!h-auto">
+        className="!h-auto overflow-y-scroll">
         <body
           className={
             inter.className +
-            " bg-[#f5f5f5] flex flex-col justify-between min-h-screen"
+            " bg-[#f5f5f5] flex flex-col justify-between min-h-screen overflow-y-scroll"
           }>
           <UserContextProvider user={user}>
             <Header />

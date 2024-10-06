@@ -74,9 +74,10 @@ export const RedisterForm = () => {
                 name={"name"}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nom d&#39;utilisateur</FormLabel>
+                    <FormLabel htmlFor="name">Nom d&#39;utilisateur</FormLabel>
                     <FormControl>
                       <Input
+                        id="name"
                         {...field}
                         disabled={isPending}
                         placeholder="john"
@@ -93,9 +94,10 @@ export const RedisterForm = () => {
                 name={"password"}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Mot de passe</FormLabel>
+                    <FormLabel htmlFor="password">Mot de passe</FormLabel>
                     <FormControl>
                       <Input
+                        id="password"
                         {...field}
                         disabled={isPending}
                         placeholder="******"
@@ -114,9 +116,10 @@ export const RedisterForm = () => {
                 name={"email"}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel htmlFor="email">Email</FormLabel>
                     <FormControl>
                       <Input
+                        id="email"
                         {...field}
                         disabled={isPending}
                         placeholder="john.doe@me.com"
@@ -133,9 +136,12 @@ export const RedisterForm = () => {
                 name={"confirm_password"}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Confirmez le mot de passe</FormLabel>
+                    <FormLabel htmlFor="confirm_password">
+                      Confirmez le mot de passe
+                    </FormLabel>
                     <FormControl>
                       <Input
+                        id="confirm_password"
                         {...field}
                         disabled={isPending}
                         placeholder="******"
@@ -175,8 +181,8 @@ export const RedisterForm = () => {
             <ul className="flex flex-col gap-y-2">
               <li>
                 <div className="flex justify-between gap-x-4 items-center ">
-                  <p className="text-xs">Min 6 caractères</p>
-                  {password.length >= 6 ? (
+                  <p className="text-xs">Min 8 caractères</p>
+                  {password.length >= 8 ? (
                     <FaCheckCircle className="w-4 h-4 text-primary" />
                   ) : (
                     <FaCircleXmark className="w-4 h-4 text-red-500" />

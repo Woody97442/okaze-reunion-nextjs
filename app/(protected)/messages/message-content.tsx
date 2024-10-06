@@ -279,6 +279,12 @@ const MessageContent = () => {
                   }
                   return;
                 })
+                .sort((a, b) => {
+                  return (
+                    new Date(b.createdAt).getTime() -
+                    new Date(a.createdAt).getTime()
+                  );
+                })
                 .map((message) => {
                   // Vérifiez si message.lot et message.lot.posts sont définis et non vides
                   const lotHasPosts =
@@ -571,6 +577,12 @@ const MessageContent = () => {
                       }
                       return;
                     })
+                    .sort((a, b) => {
+                      return (
+                        new Date(b.createdAt).getTime() -
+                        new Date(a.createdAt).getTime()
+                      );
+                    })
                     .map((message) => {
                       // Vérifiez si message.lot et message.lot.posts sont définis et non vides
                       const lotHasPosts =
@@ -763,11 +775,11 @@ const MessageContent = () => {
         {currentMessage ? (
           <div className="flex flex-col justify-between h-full">
             <div className="space-y-4">
-              <div className="flex flex-col md:flex-row space-y-4 md:space-x-4 items-start md:items-center">
+              <div className="flex flex-col md:flex-row space-y-4 md:space-x-4 items-start md:items-center gap-4">
                 <h2 className="text-xl md:text-2xl text-black font-bold font-lato ">
                   {currentMessage.lot ? "Message :" : "Message de l'annonce :"}
                 </h2>
-                <span className="text-lg md:text-xl">
+                <span className="text-lg md:text-xl !m-0">
                   {currentMessage.lot
                     ? currentMessage.lot.name
                     : currentMessage.post?.title}

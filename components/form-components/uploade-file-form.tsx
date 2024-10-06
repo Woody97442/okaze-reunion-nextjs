@@ -9,6 +9,7 @@ import { FormEventHandler, useState, useTransition } from "react";
 import { compressFile } from "@/lib/compress-image";
 import { PulseLoader } from "react-spinners";
 import { FiTrash2 } from "react-icons/fi";
+import { MdOutlineAddAPhoto } from "react-icons/md";
 
 export default function UploadeFileForm({
   setCurrentUser,
@@ -129,19 +130,35 @@ export default function UploadeFileForm({
       <form
         onSubmit={handleSubmit}
         className="flex flex-row gap-x-2">
-        <Input
-          className="col-span-3 cursor-pointer"
-          type="file"
-          name="file"
-          accept="image/png, image/jpeg"
-          onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (file) {
-              const tempFile = URL.createObjectURL(file);
-              setTempFile(tempFile);
-            }
-          }}
-        />
+        <div>
+          <Input
+            id="imgImport"
+            className="hidden"
+            type="file"
+            name="file"
+            accept="image/png, image/jpeg"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                const tempFile = URL.createObjectURL(file);
+                setTempFile(tempFile);
+              }
+            }}
+          />
+          <Button
+            onClick={() => {
+              const fileInput = document.getElementById("imgImport");
+              if (fileInput) {
+                (fileInput as HTMLInputElement).click();
+              } else {
+                console.error("Élément imgImport introuvable dans le DOM.");
+              }
+            }}
+            variant={"default"}>
+            <MdOutlineAddAPhoto className="w-5 h-5 md:me-2" />
+            <span className="text-sm hidden md:block">Choisir une image</span>
+          </Button>
+        </div>
         <Button
           type="submit"
           variant={"secondary"}

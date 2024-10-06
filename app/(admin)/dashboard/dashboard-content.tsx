@@ -27,7 +27,6 @@ const DashboardContent = () => {
     setCurrentPost,
     currentPost,
     currentCategory,
-    setCurrentCategory,
   } = FindAdminContext();
 
   const renderButton = (
@@ -56,32 +55,32 @@ const DashboardContent = () => {
     switch (currentContent) {
       case "posts":
         return (
-          <h2 className="text-2xl text-black drop-shadow-md">
+          <h2 className="text-2xl text-center md:text-left text-black drop-shadow-md">
             List de tout les Annonces
           </h2>
         );
       case "users":
         return (
-          <h2 className="text-2xl text-black drop-shadow-md">
+          <h2 className="text-2xl text-center md:text-left text-black drop-shadow-md">
             List de tout les Utilisateurs
           </h2>
         );
       case "categories":
         return (
-          <h2 className="text-2xl text-black drop-shadow-md">
+          <h2 className="text-2xl text-center md:text-left text-black drop-shadow-md">
             List de tout les Catégories
           </h2>
         );
       case "new-post":
         return (
-          <h2 className="text-2xl text-black drop-shadow-md">
+          <h2 className="text-2xl text-center md:text-left text-black drop-shadow-md">
             Créer une Nouvelle Annonce
           </h2>
         );
       case "edit-post":
         return (
           <div className="flex w-full justify-between items-center space-x-2">
-            <h2 className="text-2xl text-black drop-shadow-md">
+            <h2 className="text-2xl text-center md:text-left text-black drop-shadow-md">
               Modifier L&#39;annonce {currentPost?.title}
             </h2>
             {currentPost && currentPost.id && (
@@ -93,7 +92,7 @@ const DashboardContent = () => {
       case "edit-category":
         return (
           <div className="flex w-full justify-between items-center space-x-2">
-            <h2 className="text-2xl text-black drop-shadow-md">
+            <h2 className="text-2xl text-center md:text-left text-black drop-shadow-md">
               Modifier La Catégorie {currentCategory?.name}
             </h2>
             {currentCategory && currentCategory.id && (
@@ -119,7 +118,7 @@ const DashboardContent = () => {
       case "users":
         return (
           <DataTableUser
-            columns={columnsUser}
+            columns={columnsUser as any}
             data={allUsers as any}
           />
         );
@@ -145,10 +144,12 @@ const DashboardContent = () => {
   };
 
   return (
-    <div className="flex flex-row space-x-6 h-full w-full">
-      <aside className="flex flex-col gap-y-4 bg-white w-1/1 py-4 px-8 shadow-md rounded-sm">
+    <div className="flex flex-col md:flex-row space-y-6 md:space-x-6 h-full w-full">
+      <aside className="flex flex-col gap-y-4 bg-white w-1/1 py-4 px-8 shadow-md rounded-sm mt-4 md:mt-6">
         <div className="space-y-4 my-2">
-          <h2 className="text-2xl text-black drop-shadow-md">Sélection</h2>
+          <h2 className="text-2xl text-black drop-shadow-md text-center md:text-left">
+            Sélection
+          </h2>
           <Separator />
           {renderButton("posts", "Annonces", "secondary")}
           {renderButton("categories", "Catégories", "secondary")}

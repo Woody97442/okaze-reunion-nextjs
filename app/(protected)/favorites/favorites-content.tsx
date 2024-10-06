@@ -78,14 +78,22 @@ const FavoritesContent = () => {
                 <Separator />
                 <ScrollArea className="h-fit w-full">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mx-6">
-                    {filteredPosts?.map((post, index) => (
-                      <div
-                        key={post.id}
-                        className={`animate-fadeIn`}
-                        style={{ animationDelay: `${index * 0.1}s` }}>
-                        <CardPost post={post as Post} />
-                      </div>
-                    ))}
+                    {filteredPosts &&
+                      filteredPosts
+                        .sort((a, b) => {
+                          return (
+                            new Date(b.createdAt).getTime() -
+                            new Date(a.createdAt).getTime()
+                          );
+                        })
+                        .map((post, index) => (
+                          <div
+                            key={post.id}
+                            className={`animate-fadeIn`}
+                            style={{ animationDelay: `${index * 0.1}s` }}>
+                            <CardPost post={post as Post} />
+                          </div>
+                        ))}
                   </div>
                 </ScrollArea>
               </>

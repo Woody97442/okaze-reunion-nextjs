@@ -10,6 +10,7 @@ export type Post = {
 
     state: $Enums.PostState
 
+    coverImageIndex: number
     categories: Category[]
     attributs: Attribut[]
     images: Image[]

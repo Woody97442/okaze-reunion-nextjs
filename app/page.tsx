@@ -8,7 +8,7 @@ const HomePage = async () => {
 
   return (
     <>
-      <main className="flex flex-col py-8 space-y-12 container mt-[17rem] md:mt-[13rem]">
+      <main className="flex flex-col py-8 space-y-12 container ">
         <div>
           <Heros />
         </div>

@@ -7,7 +7,7 @@ export const UserSchema = z.object({
     phoneNumber: z.optional(z.string()),
     password: z.union([
         z.string().length(0),
-        z.string().min(6, { message: "Minimum 6 caractères requis" })
+        z.string().min(8, { message: "Minimum 8 caractères requis" })
             .refine(val => /[A-Z]/.test(val), { message: "Doit contenir au moins une majuscule" })
             .refine(val => /[0-9]/.test(val), { message: "Doit contenir au moins un chiffre" })
             .refine(val => /[^a-zA-Z0-9]/.test(val), { message: "Doit contenir au moins un caractère spécial" })

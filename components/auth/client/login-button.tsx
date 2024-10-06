@@ -18,14 +18,10 @@ export const LoginButton = ({
     router.push("/auth/login");
   };
 
-  if (mode === "modal") {
-    return <span>TODO: Implement modal</span>;
-  }
-
   return (
     <span
       onClick={onClick}
-      className="cursor-pointer">
+      className="cursor-pointer p-2 hover:bg-gray-100 rounded active:bg-gray-300 active:scale-95 transition-all">
       {children}
     </span>
   );

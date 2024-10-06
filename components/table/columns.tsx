@@ -7,36 +7,14 @@ import { Image } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { FaArrowsUpDown } from "react-icons/fa6";
 import { Button } from "../ui/button";
-import { Checkbox } from "../ui/checkbox";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import FindAdminContext from "@/lib/admin-context-provider";
 import DeletePostButton from "../admin/delete-post-button";
 import PublishSwitch from "../admin/publish-switch";
 import DeleteCategoryButton from "../admin/delete-category-button";
+import { FaEdit } from "react-icons/fa";
 
 export const columnsPost: ColumnDef<Post>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
   {
     accessorKey: "images",
     header: () => {
@@ -65,6 +43,25 @@ export const columnsPost: ColumnDef<Post>[] = [
           </Avatar>
         );
       }
+    },
+  },
+  {
+    accessorKey: "createdAt",
+    id: "createdAt",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="w-auto text-center">
+          Date de Création
+          <FaArrowsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const date = new Date(row.getValue("createdAt"));
+      return <div className="text-center">{date.toLocaleDateString()}</div>;
     },
   },
   {
@@ -101,7 +98,7 @@ export const columnsPost: ColumnDef<Post>[] = [
     },
     cell: ({ row }) => {
       const post = row.original;
-      return <div className="w-auto text-center">{post.title}</div>;
+      return <div className="w-auto text-start">{post.title}</div>;
     },
   },
   {
@@ -189,7 +186,7 @@ export const columnsPost: ColumnDef<Post>[] = [
           <Button
             variant="default"
             onClick={() => handleEditPost("edit-post", post)}>
-            Modifier
+            <FaEdit className="h-5 w-5" />
           </Button>
           <DeletePostButton postId={post.id} />
         </div>
@@ -199,28 +196,6 @@ export const columnsPost: ColumnDef<Post>[] = [
 ];
 
 export const columnsUser: ColumnDef<User>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
   {
     accessorKey: "image",
     header: () => {
@@ -250,6 +225,25 @@ export const columnsUser: ColumnDef<User>[] = [
           </Avatar>
         );
       }
+    },
+  },
+  {
+    accessorKey: "createdAt",
+    id: "createdAt",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="w-auto text-center">
+          Date de Création
+          <FaArrowsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const date = new Date(row.getValue("createdAt"));
+      return <div className="text-center">{date.toLocaleDateString()}</div>;
     },
   },
   {
@@ -298,21 +292,6 @@ export const columnsUser: ColumnDef<User>[] = [
     },
   },
   {
-    accessorKey: "gender",
-    id: "genre",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="w-auto">
-          Genre
-          <FaArrowsUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
     accessorKey: "postalCode",
     id: "code-postal",
     header: ({ column }) => {
@@ -346,28 +325,6 @@ export const columnsUser: ColumnDef<User>[] = [
 
 export const columnsCategory: ColumnDef<Category>[] = [
   {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
     accessorKey: "icon",
     header: "Icon",
     cell: ({ row }) => {
@@ -395,6 +352,25 @@ export const columnsCategory: ColumnDef<Category>[] = [
           </Avatar>
         );
       }
+    },
+  },
+  {
+    accessorKey: "createdAt",
+    id: "createdAt",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="w-auto text-center">
+          Date de Création
+          <FaArrowsUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const date = new Date(row.getValue("createdAt"));
+      return <div className="text-center">{date.toLocaleDateString()}</div>;
     },
   },
   {
@@ -455,7 +431,6 @@ export const columnsCategory: ColumnDef<Category>[] = [
       const category = row.original;
       const { setCurrentContent, setCurrentCategory } = FindAdminContext();
 
-      // Edit Category
       const handleEditCategory = (value: string, category: Category) => {
         setCurrentContent(value);
         setCurrentCategory(category);
@@ -466,7 +441,7 @@ export const columnsCategory: ColumnDef<Category>[] = [
           <Button
             variant="default"
             onClick={() => handleEditCategory("edit-category", category)}>
-            Modifier
+            <FaEdit className="h-5 w-5" />
           </Button>
           <DeleteCategoryButton categoryId={category.id} />
         </div>

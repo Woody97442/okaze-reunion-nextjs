@@ -75,9 +75,10 @@ const ContactContent = () => {
                     name={"name"}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Nom</FormLabel>
+                        <FormLabel htmlFor="name">Nom</FormLabel>
                         <FormControl>
                           <Input
+                            id="name"
                             {...field}
                             placeholder="Votre nom"
                             disabled={isPending}
@@ -93,9 +94,10 @@ const ContactContent = () => {
                     name={"email"}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Email</FormLabel>
+                        <FormLabel htmlFor="email">Email</FormLabel>
                         <FormControl>
                           <Input
+                            id="email"
                             {...field}
                             placeholder="Votre adresse e-mail"
                             disabled={isPending}
@@ -111,9 +113,10 @@ const ContactContent = () => {
                     name={"message"}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Message</FormLabel>
+                        <FormLabel htmlFor="message">Message</FormLabel>
                         <FormControl>
                           <Textarea
+                            id="message"
                             {...field}
                             placeholder="Votre message"
                             disabled={isPending}

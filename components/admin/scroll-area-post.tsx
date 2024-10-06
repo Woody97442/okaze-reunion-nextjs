@@ -11,6 +11,17 @@ import { Image as ImageType } from "@prisma/client";
 import { DeleteImage } from "@/actions/admin/delete-image";
 import { toast } from "../ui/use-toast";
 import PublishSwitch from "./publish-switch";
+import { MdOutlineAddAPhoto } from "react-icons/md";
+import { UpdateCoverImagePost } from "@/actions/admin/post";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { Label } from "../ui/label";
 
 interface PropsImagesPost {
   file: File;
@@ -73,9 +84,38 @@ export default function ScrollAreaPost() {
     });
   };
 
+  const HandleSelectCoverImage = (
+    idPost: string | undefined,
+    indexCover: number
+  ) => {
+    setLoading(true);
+    startTransition(() => {
+      if (!idPost) {
+        return;
+      }
+      UpdateCoverImagePost(idPost, indexCover).then((data) => {
+        if (data.success) {
+          toast({
+            variant: "default",
+            title: "Succès",
+            description: data?.success,
+          });
+          setLoading(false);
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Erreur",
+            description: data?.error,
+          });
+          setLoading(false);
+        }
+      });
+    });
+  };
+
   return (
     <>
-      <ScrollArea className="  whitespace-nowrap">
+      <ScrollArea className="whitespace-nowrap">
         <div className="flex space-x-4 w-max p-4 pb-6">
           {currentPost &&
             currentPost.images &&
@@ -136,21 +176,39 @@ export default function ScrollAreaPost() {
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
 
-      <div className="flex flex-row items-center justify-between ">
+      <div className="flex flex-col gap-4 md:flex-row items-center justify-between">
         <div className="flex flex-row space-x-2 items-center">
-          <Input
-            className="cursor-pointer w-auto"
-            type="file"
-            name="file"
-            accept="image/png, image/jpeg"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (!file) return;
-              if (file && file.size > 0 && file.type.includes("image")) {
-                HandleAddImageToPost(file);
-              }
-            }}
-          />
+          <div>
+            <Input
+              id="imgImport"
+              className="hidden"
+              type="file"
+              name="file"
+              accept="image/png, image/jpeg"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                if (file && file.size > 0 && file.type.includes("image")) {
+                  HandleAddImageToPost(file);
+                }
+              }}
+            />
+            <Button
+              onClick={() => {
+                const fileInput = document.getElementById("imgImport");
+                if (fileInput) {
+                  (fileInput as HTMLInputElement).click();
+                } else {
+                  console.error("Élément imgImport introuvable dans le DOM.");
+                }
+              }}
+              className={
+                " inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-secondary text-primary-foreground shadow hover:bg-secondary/90 h-9 px-4 py-2"
+              }>
+              <MdOutlineAddAPhoto className="w-5 h-5 md:me-2" />
+              <span className="text-sm hidden md:block">Ajouter une image</span>
+            </Button>
+          </div>
           <span className="text-sm font-bold">
             <span>Nombre d&#39;images : </span>
             {currentPost && currentPost.images && currentPost.images.length
@@ -170,6 +228,35 @@ export default function ScrollAreaPost() {
           </div>
         )}
       </div>
+      {currentPost?.id && (
+        <div className="flex flex-row gap-4 items-center">
+          <span className="font-bold">
+            Selection de l'image de couverture :{" "}
+          </span>
+          <Select
+            onValueChange={(e) =>
+              HandleSelectCoverImage(currentPost?.id, parseInt(e))
+            }
+            defaultValue={currentPost?.coverImageIndex.toString() ?? "0"}>
+            <SelectTrigger className="w-20">
+              <SelectValue placeholder={"1"} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {currentPost &&
+                  currentPost.images.length > 0 &&
+                  currentPost.images.map((image, index) => (
+                    <SelectItem
+                      value={index.toString()}
+                      key={index}>
+                      {index + 1}
+                    </SelectItem>
+                  ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+      )}
     </>
   );
 }

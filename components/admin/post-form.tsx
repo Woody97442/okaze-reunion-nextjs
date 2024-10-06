@@ -233,11 +233,14 @@ export default function PostForm() {
                 name={"title"}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-bold">
+                    <FormLabel
+                      className="font-bold"
+                      htmlFor="title">
                       Titre de l&#39;annonce
                     </FormLabel>
                     <FormControl>
                       <Input
+                        id="title"
                         {...field}
                         disabled={loading}
                         placeholder={currentPost?.title ?? "Mon Titre"}
@@ -254,9 +257,14 @@ export default function PostForm() {
                 name={"description"}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-bold">Description</FormLabel>
+                    <FormLabel
+                      className="font-bold"
+                      htmlFor="description">
+                      Description
+                    </FormLabel>
                     <FormControl>
                       <Textarea
+                        id="description"
                         placeholder={
                           currentPost?.description ?? "Mon annonce est..."
                         }
@@ -269,7 +277,7 @@ export default function PostForm() {
                 )}
               />
             </div>
-            <div className="flex flex-row space-x-12">
+            <div className="flex flex-col md:flex-row md:space-x-12 space-y-10 md:space-y-0">
               <div className="space-y-4 w-full">
                 {/* Valeur du prix de l'annonce */}
                 <FormField
@@ -277,9 +285,14 @@ export default function PostForm() {
                   name={"price"}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-bold">Prix en €</FormLabel>
+                      <FormLabel
+                        className="font-bold"
+                        htmlFor="price">
+                        Prix en €
+                      </FormLabel>
                       <FormControl>
                         <Input
+                          id="price"
                           {...field}
                           disabled={loading}
                           placeholder={currentPost?.price?.toString() ?? "25"}
@@ -300,14 +313,18 @@ export default function PostForm() {
                   name={"state"}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-bold">
+                      <FormLabel
+                        className="font-bold"
+                        htmlFor="state">
                         Séléctionnez un état
                       </FormLabel>
                       <FormControl>
                         <Select
                           onValueChange={field.onChange}
                           defaultValue={currentPost?.state ?? "new"}>
-                          <SelectTrigger className="w-full">
+                          <SelectTrigger
+                            className="w-full"
+                            id="state">
                             <SelectValue placeholder={""} />
                           </SelectTrigger>
                           <SelectContent>
@@ -335,16 +352,18 @@ export default function PostForm() {
             {currentPost && currentPost.id ? (
               <Button
                 type="submit"
-                disabled={loading}>
-                <div>
+                disabled={loading}
+                className="w-full md:w-auto ">
+                <div className="w-full flex justify-center gap-x-2 items-center">
                   <span>Modifier l&#39;annonce</span>
                 </div>
               </Button>
             ) : (
               <Button
                 type="submit"
-                disabled={loading}>
-                <div className="w-full flex justify-start gap-x-2 items-center">
+                disabled={loading}
+                className="w-full md:w-auto ">
+                <div className="w-full flex justify-center gap-x-2 items-center">
                   <span>Créer une nouvelle annonce</span>
                 </div>
               </Button>

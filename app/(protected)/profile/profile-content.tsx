@@ -154,19 +154,17 @@ const ProfileContent = () => {
   return (
     <>
       {currentUser && (
-        <div className="flex flex-col md:flex-row space-y-6 md:space-x-6 h-full w-full">
+        <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6 h-full w-full">
           <section className="flex flex-col gap-y-10 bg-white w-full py-4 px-8 shadow-md rounded-sm">
             <h1 className="text-2xl font-bold text-center ">
               Informations du compte
             </h1>
             <div className="flex flex-col gap-y-6 max-w-md">
-              <p className="flex justify-between">
-                <Label className="font-bold text-md">
-                  Date de création du compte :{" "}
-                </Label>
+              <p className="flex justify-between flex-col md:flex-row">
+                <Label className="font-bold text-md">Compte créer le : </Label>
                 {FormatDate(currentUser.createdAt)}
               </p>
-              <p className="flex justify-between">
+              <p className="flex justify-between flex-col md:flex-row">
                 <Label className="font-bold text-md">Email : </Label>
                 {currentUser.email}
               </p>
@@ -181,14 +179,12 @@ const ProfileContent = () => {
                 {currentUser.lot.length}
               </p>
               <p className="flex justify-between">
-                <Label className="font-bold text-md">
-                  Nombre de Annonce dans les favoris :
-                </Label>
+                <Label className="font-bold text-md">Nombre de favoris :</Label>
                 {currentUser.favorite ? currentUser.favorite.posts.length : 0}
               </p>
               <p className="flex justify-between">
                 <Label className="font-bold text-md">
-                  Nombre de conversations :{" "}
+                  Nombre de messages :{" "}
                 </Label>
                 {currentUser.messages.length}
               </p>
@@ -215,7 +211,7 @@ const ProfileContent = () => {
               </p>
               <Dialog>
                 <DialogTrigger className="flex justify-start">
-                  <div className=" text-xs bg-red-500 text-white px-4 py-2 rounded-md cursor-pointer">
+                  <div className=" text-xs bg-red-500 text-white px-4 py-2 rounded-md cursor-pointer w-full md:w-auto">
                     Supprimer mon compte !
                   </div>
                 </DialogTrigger>
@@ -300,9 +296,12 @@ const ProfileContent = () => {
                         name={"username"}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Nom d&#39;utilisateur :</FormLabel>
+                            <FormLabel htmlFor="username">
+                              Nom d&#39;utilisateur :
+                            </FormLabel>
                             <FormControl>
                               <Input
+                                id="username"
                                 {...field}
                                 disabled={isPending}
                                 placeholder={currentUser?.username || ""}
@@ -319,9 +318,12 @@ const ProfileContent = () => {
                         name={"postalCode"}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Code Postale :</FormLabel>
+                            <FormLabel htmlFor="postalCode">
+                              Code Postale :
+                            </FormLabel>
                             <FormControl>
                               <Input
+                                id="postalCode"
                                 {...field}
                                 disabled={isPending}
                                 placeholder={
@@ -341,14 +343,16 @@ const ProfileContent = () => {
                         name={"gender"}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Genre :</FormLabel>
+                            <FormLabel htmlFor="gender">Genre :</FormLabel>
                             <FormControl>
                               <Select
                                 onValueChange={field.onChange}
                                 defaultValue={
                                   (currentUser.gender as string) || ""
                                 }>
-                                <SelectTrigger className="w-full">
+                                <SelectTrigger
+                                  className="w-full"
+                                  id="gender">
                                   <SelectValue
                                     placeholder={
                                       (currentUser.gender as string) || "Homme"
@@ -376,9 +380,12 @@ const ProfileContent = () => {
                         name={"phoneNumber"}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Numéro de téléphone :</FormLabel>
+                            <FormLabel htmlFor="phoneNumber">
+                              Numéro de téléphone :
+                            </FormLabel>
                             <FormControl>
                               <Input
+                                id="phoneNumber"
                                 {...field}
                                 disabled={isPending}
                                 placeholder="..."
@@ -397,9 +404,12 @@ const ProfileContent = () => {
                       name={"password"}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Mot de passe :</FormLabel>
+                          <FormLabel htmlFor="password">
+                            Mot de passe :
+                          </FormLabel>
                           <FormControl>
                             <Input
+                              id="password"
                               {...field}
                               disabled={isPending || isGoogleAccount}
                               placeholder="..."
@@ -416,9 +426,12 @@ const ProfileContent = () => {
                       name={"confirm_password"}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Confirmation Mot de passe :</FormLabel>
+                          <FormLabel htmlFor="confirm_password">
+                            Confirmation Mot de passe :
+                          </FormLabel>
                           <FormControl>
                             <Input
+                              id="confirm_password"
                               {...field}
                               disabled={isPending || isGoogleAccount}
                               placeholder="..."
@@ -433,8 +446,8 @@ const ProfileContent = () => {
                   {isGoogleAccount ? (
                     <div></div>
                   ) : (
-                    <div className="space-y-2 flex flex-row  justify-around items-center py-2">
-                      <ul className="flex flex-col gap-y-2">
+                    <div className="space-y-2 md:space-y-0 flex flex-col md:flex-row gap-2 justify-around items-center py-2">
+                      <ul className="flex flex-col gap-y-4 w-full md:w-auto">
                         <li>
                           <div className="flex justify-between gap-x-4 items-center ">
                             <p className="text-xs">Un chiffre</p>
@@ -456,7 +469,7 @@ const ProfileContent = () => {
                           </div>
                         </li>
                       </ul>
-                      <ul className="flex flex-col gap-y-2">
+                      <ul className="flex flex-col gap-y-4 w-full md:w-auto">
                         <li>
                           <div className="flex justify-between gap-x-4 items-center ">
                             <p className="text-xs">Min 6 caractères</p>
@@ -480,12 +493,14 @@ const ProfileContent = () => {
                       </ul>
                     </div>
                   )}
-                  <Button
-                    type="submit"
-                    className="w-full"
-                    disabled={isPending}>
-                    <div>Enregistrer</div>
-                  </Button>
+                  <div className="flex justify-center">
+                    <Button
+                      type="submit"
+                      className="w-full md:w-1/3 "
+                      disabled={isPending}>
+                      <div>Enregistrer</div>
+                    </Button>
+                  </div>
                 </form>
               </Form>
             </div>
