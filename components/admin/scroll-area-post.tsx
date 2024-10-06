@@ -231,7 +231,7 @@ export default function ScrollAreaPost() {
       {currentPost?.id && (
         <div className="flex flex-row gap-4 items-center">
           <span className="font-bold">
-            Selection de l'image de couverture :{" "}
+            Selection de l&#39;image de couverture :{" "}
           </span>
           <Select
             onValueChange={(e) =>

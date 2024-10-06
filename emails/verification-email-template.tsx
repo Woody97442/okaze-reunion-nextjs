@@ -31,15 +31,15 @@ const VerificationEmailTemplate = ({
         </a>
       </p>
       <p>
-        Si vous n'avez pas créé de compte sur notre site, vous pouvez ignorer ce
-        message.
+        Si vous n&#39;avez pas créé de compte sur notre site, vous pouvez
+        ignorer ce message.
       </p>
       <p>Merci et à bientôt sur Okaze Réunion !</p>
       <p>Bien cordialement,</p>
-      <p>L'équipe Okaze Réunion</p>
+      <p>L&#39;équipe Okaze Réunion</p>
       <p>
         <small>
-          Si vous avez des questions, n'hésitez pas à nous contacter à{" "}
+          Si vous avez des questions, n&#39;hésitez pas à nous contacter à{" "}
           <a
             href="mailto:okaze-reunion@gmail.com"
             style={{ color: "#4A90E2" }}>
