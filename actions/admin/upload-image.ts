@@ -4,6 +4,7 @@ import path from 'path';
 import { prisma } from "@/prisma/prismaClient";
 import { auth } from "@/auth";
 import { Post } from '@/prisma/post/types';
+import { revalidatePath } from 'next/cache';
 
 export const UploadImage = async (formData: FormData, post: Post) => {
 
@@ -46,11 +47,21 @@ export const UploadImage = async (formData: FormData, post: Post) => {
                 fs.mkdirSync(uploadDir, { recursive: true });
             }
 
-            // Créer un chemin unique pour le fichier
-            const filePath = path.join(uploadDir, `${Date.now()}-${file.name}`);
+            // Extraire l'extension du type MIME du fichier
+            const mimeType = file.type;
+            const extension = mimeType.split('/')[1];
+
+            // Formater la date du jour pour le nom du fichier
+            const formattedDate = formatDateForFileName();
+
+            // Créer un chemin unique pour le fichier avec l'extension correcte
+            const filePath = path.join(uploadDir, `IMG${formattedDate}.${extension}`);
 
             // Écrire le fichier sur le disque
-            const buffer = Buffer.from(await file.arrayBuffer());
+            const arrayBuffer = await file.arrayBuffer();
+
+            const buffer = new Uint8Array(arrayBuffer);
+
             fs.writeFileSync(filePath, buffer);
 
             // Générer le chemin d'accès URL
@@ -70,6 +81,7 @@ export const UploadImage = async (formData: FormData, post: Post) => {
                 }
             });
 
+            revalidatePath("/");
         }
 
         const findPostUpdate = await prisma.post.findUnique({
@@ -90,4 +102,14 @@ export const UploadImage = async (formData: FormData, post: Post) => {
         return { error: "Une erreur est survenue !" };
     }
 
+}
+
+// Fonction pour formater la date dans le format jjmmaaaa
+function formatDateForFileName() {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const year = today.getFullYear();
+
+    return `${day}${month}${year}`;
 }

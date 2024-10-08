@@ -336,7 +336,7 @@ const generateMessageForPost = async () => {
 async function main() {
     await clearDatabase();
 
-    // await generateAdmin();
+    await generateAdmin();
 
     // await generateUserTest();
 
