@@ -42,7 +42,7 @@ export const UploadImage = async (formData: FormData, post: Post) => {
         for (let imgIndex = 0; imgIndex < imagesPost.length; imgIndex++) {
             const file = imagesPost[imgIndex];
             // Assurez-vous que le répertoire existe
-            const uploadDir = path.join(process.cwd(), 'public/upload/posts');
+            const uploadDir = path.join(process.cwd(), 'uploads/posts');
             if (!fs.existsSync(uploadDir)) {
                 fs.mkdirSync(uploadDir, { recursive: true });
             }
