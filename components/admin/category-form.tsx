@@ -12,6 +12,7 @@ import { Separator } from "../ui/separator";
 import { FaArrowRight } from "react-icons/fa6";
 import { UpdateIcon } from "@/actions/admin/upload-icon";
 import { compressIcon } from "@/lib/compress-image";
+import LoaderOkaze from "../utils/loader";
 
 export default function CategoryForm() {
   const {
@@ -38,46 +39,42 @@ export default function CategoryForm() {
       // Upload la nouvelle icone
       if (currentCategory) {
         if (currentFileIcon) {
-          compressIcon(currentFileIcon as File).then((data) => {
-            if (data) {
-              const formDataIcon = new FormData();
-              formDataIcon.append("file", data);
-              UpdateIcon(formDataIcon, currentCategory.id).then((dataImage) => {
-                if (dataImage.success) {
-                  UpdatedCategory(
-                    currentCategory.id,
-                    labelCategory || currentCategory.name,
-                    dataImage.url
-                  ).then((data) => {
-                    if (data.success) {
-                      toast({
-                        title: "Catégorie mise a jour",
-                        description: "La catégorie a bien été mise a jour",
-                        variant: "default",
-                      });
-                      setLoading(false);
-                      setCurrentCategory(null);
-                      setCurrentFileIcon(null);
-                      setLabelCategory("");
-                      setCurrentContent("categories");
-                      if (allCategories) {
-                        const newCategories = allCategories.map((category) => {
-                          if (category.id === data.categoryUpdate.id) {
-                            return data.categoryUpdate;
-                          }
-                          return category;
-                        });
-                        setAllCategories(newCategories);
-                      }
-                    }
-                  });
-                } else {
+          const formDataIcon = new FormData();
+          formDataIcon.append("file", currentFileIcon);
+          UpdateIcon(formDataIcon, currentCategory.id).then((dataImage) => {
+            if (dataImage.success) {
+              UpdatedCategory(
+                currentCategory.id,
+                labelCategory || currentCategory.name,
+                dataImage.url
+              ).then((data) => {
+                if (data.success) {
                   toast({
-                    title: "Une erreur est survenue",
-                    description: dataImage.error,
-                    variant: "destructive",
+                    title: "Catégorie mise a jour",
+                    description: "La catégorie a bien été mise a jour",
+                    variant: "default",
                   });
+                  setLoading(false);
+                  setCurrentCategory(null);
+                  setCurrentFileIcon(null);
+                  setLabelCategory("");
+                  setCurrentContent("categories");
+                  if (allCategories) {
+                    const newCategories = allCategories.map((category) => {
+                      if (category.id === data.categoryUpdate.id) {
+                        return data.categoryUpdate;
+                      }
+                      return category;
+                    });
+                    setAllCategories(newCategories);
+                  }
                 }
+              });
+            } else {
+              toast({
+                title: "Une erreur est survenue",
+                description: dataImage.error,
+                variant: "destructive",
               });
             }
           });
@@ -132,7 +129,6 @@ export default function CategoryForm() {
             htmlFor="name"
             className="text-left w-full flex flex-row justify-between items-center font-bold">
             Choisire une nouvelle icone pour la catégorie
-            <span className="text-sm text-muted-foreground">(2Mo maximum)</span>
           </Label>
           <Input
             className="cursor-pointer w-auto"
@@ -148,9 +144,6 @@ export default function CategoryForm() {
               }
             }}
           />
-          <span className="text-sm text-muted-foreground">
-            L&#39;icône sera redimensionnée à 42x42.
-          </span>
         </div>
         <Separator />
         <div className="flex flex-col gap-4">

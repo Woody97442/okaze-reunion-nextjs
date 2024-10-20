@@ -1,38 +1,14 @@
 "use server";
-import fs from 'fs';
-import path from 'path';
 import { prisma } from "@/prisma/prismaClient";
-import { auth } from "@/auth";
 import { Category } from '@/prisma/category/types';
+import { CheckAdminPermission } from '@/lib/check-permission';
+import { DriveDeleteFile, ExtractDriveFileId } from '@/lib/api-google-drive';
 
 export const DeleteIcon = async (category: Category) => {
 
-    const session = await auth();
-
-    if (!session) {
-        return { error: "Veuillez vous connecter !" };
-    }
-
-    const userId = session.user.id;
-
-    if (!userId) {
-        return { error: "utilisateur introuvable !" };
-    }
-
-    const existingUser = await prisma.user.findUnique({
-        where: {
-            id: userId
-        }
-    })
-
-    if (!existingUser) {
-        return { error: "utilisateur introuvable !" };
-    }
-
-    const userIsAdmin = session.user.role === "ADMIN";
-
-    if (!userIsAdmin) {
-        return { error: "Vous n'avez pas les droits administrateurs !" };
+    const isOk = await CheckAdminPermission();
+    if (!isOk.check) {
+        return { error: isOk.message };
     }
 
     if (!category.icon) {
@@ -41,11 +17,17 @@ export const DeleteIcon = async (category: Category) => {
 
     try {
 
-        const imagePath = path.join(process.cwd(), 'public', category.icon);
+        // Extraire l'ID de fichier Google Drive de l'URL
+        const fileId = ExtractDriveFileId(category.icon);
+        if (!fileId) {
+            return { error: "ID de fichier Google Drive introuvable !" };
+        }
 
-        // Vérifier si le fichier existe et le supprimer
-        if (fs.existsSync(imagePath)) {
-            fs.unlinkSync(imagePath);
+        const isDeletedDrive = await DriveDeleteFile(fileId);
+        if (!isDeletedDrive) {
+            return {
+                error: "Une erreur est survenue à la suppression de l'image du drive !",
+            };
         }
 
         // Supprimer l'entrée de la base de données

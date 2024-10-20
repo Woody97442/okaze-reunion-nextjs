@@ -1,28 +1,15 @@
 "use server";
 
 import { prisma } from "@/prisma/prismaClient";
-import { auth } from "@/auth";
 import { Category } from "@/prisma/category/types";
 import { DeleteIcon } from "./delete-icon";
+import { CheckAdminPermission } from "@/lib/check-permission";
 
 export const GetAllCategories = async () => {
 
-    const session = await auth();
-
-    if (!session) {
-        return { error: "Veuillez vous connecter !" };
-    }
-
-    const userId = session.user.id;
-
-    if (!userId) {
-        return { error: "utilisateur introuvable !" };
-    }
-
-    const userIsAdmin = session.user.role === "ADMIN";
-
-    if (!userIsAdmin) {
-        return { error: "Vous n'avez pas les droits administrateurs !" };
+    const isOk = await CheckAdminPermission();
+    if (!isOk.check) {
+        return { error: isOk.message };
     }
 
     const categories = await prisma.category.findMany({
@@ -39,22 +26,10 @@ export const GetAllCategories = async () => {
 }
 
 export const CreateCategory = async (name: string, icon?: string) => {
-    const session = await auth();
 
-    if (!session) {
-        return { error: "Veuillez vous connecter !" };
-    }
-
-    const userId = session.user.id;
-
-    if (!userId) {
-        return { error: "utilisateur introuvable !" };
-    }
-
-    const userIsAdmin = session.user.role === "ADMIN";
-
-    if (!userIsAdmin) {
-        return { error: "Vous n'avez pas les droits administrateurs !" };
+    const isOk = await CheckAdminPermission();
+    if (!isOk.check) {
+        return { error: isOk.message };
     }
 
     if (typeof name !== "string") {
@@ -120,22 +95,10 @@ export const CreateCategory = async (name: string, icon?: string) => {
 }
 
 export const UpdatedCategory = async (idCategory: string, name: string, icon?: string) => {
-    const session = await auth();
 
-    if (!session) {
-        return { error: "Veuillez vous connecter !" };
-    }
-
-    const userId = session.user.id;
-
-    if (!userId) {
-        return { error: "utilisateur introuvable !" };
-    }
-
-    const userIsAdmin = session.user.role === "ADMIN";
-
-    if (!userIsAdmin) {
-        return { error: "Vous n'avez pas les droits administrateurs !" };
+    const isOk = await CheckAdminPermission();
+    if (!isOk.check) {
+        return { error: isOk.message };
     }
 
     if (typeof name !== "string") {
@@ -208,22 +171,10 @@ export const UpdatedCategory = async (idCategory: string, name: string, icon?: s
 }
 
 export const DeleteCategory = async (idCategory: string) => {
-    const session = await auth();
 
-    if (!session) {
-        return { error: "Veuillez vous connecter !" };
-    }
-
-    const userId = session.user.id;
-
-    if (!userId) {
-        return { error: "utilisateur introuvable !" };
-    }
-
-    const userIsAdmin = session.user.role === "ADMIN";
-
-    if (!userIsAdmin) {
-        return { error: "Vous n'avez pas les droits administrateurs !" };
+    const isOk = await CheckAdminPermission();
+    if (!isOk.check) {
+        return { error: isOk.message };
     }
 
     const existingCategory = await prisma.category.findUnique({

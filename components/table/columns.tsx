@@ -2,7 +2,7 @@
 import { Post } from "@/prisma/post/types";
 import { User } from "@/prisma/user/types";
 import { Category } from "@/prisma/category/types";
-import { Image } from "@prisma/client";
+import { Image as ImageType } from "@prisma/client";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { FaArrowsUpDown } from "react-icons/fa6";
@@ -13,6 +13,7 @@ import DeletePostButton from "../admin/delete-post-button";
 import PublishSwitch from "../admin/publish-switch";
 import DeleteCategoryButton from "../admin/delete-category-button";
 import { FaEdit } from "react-icons/fa";
+import Image from "next/image";
 
 export const columnsPost: ColumnDef<Post>[] = [
   {
@@ -21,26 +22,27 @@ export const columnsPost: ColumnDef<Post>[] = [
       return <div className="w-auto text-center">Image</div>;
     },
     cell: ({ row }) => {
-      const images: Image[] = row.getValue("images");
+      const images: ImageType[] = row.getValue("images");
+      const coverIndex: number = row.original.coverImageIndex;
       if (images && images.length > 0) {
         return (
-          <Avatar>
-            <AvatarImage
-              src={images[0].src}
-              alt={images[0].alt}
-              className="w-10 h-10 object-cover"
-            />
-          </Avatar>
+          <Image
+            className="rounded-md w-[100px] h-[100px] object-cover"
+            width="100"
+            height="100"
+            src={images[coverIndex].src}
+            alt={images[coverIndex].alt}
+          />
         );
       } else {
         return (
-          <Avatar>
-            <AvatarImage
-              src="/images/image_not_found.png"
-              alt="image not found"
-              className="w-10 h-10 object-cover"
-            />
-          </Avatar>
+          <Image
+            className="rounded-md w-[100px] h-[100px] object-cover"
+            width="100"
+            height="100"
+            src="/images/image_not_found.png"
+            alt="image not found"
+          />
         );
       }
     },
@@ -203,7 +205,6 @@ export const columnsUser: ColumnDef<User>[] = [
     },
     cell: ({ row }) => {
       const image: string = row.getValue("image");
-
       if (image) {
         return (
           <Avatar>
@@ -333,23 +334,23 @@ export const columnsCategory: ColumnDef<Category>[] = [
 
       if (icon) {
         return (
-          <Avatar>
-            <AvatarImage
-              src={icon}
-              alt={altIcon}
-              className="w-10 h-10"
-            />
-          </Avatar>
+          <Image
+            className="rounded-md w-[50px] h-[50px] object-cover"
+            width="50"
+            height="50"
+            src={icon}
+            alt={altIcon}
+          />
         );
       } else {
         return (
-          <Avatar>
-            <AvatarImage
-              src="/images/image_not_found.png"
-              alt="image not found"
-              className="w-10 h-10"
-            />
-          </Avatar>
+          <Image
+            className="rounded-md w-[50px] h-[50px] object-cover"
+            width="50"
+            height="50"
+            src="/images/image_not_found.png"
+            alt="image not found"
+          />
         );
       }
     },

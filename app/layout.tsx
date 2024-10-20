@@ -29,7 +29,7 @@ export default async function RootLayout({
     <SessionProvider session={session}>
       <html
         lang="fr"
-        className="!h-auto overflow-y-scroll">
+        className="!h-auto ">
         <body
           className={
             inter.className +

@@ -21,6 +21,18 @@ const nextConfig = {
         port: "", // Facultatif, si vous avez besoin d'un port spécifique
         pathname: "/**", // Correspond à tous les chemins sous ce domaine
       },
+      {
+        protocol: "https",
+        hostname: "drive.google.com", // Ajoutez ce domaine
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "drive.usercontent.google.com", // Ajoutez ce domaine
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 };

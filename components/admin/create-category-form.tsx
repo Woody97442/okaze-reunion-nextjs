@@ -12,7 +12,6 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import FindAdminContext from "@/lib/admin-context-provider";
-import { compressIcon } from "@/lib/compress-image";
 import { UploadIcon } from "@/actions/admin/upload-icon";
 import { CreateCategory } from "@/actions/admin/categories";
 import { toast } from "../ui/use-toast";
@@ -28,6 +27,7 @@ import {
 } from "../ui/select";
 import { Post } from "@/prisma/post/types";
 import { MdOutlineAddCircleOutline } from "react-icons/md";
+import LoaderOkaze from "../utils/loader";
 
 export default function CreateCategoryForm({ variant }: { variant?: boolean }) {
   const { allCategories, setAllCategories, currentPost, setCurrentPost } =
@@ -41,83 +41,73 @@ export default function CreateCategoryForm({ variant }: { variant?: boolean }) {
 
   const CreateNewCategory = () => {
     if (labelNewCategory) {
+      setOpen(false);
       startTransition(() => {
         if (currentFileIcon) {
-          compressIcon(currentFileIcon as File).then((data) => {
-            if (data) {
-              const formData = new FormData();
-              formData.append("file", data);
+          const formData = new FormData();
+          formData.append("file", currentFileIcon);
 
-              UploadIcon(formData).then((data) => {
-                if (data) {
-                  if (data?.success) {
-                    const iconUrl = data.url;
-                    if (iconUrl) {
-                      CreateCategory(labelNewCategory, iconUrl).then((data) => {
-                        if (data?.success) {
-                          setOpen(false);
-                          setLabelNewCategory("");
-                          setCurrentFileIcon(null);
-                          const newCategories = [
-                            ...(allCategories as Category[]),
-                            data.category,
-                          ];
-                          setAllCategories(newCategories);
-                          const addCategories = [
-                            ...(currentPost?.categories || []),
-                            data.category,
-                          ];
-                          const updateCurrentPost = {
-                            ...currentPost,
-                            categories: addCategories,
-                          };
-                          setCurrentPost(updateCurrentPost as Post);
-                          toast({
-                            title: "Succès",
-                            description: data?.success,
-                          });
-                          setOpen(false);
-                        } else {
-                          toast({
-                            variant: "destructive",
-                            title: "Erreur",
-                            description: data?.error,
-                          });
-                          setOpen(false);
-                        }
+          UploadIcon(formData, labelNewCategory).then((data) => {
+            if (data) {
+              if (data?.success) {
+                const iconUrl = data.url;
+                if (iconUrl) {
+                  CreateCategory(labelNewCategory, iconUrl).then((data) => {
+                    if (data?.success) {
+                      setLabelNewCategory("");
+                      setCurrentFileIcon(null);
+                      const newCategories = [
+                        ...(allCategories as Category[]),
+                        data.category,
+                      ];
+                      setAllCategories(newCategories);
+                      const addCategories = [
+                        ...(currentPost?.categories || []),
+                        data.category,
+                      ];
+                      const updateCurrentPost = {
+                        ...currentPost,
+                        categories: addCategories,
+                      };
+                      setCurrentPost(updateCurrentPost as Post);
+                      toast({
+                        title: "Succès",
+                        description: data?.success,
                       });
                     } else {
                       toast({
                         variant: "destructive",
                         title: "Erreur",
-                        description:
-                          "Une erreur est survenue pendant l'upload de l'icône !",
+                        description: data?.error,
                       });
-                      setOpen(false);
                     }
-                  } else {
-                    toast({
-                      variant: "destructive",
-                      title: "Erreur",
-                      description: data?.error,
-                    });
-                    setOpen(false);
-                  }
+                  });
                 } else {
                   toast({
                     variant: "destructive",
                     title: "Erreur",
-                    description: "Une erreur est survenue !",
+                    description:
+                      "Une erreur est survenue pendant l'upload de l'icône !",
                   });
-                  setOpen(false);
                 }
+              } else {
+                toast({
+                  variant: "destructive",
+                  title: "Erreur",
+                  description: data?.error,
+                });
+              }
+            } else {
+              toast({
+                variant: "destructive",
+                title: "Erreur",
+                description: "Une erreur est survenue !",
               });
             }
           });
         } else {
           CreateCategory(labelNewCategory).then((data) => {
             if (data?.success) {
-              setOpen(false);
               setLabelNewCategory("");
               setCurrentFileIcon(null);
               const newCategories = [
@@ -138,14 +128,12 @@ export default function CreateCategoryForm({ variant }: { variant?: boolean }) {
                 title: "Succès",
                 description: data?.success,
               });
-              setOpen(false);
             } else {
               toast({
                 variant: "destructive",
                 title: "Erreur",
                 description: data?.error,
               });
-              setOpen(false);
             }
           });
         }
@@ -156,7 +144,6 @@ export default function CreateCategoryForm({ variant }: { variant?: boolean }) {
         title: "Erreur",
         description: "Le nom de la catégorie ne doit pas étre vide !",
       });
-      setOpen(false);
     }
   };
 
@@ -194,9 +181,6 @@ export default function CreateCategoryForm({ variant }: { variant?: boolean }) {
                     htmlFor="name"
                     className="text-left w-full flex flex-row justify-between items-center">
                     Ajouter une icone a la catégorie
-                    <span className="text-sm text-muted-foreground">
-                      (2Mo maximum)
-                    </span>
                   </Label>
                   <Input
                     className="cursor-pointer w-auto"
@@ -216,9 +200,6 @@ export default function CreateCategoryForm({ variant }: { variant?: boolean }) {
                       }
                     }}
                   />
-                  <span className="text-sm text-muted-foreground">
-                    L&#39;icône sera redimensionnée à 42x42.
-                  </span>
                 </div>
                 <div className="flex flex-col gap-4">
                   <Label
@@ -245,6 +226,11 @@ export default function CreateCategoryForm({ variant }: { variant?: boolean }) {
               </Button>
             </DialogContent>
           </Dialog>
+          {isPending && (
+            <div className="flex justify-center items-center h-screen w-full bg-black bg-opacity-70 fixed z-50 top-0 left-0">
+              <LoaderOkaze variant="light" />
+            </div>
+          )}
         </>
       ) : (
         <>
@@ -324,9 +310,6 @@ export default function CreateCategoryForm({ variant }: { variant?: boolean }) {
                       htmlFor="name"
                       className="text-left w-full flex flex-row justify-between items-center">
                       Ajouter une icone a la catégorie
-                      <span className="text-sm text-muted-foreground">
-                        (2Mo maximum)
-                      </span>
                     </Label>
                     <Input
                       className="cursor-pointer w-auto"
@@ -346,9 +329,6 @@ export default function CreateCategoryForm({ variant }: { variant?: boolean }) {
                         }
                       }}
                     />
-                    <span className="text-sm text-muted-foreground">
-                      L&#39;icône sera redimensionnée à 42x42.
-                    </span>
                   </div>
                   <div className="flex flex-col gap-4">
                     <Label
@@ -410,6 +390,11 @@ export default function CreateCategoryForm({ variant }: { variant?: boolean }) {
                 </div>
               ))}
           </div>
+          {isPending && (
+            <div className="flex justify-center items-center h-screen w-full bg-black bg-opacity-70 fixed z-50 top-0 left-0">
+              <LoaderOkaze variant="light" />
+            </div>
+          )}
         </>
       )}
     </>

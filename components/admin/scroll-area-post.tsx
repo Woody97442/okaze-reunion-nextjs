@@ -21,7 +21,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Label } from "../ui/label";
 
 interface PropsImagesPost {
   file: File;

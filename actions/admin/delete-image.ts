@@ -1,86 +1,69 @@
 "use server";
-import fs from 'fs';
-import path from 'path';
 import { prisma } from "@/prisma/prismaClient";
-import { auth } from "@/auth";
-import { Image } from '@prisma/client';
+import { Image } from "@prisma/client";
+import { CheckAdminPermission } from "@/lib/check-permission";
+import {
+    DriveDeleteFile,
+    ExtractDriveFileId,
+} from "@/lib/api-google-drive";
 
 export const DeleteImage = async (image: Image) => {
-
-    const session = await auth();
-
-    if (!session) {
-        return { error: "Veuillez vous connecter !" };
-    }
-
-    const userId = session.user.id;
-
-    if (!userId) {
-        return { error: "utilisateur introuvable !" };
-    }
-
-    const existingUser = await prisma.user.findUnique({
-        where: {
-            id: userId
-        }
-    })
-
-    if (!existingUser) {
-        return { error: "utilisateur introuvable !" };
-    }
-
-    const userIsAdmin = session.user.role === "ADMIN";
-
-    if (!userIsAdmin) {
-        return { error: "Vous n'avez pas les droits administrateurs !" };
+    const isOk = await CheckAdminPermission();
+    if (!isOk.check) {
+        return { error: isOk.message };
     }
 
     const existingImage = await prisma.image.findUnique({
         where: {
-            id: image.id
-        }
-    })
+            id: image.id,
+        },
+    });
 
     if (!existingImage) {
         return { error: "image introuvable !" };
     }
 
     try {
+        // Extraire l'ID de fichier Google Drive de l'URL
+        const fileId = ExtractDriveFileId(image.src);
+        if (!fileId) {
+            return { error: "ID de fichier Google Drive introuvable !" };
+        }
 
-        const imagePath = path.join(process.cwd(), 'public', image.src);
-
-        // Vérifier si le fichier existe et le supprimer
-        if (fs.existsSync(imagePath)) {
-            fs.unlinkSync(imagePath);
+        const isDeletedDrive = await DriveDeleteFile(fileId);
+        if (!isDeletedDrive) {
+            return {
+                error: "Une erreur est survenue à la suppression de l'image du drive !",
+            };
         }
 
         // Supprimer l'entrée de la base de données
         await prisma.image.delete({
             where: {
-                id: image.id
-            }
+                id: image.id,
+            },
         });
 
         // Récupérer les images dans le post mis à jour
         const updatedPost = await prisma.post.findUnique({
             where: {
-                id: image.postId
-            }, include: {
+                id: image.postId,
+                coverImageIndex: 0,
+            },
+            include: {
                 images: true,
-            }
+            },
         });
 
-        if (!updatedPost) {
-            return { imageInPost: [], success: "image supprimée avec succes !" }
-        } else {
-            return { imageInPost: updatedPost.images, success: "image supprimée avec succes !" };
-        }
+        return updatedPost
+            ? {
+                imageInPost: updatedPost.images,
+                success: "Image supprimée avec succès !",
+            }
+            : { imageInPost: [], success: "Image supprimée avec succès !" };
 
     } catch (error) {
-        console.error('Error deleting image:', error);
+        console.error("Error deleting image:", error);
         return { error: "Une erreur est survenue !" };
     }
-
-
-
-}
+};
