@@ -33,7 +33,7 @@ const NavCategories = ({
                   variant={"ghost"}
                   className="h-full">
                   <Link
-                    href={"/category/" + category.id}
+                    href={"/category/" + category.name}
                     className={`flex flex-row items-center gap-x-2 font-bold `}>
                     {category.icon ? (
                       <Image
@@ -86,7 +86,7 @@ const NavCategories = ({
                         key={category.id}
                         className="gap-x-3">
                         <Link
-                          href={"/category/" + category.id}
+                          href={"/category/" + category.name}
                           className="font-Lato">
                           {category.name}
                         </Link>

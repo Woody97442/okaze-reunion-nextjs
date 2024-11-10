@@ -21,6 +21,31 @@ export const getPostById = async (id: string): Promise<Post | null> => {
     }
 }
 
+// Retourne un post par son ID
+export const getPostBySlug = async (slug: string): Promise<Post | null> => {
+
+    const formatSlug = slug.replace(/-/g, " ");
+
+    try {
+        const post = await prisma.post.findUnique({
+            where: {
+                title: formatSlug,
+                isActive: true
+            }, include: {
+                categories: true,
+                attributs: true,
+                images: true,
+                favorites: true
+            }
+        })
+        return post
+
+    } catch {
+        console.error("Error in getPostBySlug:", slug);
+        return null
+    }
+}
+
 // Retourne tous les posts d'une catégorie
 export const getPostsByCategoryId = async (categoryId: string): Promise<Post[] | null> => {
     try {

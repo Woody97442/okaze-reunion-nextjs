@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { auth } from "@/auth";
@@ -10,11 +9,6 @@ import { getUserById } from "@/data/user";
 import UserContextProvider from "@/components/context/user-context";
 
 const inter = Montserrat({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "Okaze Réunion",
-  description: "Brocantage de la Réunion",
-};
 
 export default async function RootLayout({
   children,

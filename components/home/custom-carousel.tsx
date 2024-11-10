@@ -19,14 +19,14 @@ interface Props {
 
 const CustomCarousel: React.FC<Props> = ({ posts, title }) => {
   if (!posts || posts.length === 0) {
-    return <h1 className="text-xl md:text-2xl font-bold">{title}</h1>;
+    return <h3 className="text-xl md:text-2xl font-bold">{title}</h3>;
   }
 
   return (
     <>
-      <h1 className="text-xl md:text-2xl font-bold text-center md:text-left">
+      <h4 className="text-xl md:text-2xl font-bold text-center md:text-left">
         {title}
-      </h1>
+      </h4>
       <Separator />
       <Carousel
         plugins={[

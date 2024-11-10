@@ -188,7 +188,7 @@ model Attribut  {
 model Post {
   id          String @id @default(cuid())
   icode       String @unique
-  title       String
+  title       String @unique
   price       Float
   description String? @db.VarChar(1000)
 

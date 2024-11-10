@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import LoaderOkaze from "@/components/utils/loader";
 
-import { getPostById, getPosts } from "@/data/post";
+import { getPostBySlug, getPosts } from "@/data/post";
 import { FormatDate } from "@/lib/format-date";
 import { FormatPrice } from "@/lib/format-price";
 import { TraductionState } from "@/lib/traduction-state";
@@ -23,15 +23,115 @@ import { auth } from "@/auth";
 import { getUserById } from "@/data/user";
 import BannerH from "@/components/banner/banner-h";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Metadata } from "next";
 
 interface Props {
   params: {
-    id: string;
+    slug: string;
   };
 }
 
-export default async function PostId({ params: { id } }: Props) {
-  const post: Post | null = await getPostById(id);
+export async function generateMetadata({
+  params: { slug },
+}: Props): Promise<Metadata> {
+  // Récupérer l'annonce par son slug
+  const post = await getPostBySlug(slug);
+
+  if (!post) {
+    return {
+      title: `Annonce non trouvée | Okaze Réunion | Brocante en Ligne à La Réunion`,
+      description: "Cette annonce n'existe pas sur Okaze Réunion.",
+      openGraph: {
+        title: `Annonce non trouvée | Okaze Réunion`,
+        description: "Cette annonce n'existe pas sur Okaze Réunion.",
+        url: `https://www.okaze-reunion.com/post/${slug}`,
+        images: [
+          {
+            url: "https://www.okaze-reunion.com/images/banner/banner_h_1.jpg",
+            width: 1200,
+            height: 630,
+            alt: "Annonce non trouvée",
+          },
+        ],
+        type: "website",
+        siteName: "Okaze Réunion",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: "Annonce non trouvée | Okaze Réunion",
+        description: "Cette annonce n'existe pas sur Okaze Réunion.",
+        images: ["https://www.okaze-reunion.com/images/banner/banner_h_1.jpg"],
+      },
+      robots: {
+        index: true,
+        follow: true,
+      },
+      alternates: {
+        canonical: `https://www.okaze-reunion.com/post/${slug}`,
+        languages: {
+          "fr-FR": `https://www.okaze-reunion.com/post/${slug}`,
+        },
+      },
+    };
+  }
+
+  // Si l'annonce existe, retourner les métadonnées dynamiques basées sur l'annonce
+  return {
+    title: `${post.title} | Okaze Réunion | Brocante en Ligne à La Réunion`,
+    description: `Découvrez l'annonce pour "${post.title}" sur Okaze Réunion, votre plateforme de brocante à La Réunion.`,
+    keywords: [
+      "annonce",
+      "brocante",
+      "Réunion",
+      "occasion",
+      "antiquités",
+      "meubles",
+      "accessoires",
+      "objets rares",
+      "achats d'occasion",
+      post.categories[0].name, // Inclure la catégorie de l'annonce pour plus de précision
+    ],
+    openGraph: {
+      title: `${post.title} | Okaze Réunion | Brocante en Ligne à La Réunion`,
+      description: `Explorez l'annonce pour "${post.title}" sur Okaze Réunion.`,
+      url: `https://www.okaze-reunion.com/post/${slug}`,
+      images: [
+        {
+          url:
+            post.images[0]?.src ||
+            "https://www.okaze-reunion.com/images/banner/banner_h_1.jpg", // Utiliser l'image de l'annonce si elle existe
+          width: 1200,
+          height: 630,
+          alt: `Annonce "${post.title}" sur Okaze Réunion`,
+        },
+      ],
+      type: "website",
+      siteName: "Okaze Réunion",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${post.title} | Okaze Réunion | Brocante en Ligne`,
+      description: `Découvrez l'annonce pour "${post.title}" sur Okaze Réunion.`,
+      images: [
+        post.images[0]?.src ||
+          "https://www.okaze-reunion.com/images/banner/banner_h_1.jpg",
+      ],
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    alternates: {
+      canonical: `https://www.okaze-reunion.com/post/${slug}`,
+      languages: {
+        "fr-FR": `https://www.okaze-reunion.com/post/${slug}`,
+      },
+    },
+  };
+}
+
+export default async function PostId({ params: { slug } }: Props) {
+  const post: Post | null = await getPostBySlug(slug);
   const allPosts = await getPosts();
 
   const session = await auth();
@@ -65,7 +165,7 @@ export default async function PostId({ params: { id } }: Props) {
   return (
     <main className="flex flex-col py-8 space-y-6 container">
       <div className="flex flex-col md:flex-row space-y-6 md:space-x-6 h-full w-full">
-        <aside className="flex flex-row gap-x-4 bg-white w-full py-4 md:px-10 shadow-md rounded-sm justify-center">
+        <aside className="flex flex-row gap-x-4 bg-white w-full py-4 md:px-10 rounded-sm justify-center">
           <ScrollArea className="w-full md:w-[800px] whitespace-nowrap">
             <div className="flex space-x-4 w-max p-4 pb-6">
               {post.images.length > 0 ? (
@@ -77,22 +177,24 @@ export default async function PostId({ params: { id } }: Props) {
                         alt={picture.alt}
                         width="250"
                         height="250"
-                        className="object-cover rounded-md md:aspect-square"
+                        className="object-cover rounded-md aspect-square"
                         src={picture.src}
                       />
                     </DialogTrigger>
-                    <DialogContent className="bg-transparent border-none p-0 text-white">
-                      <DialogTitle className="text-xl text-white">
-                        {post.title}
-                      </DialogTitle>
-                      <Image
-                        key={index}
-                        alt={post.title}
-                        width="800"
-                        height="800"
-                        className=" rounded-md object-cover"
-                        src={picture.src || "/images/image_not_found_2.jpg"}
-                      />
+                    <DialogContent className="bg-transparent border-none p-0 text-white shadow-none">
+                      <div className="m-10">
+                        <DialogTitle className="text-xl text-white mb-2">
+                          {post.title}
+                        </DialogTitle>
+                        <Image
+                          key={index}
+                          alt={post.title}
+                          width="800"
+                          height="800"
+                          className=" rounded-md object-cover"
+                          src={picture.src || "/images/image_not_found_2.jpg"}
+                        />
+                      </div>
                     </DialogContent>
                   </Dialog>
                 ))

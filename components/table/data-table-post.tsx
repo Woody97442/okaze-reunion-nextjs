@@ -39,16 +39,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Post } from "@/prisma/post/types";
+import FindAdminContext from "@/lib/admin-context-provider";
 
 interface DataTableProps<TData extends { createdAt: Date }, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export function DataTablePost<TData extends { createdAt: Date }, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
+export function DataTablePost<
+  TData extends {
+    original: any;
+    createdAt: Date;
+  },
+  TValue
+>({ columns, data }: DataTableProps<TData, TValue>) {
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [authorFilter, setAuthorFilter] = useState<string>("");
   const [sorting, setSorting] = useState<SortingState>([
@@ -91,6 +96,14 @@ export function DataTablePost<TData extends { createdAt: Date }, TValue>({
   });
 
   const { pageSize } = pagination;
+
+  const { setCurrentContent, setCurrentPost } = FindAdminContext();
+
+  const handleRowClick = (value: string, row: TData) => {
+    const post = row;
+    setCurrentContent(value);
+    setCurrentPost(post as unknown as Post);
+  };
 
   return (
     <div>
@@ -168,12 +181,12 @@ export function DataTablePost<TData extends { createdAt: Date }, TValue>({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row, index) => (
                 <TableRow
+                  onClick={() => handleRowClick("edit-post", row.original)}
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   className={`cursor-pointer ${
                     index % 2 === 0 ? "bg-gray-100" : "bg-white"
-                  }`}
-                  onClick={() => row.toggleSelected()}>
+                  }`}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}

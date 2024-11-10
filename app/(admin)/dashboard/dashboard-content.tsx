@@ -111,7 +111,7 @@ const DashboardContent = () => {
       case "posts":
         return (
           <DataTablePost
-            columns={columnsPost}
+            columns={columnsPost as any}
             data={allPosts as any}
           />
         );

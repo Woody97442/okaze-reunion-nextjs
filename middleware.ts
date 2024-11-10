@@ -16,9 +16,9 @@ export default auth((req) => {
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
     // Vérifier si la route est une route dynamique sous /category
-    const isDynamicCategoryRoute = /^\/category\/c[a-z0-9]{24,}$/.test(nextUrl.pathname);
+    const isDynamicCategoryRoute = /^\/category\/[a-z0-9-]+$/.test(nextUrl.pathname);
     const isDynamicPostsApiRoute = /^\/api\/posts\/c[a-z0-9]{24,}$/.test(nextUrl.pathname);
-    const isDynamicPostRoute = /^\/post\/c[a-z0-9]{24,}$/.test(nextUrl.pathname);
+    const isDynamicPostRoute = /^\/post\/[a-z0-9]{24,}$/.test(nextUrl.pathname);
 
     // Si la requête est pour une route d'authentification API, ne rien faire
     if (isApiAuthRoute) {

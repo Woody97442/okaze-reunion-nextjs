@@ -17,6 +17,23 @@ export const getCategoryById = async (id: string): Promise<Category | null> => {
     }
 }
 
+export const getCategoryBySlug = async (slug: string): Promise<Category | null> => {
+    try {
+        const category = await prisma.category.findUnique({
+            where: {
+                name: slug
+            },
+            include: {
+                posts: true
+            }
+        })
+        return category
+    } catch {
+        console.error("Error in getCategoryBySlug:", slug);
+        return null
+    }
+}
+
 export const getCategoryByName = async (name: string): Promise<Category | null> => {
     try {
         const category = await prisma.category.findUnique({

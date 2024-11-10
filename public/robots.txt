@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.okaze-reunion.com
+
+# Sitemaps
+Sitemap: https://www.okaze-reunion.com/sitemap.xml

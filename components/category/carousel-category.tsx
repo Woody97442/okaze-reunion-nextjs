@@ -27,9 +27,9 @@ const CarouselCategories: React.FC<Props> = ({ posts, categoryName }) => {
 
   return (
     <>
-      <h1 className="text-xl md:text-2xl font-bold">
+      <h2 className="text-xl md:text-2xl font-bold">
         Nouvelles Offres / {categoryName}
-      </h1>
+      </h2>
       <Carousel
         plugins={[
           Autoplay({

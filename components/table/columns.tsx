@@ -24,6 +24,7 @@ export const columnsPost: ColumnDef<Post>[] = [
     cell: ({ row }) => {
       const images: ImageType[] = row.getValue("images");
       const coverIndex: number = row.original.coverImageIndex;
+
       if (images && images.length > 0) {
         return (
           <Image
@@ -45,25 +46,6 @@ export const columnsPost: ColumnDef<Post>[] = [
           />
         );
       }
-    },
-  },
-  {
-    accessorKey: "createdAt",
-    id: "createdAt",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="w-auto text-center">
-          Date de Création
-          <FaArrowsUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const date = new Date(row.getValue("createdAt"));
-      return <div className="text-center">{date.toLocaleDateString()}</div>;
     },
   },
   {
@@ -166,31 +148,6 @@ export const columnsPost: ColumnDef<Post>[] = [
       return (
         <div>
           <div className="w-auto text-center">{post.categories[0].name}</div>
-        </div>
-      );
-    },
-  },
-  {
-    header: () => <div className="w-auto text-center">Actions</div>,
-    id: "actions",
-    cell: ({ row }) => {
-      const post = row.original;
-      const { setCurrentContent, setCurrentPost } = FindAdminContext();
-
-      // Edit post
-      const handleEditPost = (value: string, post: Post) => {
-        setCurrentContent(value);
-        setCurrentPost(post);
-      };
-
-      return (
-        <div className="flex justify-center space-x-2 items-center">
-          <Button
-            variant="default"
-            onClick={() => handleEditPost("edit-post", post)}>
-            <FaEdit className="h-5 w-5" />
-          </Button>
-          <DeletePostButton postId={post.id} />
         </div>
       );
     },
@@ -356,25 +313,6 @@ export const columnsCategory: ColumnDef<Category>[] = [
     },
   },
   {
-    accessorKey: "createdAt",
-    id: "createdAt",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="w-auto text-center">
-          Date de Création
-          <FaArrowsUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const date = new Date(row.getValue("createdAt"));
-      return <div className="text-center">{date.toLocaleDateString()}</div>;
-    },
-  },
-  {
     accessorKey: "name",
     id: "nom",
     header: ({ column }) => {
@@ -384,21 +322,6 @@ export const columnsCategory: ColumnDef<Category>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="w-auto">
           Nom
-          <FaArrowsUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "altIcon",
-    id: "altIcon",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="w-auto">
-          Alt Icon
           <FaArrowsUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
